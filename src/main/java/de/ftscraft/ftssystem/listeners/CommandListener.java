@@ -35,7 +35,8 @@ public class CommandListener implements Listener {
             if(c == null)
                 return;
             event.setCancelled(true);
-            event.getPlayer().performCommand("channel toggle "+c.getName());
+            plugin.getUser(event.getPlayer()).setActiveChannel(c);
+            event.getPlayer().sendMessage(Messages.NOW_ACTIVE_CHANNEL.replace("%s", c.getName()));
         } else {
             Channel c = plugin.getChatManager().getChannel(cmd);
             if(c == null)

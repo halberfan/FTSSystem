@@ -90,7 +90,9 @@ public class CMDchannel implements FTSCommand {
                     }
 
                     u.setActiveChannel(channel);
-                    p.sendMessage(Messages.NOW_ACTIVE_CHANNEL.replace("%s", channel.getName()));
+                    String str = channel.getName();
+                    String cap = str.substring(0, 1).toUpperCase() + str.substring(1);
+                    p.sendMessage(Messages.NOW_ACTIVE_CHANNEL.replace("%s", cap));
 
                 } else p.sendMessage(Messages.HELP_CHANNEL);
             } else if (args[0].equalsIgnoreCase("toggle")) {

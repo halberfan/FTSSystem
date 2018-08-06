@@ -122,6 +122,25 @@ public class ChatManager {
     private void loadChannels() {
         File file = new File(plugin.getDataFolder() + "//channels.yml");
         YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
+        if(!file.exists()) {
+            cfg.set("channel.global.prefix", "G");
+            cfg.set("channel.global.default", false);
+            cfg.set("channel.global.permission", "ftssystem.chat.global");
+            cfg.set("channel.global.range", -1);
+            cfg.set("channel.global.format", "§8[%cp]§r[%pr§7:§r%fa§r] %na: %msg");
+
+            cfg.set("channel.local.prefix", "L");
+            cfg.set("channel.local.default", true);
+            cfg.set("channel.local.permission", "ftssystem.chat.local");
+            cfg.set("channel.local.range", 40);
+            cfg.set("channel.local.format", "[%pr§7:§r%fa§r] %na: %msg");
+
+            try {
+                cfg.save(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         try {
             for (String a : cfg.getConfigurationSection("channel").getKeys(false)) {
                 String name = a;
@@ -135,11 +154,6 @@ public class ChatManager {
             }
         } catch (Exception ignored) {
             ignored.printStackTrace();
-        }
-        try {
-            cfg.save(file);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

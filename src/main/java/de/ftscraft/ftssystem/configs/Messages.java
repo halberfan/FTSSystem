@@ -6,7 +6,7 @@ public class Messages {
             PREFIX = "§7[§4FTS-System§7]" + " ",
             NO_PERM = PREFIX + "Duzu hast du keine Rechte!",
             NO_ACTIVE_CHANNEL = PREFIX + "Du hast keinen aktiven Channel ausgewählt. Mache dies mit /channel aktiv <Name>",
-            NOW_ACTIVE_CHANNEL = PREFIX + "%s ist nun dein Aktiver Channel!",
+            NOW_ACTIVE_CHANNEL = PREFIX + "%s ist nun dein aktiver Channel!",
             CHOOSE_CHANNEL = PREFIX + "Bitte wähle einen Channel. Du kannst die Channel mit §c/channel list §7sehen!",
             LIST_CHANNEL = PREFIX + "Es gibt diese Channel:",
             NO_CHANNEL = PREFIX + "Es wurde kein Channel mit diesem Namen gefunden",
