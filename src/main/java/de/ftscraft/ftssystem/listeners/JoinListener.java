@@ -23,6 +23,7 @@ public class JoinListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         User u = new User(plugin, event.getPlayer());
+
     }
 
 }

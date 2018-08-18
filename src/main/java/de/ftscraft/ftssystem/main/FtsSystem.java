@@ -4,10 +4,14 @@ import de.ftscraft.ftssystem.channel.Channel;
 import de.ftscraft.ftssystem.channel.ChatManager;
 import de.ftscraft.ftssystem.commands.CMDchannel;
 import de.ftscraft.ftssystem.commands.CMDftssystem;
+import de.ftscraft.ftssystem.commands.CMDumfrage;
+import de.ftscraft.ftssystem.configs.ConfigManager;
 import de.ftscraft.ftssystem.listeners.ChatListener;
 import de.ftscraft.ftssystem.listeners.CommandListener;
 import de.ftscraft.ftssystem.listeners.JoinListener;
 import de.ftscraft.ftssystem.listeners.QuitListener;
+import de.ftscraft.ftssystem.poll.Umfrage;
+import de.ftscraft.ftssystem.utils.Runner;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -20,6 +24,7 @@ import java.util.HashMap;
 public class FtsSystem extends JavaPlugin {
 
     private HashMap<String, User> user;
+    private Umfrage umfrage = null;
 
     public boolean factionHooked = false;
 
@@ -28,6 +33,7 @@ public class FtsSystem extends JavaPlugin {
     private Chat chat;
 
     private ChatManager chatManager;
+    private ConfigManager configManager;
 
     @Override
     public void onEnable() {
@@ -54,12 +60,15 @@ public class FtsSystem extends JavaPlugin {
     private void init() {
         user = new HashMap<>();
         chatManager = new ChatManager(this);
+        configManager = new ConfigManager(this);
         new CMDftssystem(this);
         new CMDchannel(this);
+        new CMDumfrage(this);
         new CommandListener(this);
         new ChatListener(this);
         new JoinListener(this);
         new QuitListener(this);
+        new Runner(this);
     }
 
     public User getUser(Player player) {
@@ -84,5 +93,17 @@ public class FtsSystem extends JavaPlugin {
 
     public ChatManager getChatManager() {
         return chatManager;
+    }
+
+    public ConfigManager getConfigManager() {
+        return configManager;
+    }
+
+    public Umfrage getUmfrage() {
+        return umfrage;
+    }
+
+    public void setUmfrage(Umfrage umfrage) {
+        this.umfrage = umfrage;
     }
 }

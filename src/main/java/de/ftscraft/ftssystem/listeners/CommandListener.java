@@ -43,7 +43,7 @@ public class CommandListener implements Listener {
                 return;
             event.setCancelled(true);
             if(!plugin.getUser(event.getPlayer()).getEnabledChannels().contains(c)) {
-                event.getPlayer().sendMessage(Messages.NOT_IN_CHANNEL);
+                plugin.getUser(event.getPlayer()).joinChannel(c);
                 return;
             }
             String msg = "";

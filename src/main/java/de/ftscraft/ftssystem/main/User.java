@@ -7,11 +7,13 @@ package de.ftscraft.ftssystem.main;
 
 import de.ftscraft.ftssystem.channel.Channel;
 import de.ftscraft.ftssystem.configs.Messages;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.BatchUpdateException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,8 @@ public class User {
 
     private Channel activeChannel;
     private List<Channel> enabledChannels;
+
+    private boolean muted;
 
     public User(FtsSystem plugin, Player p) {
         this.player = p;
@@ -52,6 +56,7 @@ public class User {
         }
         cfg.set("channels", chNames.toArray());
         cfg.set("activeChannel", activeChannel.getName());
+        cfg.set("muted", muted);
         try {
             cfg.save(file);
         } catch (IOException e) {
@@ -62,6 +67,11 @@ public class User {
     private void getData() {
         File file = new File(plugin.getDataFolder() + "//user//"+player.getUniqueId().toString()+".yml");
         YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
+        if(!file.exists()) {
+            for(Player a : Bukkit.getOnlinePlayers()) {
+                a.sendMessage("§cDer Spieler §e"+player.getName()+" §cist das 1. mal hier. Sagt Hallo!");
+            }
+        }
         List channelList = cfg.getList("channels");
         if(channelList != null) {
             String[] channels = (String[]) channelList.toArray(new String[channelList.size()]);
@@ -82,6 +92,8 @@ public class User {
         this.activeChannel = plugin.getChatManager().getChannel(cfg.getString("activeChannel"));
         if(this.activeChannel == null)
             this.activeChannel = plugin.getChatManager().getChannel("Local");
+
+        this.muted = cfg.getBoolean("muted");
     }
 
     public void joinChannel(Channel channel) {
@@ -111,4 +123,14 @@ public class User {
             player.sendMessage(Messages.NOW_ACTIVE_CHANNEL.replace("%s", channel.getName()));
         }
     }
+
+    public void setMuted(boolean muted) {
+        this.muted = muted;
+    }
+
+    public boolean isMuted() {
+        return muted;
+    }
+
+
 }

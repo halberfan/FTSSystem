@@ -5,13 +5,18 @@
 
 package de.ftscraft.ftssystem.channel;
 
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.integration.Econ;
 import de.ftscraft.ftssystem.configs.Messages;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.main.User;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,46 +45,135 @@ public class ChatManager {
     }
 
     public void chat(User u, String msg) {
+        if(u.isMuted()) {
+            u.getPlayer().sendMessage("§cDu bist gemuted!");
+            return;
+        }
         Channel a = u.getActiveChannel();
         if (a == null) {
             u.getPlayer().sendMessage(Messages.CHOOSE_CHANNEL);
             return;
         }
-        if(u.getActiveChannel() == null) {
+        if (u.getActiveChannel() == null) {
             u.getPlayer().sendMessage(Messages.NO_ACTIVE_CHANNEL);
         }
         String c = format(u, a, msg);
-        for (User b : plugin.getUser().values()) {
-            if (b.getEnabledChannels().contains(a)) {
-                if (a.getRange() != -1) {
-                    if (b.getPlayer().getLocation().distance(u.getPlayer().getLocation()) < a.getRange()) {
+        if (a.getType() == ChannelType.NORMAL || a.getType() == null) {
+            boolean anyoneRecived = false;
+            for (User b : plugin.getUser().values()) {
+                if (b.getEnabledChannels().contains(a)) {
+                    if (a.getRange() != -1) {
+                        if (b.getPlayer().getWorld().getName().equalsIgnoreCase(u.getPlayer().getWorld().getName())) {
+                            if (b.getPlayer().getLocation().distance(u.getPlayer().getLocation()) <= a.getRange()) {
+                                if (b != u)
+                                    anyoneRecived = true;
+                                b.getPlayer().sendMessage(c);
+                            }
+                        }
+                    } else {
                         b.getPlayer().sendMessage(c);
+                        if (b != u)
+                            anyoneRecived = true;
                     }
-                } else
+                }
+            }
+
+            if (!anyoneRecived) {
+                u.getPlayer().sendMessage("§cNiemand hat deine Nachricht gelesen. Schreibe ein ! vor deine Nachricht um in den Globalchat zu schreiben");
+            }
+
+        } else if (a.getType() == ChannelType.FACTION_F) {
+            Faction f = MPlayer.get(u.getPlayer()).getFaction();
+
+            for (MPlayer b : f.getMPlayers()) {
+                b.getPlayer().sendMessage(c);
+            }
+        } else if (a.getType() == ChannelType.FACTION_ALLY) {
+            Faction f = MPlayer.get(u.getPlayer()).getFaction();
+
+            for (MPlayer b : f.getMPlayers()) {
+                if (b.getPlayer() != null)
                     b.getPlayer().sendMessage(c);
             }
+
+            for(Player i : Bukkit.getOnlinePlayers()) {
+                MPlayer mPlayer = MPlayer.get(i);
+                if (mPlayer.getFaction().getRelationTo(f) == Rel.ALLY ||mPlayer.getFaction().getRelationTo(f) == Rel.TRUCE) {
+                    i.sendMessage(c);
+                }
+            }
+
         }
 
     }
 
     public void chat(User u, String msg, Channel channel) {
-        Channel a = channel;
-        if (a == null) {
+        if(u.isMuted()) {
+            u.getPlayer().sendMessage("§cDu bist gemuted!");
+            return;
+        }
+        if (channel == null) {
             u.getPlayer().sendMessage(Messages.CHOOSE_CHANNEL);
             return;
         }
-        String c = format(u, a, msg);
-        for (User b : plugin.getUser().values()) {
-            if (b.getEnabledChannels().contains(a)) {
-                if (a.getRange() != -1) {
-                    if (b.getPlayer().getLocation().distance(u.getPlayer().getLocation()) < a.getRange()) {
-                        b.getPlayer().sendMessage(c);
-                    }
-                } else
-                    b.getPlayer().sendMessage(c);
-            }
+        if (!u.getEnabledChannels().contains(channel)) {
+            try {
+                u.joinChannel(channel);
+            } catch (Exception ignored) {ignored.printStackTrace();}
         }
 
+        String c = format(u, channel, msg);
+
+        if (channel.getType() == ChannelType.NORMAL || channel.getType() == null) {
+
+            boolean anyoneRecived = false;
+            for (User b : plugin.getUser().values()) {
+                if (b.getEnabledChannels().contains(channel)) {
+                    if (channel.getRange() != -1) {
+                        if (b.getPlayer().getWorld() == u.getPlayer().getWorld()) {
+                            if (b.getPlayer().getLocation().distance(u.getPlayer().getLocation()) <= channel.getRange()) {
+                                if (b != u)
+                                    anyoneRecived = true;
+                                b.getPlayer().sendMessage(c);
+                            }
+                        }
+                    } else {
+                        b.getPlayer().sendMessage(c);
+                        if (b != u)
+                            anyoneRecived = true;
+                    }
+                }
+            }
+
+            if (!anyoneRecived) {
+                u.getPlayer().sendMessage("§cNiemand hat deine Nachricht gelesen. Schreibe ein ! vor deine Nachricht um in den Globalchat zu schreiben");
+            }
+
+        } else if (channel.getType() == ChannelType.FACTION_F) {
+
+            Faction f = MPlayer.get(u.getPlayer()).getFaction();
+
+            for (MPlayer b : f.getMPlayers()) {
+                b.getPlayer().sendMessage(c);
+            }
+
+        } else if (channel.getType() == ChannelType.FACTION_ALLY) {
+
+            Faction f = MPlayer.get(u.getPlayer()).getFaction();
+
+            for (MPlayer b : f.getMPlayers()) {
+                if (b.getPlayer() != null)
+                    b.getPlayer().sendMessage(c);
+            }
+
+            for(Player i : Bukkit.getOnlinePlayers()) {
+                MPlayer mPlayer = MPlayer.get(i);
+                if (mPlayer.getFaction().getRelationTo(f) == Rel.ALLY||mPlayer.getFaction().getRelationTo(f) == Rel.TRUCE) {
+                    i.sendMessage(c);
+                }
+            }
+
+        }
     }
 
     public String format(User u, Channel c, String msg) {
@@ -108,7 +202,7 @@ public class ChatManager {
             if (channel.getName().equalsIgnoreCase(a)) {
                 return channel;
             }
-            if(channel.getPrefix().equalsIgnoreCase(a)) {
+            if (channel.getPrefix().equalsIgnoreCase(a)) {
                 return channel;
             }
         }
@@ -122,7 +216,7 @@ public class ChatManager {
     private void loadChannels() {
         File file = new File(plugin.getDataFolder() + "//channels.yml");
         YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
-        if(!file.exists()) {
+        if (!file.exists()) {
             cfg.set("channel.global.prefix", "G");
             cfg.set("channel.global.default", false);
             cfg.set("channel.global.permission", "ftssystem.chat.global");
@@ -143,13 +237,15 @@ public class ChatManager {
         }
         try {
             for (String a : cfg.getConfigurationSection("channel").getKeys(false)) {
-                String name = a;
                 String prefix = cfg.getString("channel." + a + ".prefix");
                 boolean defaultChannel = cfg.getBoolean("channel." + a + ".default");
                 String permission = cfg.getString("channel." + a + ".permission");
                 int range = cfg.getInt("channel." + a + ".range");
                 String format = cfg.getString("channel." + a + ".format");
-                Channel c = new Channel(plugin, name, prefix, format, defaultChannel, permission, range);
+                ChannelType channelType = null;
+                if (cfg.contains("channel." + a + ".type"))
+                    channelType = ChannelType.valueOf(cfg.getString("channel." + a + ".type").toUpperCase());
+                Channel c = new Channel(plugin, a, prefix, format, defaultChannel, permission, range, channelType);
                 channels.add(c);
             }
         } catch (Exception ignored) {

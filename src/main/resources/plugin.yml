@@ -1,8 +1,9 @@
 name: FTSSystem
-version: 0.1
+version: 0.1.2
 main: de.ftscraft.ftssystem.main.FtsSystem
 author: halberfan
 
 commands:
     ftssystem:
     channel:
+    umfrage:

@@ -5,6 +5,7 @@
 
 package de.ftscraft.ftssystem.listeners;
 
+import de.ftscraft.ftssystem.channel.ChatManager;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.main.User;
 import org.bukkit.entity.Player;
@@ -27,6 +28,10 @@ public class ChatListener implements Listener {
         event.setCancelled(true);
         if(u == null) {
             event.getPlayer().sendMessage("§cIrgendwas ist schief gelaufen. Probier mal zu reconnecten!");
+            return;
+        }
+        if(event.getMessage().startsWith("!")) {
+            plugin.getChatManager().chat(u, event.getMessage().replaceFirst("!", ""), plugin.getChatManager().getChannel("Global"));
             return;
         }
 
