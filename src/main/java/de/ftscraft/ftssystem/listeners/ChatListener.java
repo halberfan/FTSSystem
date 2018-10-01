@@ -10,6 +10,7 @@ import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.main.User;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
@@ -22,15 +23,21 @@ public class ChatListener implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onChat(AsyncPlayerChatEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
         User u = plugin.getUser(event.getPlayer());
-        event.setCancelled(true);
-        if(u == null) {
+        if (u == null) {
             event.getPlayer().sendMessage("§cIrgendwas ist schief gelaufen. Probier mal zu reconnecten!");
             return;
         }
-        if(event.getMessage().startsWith("!")) {
+        event.setCancelled(true);
+        if (event.getMessage().startsWith("*")) {
+            return;
+        }
+        if (event.getMessage().startsWith("!")) {
             plugin.getChatManager().chat(u, event.getMessage().replaceFirst("!", ""), plugin.getChatManager().getChannel("Global"));
             return;
         }

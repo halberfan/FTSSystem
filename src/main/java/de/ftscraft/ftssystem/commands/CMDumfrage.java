@@ -5,7 +5,6 @@
 
 package de.ftscraft.ftssystem.commands;
 
-import com.massivecraft.massivecore.Integration;
 import de.ftscraft.ftssystem.configs.Messages;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.poll.Umfrage;

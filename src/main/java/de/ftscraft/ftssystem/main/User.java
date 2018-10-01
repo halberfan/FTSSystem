@@ -22,10 +22,14 @@ public class User {
     private FtsSystem plugin;
     private Player player;
 
+    private boolean scoreboardEnabled = true;
+
     private Channel activeChannel;
     private List<Channel> enabledChannels;
 
     private boolean muted;
+
+
 
     public User(FtsSystem plugin, Player p) {
         this.player = p;
@@ -57,6 +61,7 @@ public class User {
         cfg.set("channels", chNames.toArray());
         cfg.set("activeChannel", activeChannel.getName());
         cfg.set("muted", muted);
+        cfg.set("scoreboardOn", scoreboardEnabled);
         try {
             cfg.save(file);
         } catch (IOException e) {
@@ -94,6 +99,7 @@ public class User {
             this.activeChannel = plugin.getChatManager().getChannel("Local");
 
         this.muted = cfg.getBoolean("muted");
+        this.scoreboardEnabled = cfg.getBoolean("scoreboardOn");
     }
 
     public void joinChannel(Channel channel) {
@@ -132,5 +138,12 @@ public class User {
         return muted;
     }
 
+    public boolean isScoreboardEnabled() {
+        return scoreboardEnabled;
+    }
+
+    public void setScoreboardEnabled(boolean scoreboardEnabled) {
+        this.scoreboardEnabled = scoreboardEnabled;
+    }
 
 }

@@ -45,7 +45,7 @@ public class ChatManager {
     }
 
     public void chat(User u, String msg) {
-        if(u.isMuted()) {
+        if (u.isMuted()) {
             u.getPlayer().sendMessage("§cDu bist gemuted!");
             return;
         }
@@ -86,7 +86,8 @@ public class ChatManager {
             Faction f = MPlayer.get(u.getPlayer()).getFaction();
 
             for (MPlayer b : f.getMPlayers()) {
-                b.getPlayer().sendMessage(c);
+                if (b.isOnline())
+                    b.getPlayer().sendMessage(c);
             }
         } else if (a.getType() == ChannelType.FACTION_ALLY) {
             Faction f = MPlayer.get(u.getPlayer()).getFaction();
@@ -96,9 +97,9 @@ public class ChatManager {
                     b.getPlayer().sendMessage(c);
             }
 
-            for(Player i : Bukkit.getOnlinePlayers()) {
+            for (Player i : Bukkit.getOnlinePlayers()) {
                 MPlayer mPlayer = MPlayer.get(i);
-                if (mPlayer.getFaction().getRelationTo(f) == Rel.ALLY ||mPlayer.getFaction().getRelationTo(f) == Rel.TRUCE) {
+                if (mPlayer.getFaction().getRelationTo(f) == Rel.ALLY || mPlayer.getFaction().getRelationTo(f) == Rel.TRUCE) {
                     i.sendMessage(c);
                 }
             }
@@ -108,7 +109,7 @@ public class ChatManager {
     }
 
     public void chat(User u, String msg, Channel channel) {
-        if(u.isMuted()) {
+        if (u.isMuted()) {
             u.getPlayer().sendMessage("§cDu bist gemuted!");
             return;
         }
@@ -119,7 +120,9 @@ public class ChatManager {
         if (!u.getEnabledChannels().contains(channel)) {
             try {
                 u.joinChannel(channel);
-            } catch (Exception ignored) {ignored.printStackTrace();}
+            } catch (Exception ignored) {
+                ignored.printStackTrace();
+            }
         }
 
         String c = format(u, channel, msg);
@@ -130,7 +133,7 @@ public class ChatManager {
             for (User b : plugin.getUser().values()) {
                 if (b.getEnabledChannels().contains(channel)) {
                     if (channel.getRange() != -1) {
-                        if (b.getPlayer().getWorld() == u.getPlayer().getWorld()) {
+                        if (b.getPlayer().getWorld().getName().equalsIgnoreCase(u.getPlayer().getWorld().getName())) {
                             if (b.getPlayer().getLocation().distance(u.getPlayer().getLocation()) <= channel.getRange()) {
                                 if (b != u)
                                     anyoneRecived = true;
@@ -145,6 +148,8 @@ public class ChatManager {
                 }
             }
 
+            
+
             if (!anyoneRecived) {
                 u.getPlayer().sendMessage("§cNiemand hat deine Nachricht gelesen. Schreibe ein ! vor deine Nachricht um in den Globalchat zu schreiben");
             }
@@ -154,7 +159,8 @@ public class ChatManager {
             Faction f = MPlayer.get(u.getPlayer()).getFaction();
 
             for (MPlayer b : f.getMPlayers()) {
-                b.getPlayer().sendMessage(c);
+                if (b.isOnline())
+                    b.getPlayer().sendMessage(c);
             }
 
         } else if (channel.getType() == ChannelType.FACTION_ALLY) {
@@ -166,9 +172,9 @@ public class ChatManager {
                     b.getPlayer().sendMessage(c);
             }
 
-            for(Player i : Bukkit.getOnlinePlayers()) {
+            for (Player i : Bukkit.getOnlinePlayers()) {
                 MPlayer mPlayer = MPlayer.get(i);
-                if (mPlayer.getFaction().getRelationTo(f) == Rel.ALLY||mPlayer.getFaction().getRelationTo(f) == Rel.TRUCE) {
+                if (mPlayer.getFaction().getRelationTo(f) == Rel.ALLY || mPlayer.getFaction().getRelationTo(f) == Rel.TRUCE) {
                     i.sendMessage(c);
                 }
             }

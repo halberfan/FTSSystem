@@ -4,6 +4,7 @@ import de.ftscraft.ftssystem.channel.Channel;
 import de.ftscraft.ftssystem.channel.ChatManager;
 import de.ftscraft.ftssystem.commands.CMDchannel;
 import de.ftscraft.ftssystem.commands.CMDftssystem;
+import de.ftscraft.ftssystem.commands.CMDtogglesidebar;
 import de.ftscraft.ftssystem.commands.CMDumfrage;
 import de.ftscraft.ftssystem.configs.ConfigManager;
 import de.ftscraft.ftssystem.listeners.ChatListener;
@@ -11,7 +12,10 @@ import de.ftscraft.ftssystem.listeners.CommandListener;
 import de.ftscraft.ftssystem.listeners.JoinListener;
 import de.ftscraft.ftssystem.listeners.QuitListener;
 import de.ftscraft.ftssystem.poll.Umfrage;
+import de.ftscraft.ftssystem.punishment.PunishmentManager;
+import de.ftscraft.ftssystem.utils.FTSScoreboard;
 import de.ftscraft.ftssystem.utils.Runner;
+import de.ftscraft.survivalminus.main.Survival;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -35,6 +39,12 @@ public class FtsSystem extends JavaPlugin {
     private ChatManager chatManager;
     private ConfigManager configManager;
 
+    private Survival survival;
+
+    private FTSScoreboard ftsScoreboard;
+
+    private PunishmentManager punishmentManager;
+
     @Override
     public void onEnable() {
         super.onEnable();
@@ -50,6 +60,8 @@ public class FtsSystem extends JavaPlugin {
         econ = rsp2.getProvider();
         RegisteredServiceProvider<Permission> rsp3 = getServer().getServicesManager().getRegistration(Permission.class);
         perm = rsp3.getProvider();
+        survival = (Survival) getServer().getPluginManager().getPlugin("SurvivalMinus");
+
     }
 
     @Override
@@ -59,11 +71,14 @@ public class FtsSystem extends JavaPlugin {
 
     private void init() {
         user = new HashMap<>();
+        punishmentManager = new PunishmentManager(this);
         chatManager = new ChatManager(this);
         configManager = new ConfigManager(this);
+        ftsScoreboard = new FTSScoreboard(this);
         new CMDftssystem(this);
         new CMDchannel(this);
         new CMDumfrage(this);
+        new CMDtogglesidebar(this);
         new CommandListener(this);
         new ChatListener(this);
         new JoinListener(this);
@@ -105,5 +120,17 @@ public class FtsSystem extends JavaPlugin {
 
     public void setUmfrage(Umfrage umfrage) {
         this.umfrage = umfrage;
+    }
+
+    public Survival getSurvival() {
+        return survival;
+    }
+
+    public FTSScoreboard getFtsScoreboard() {
+        return ftsScoreboard;
+    }
+
+    public PunishmentManager getPunishmentManager() {
+        return punishmentManager;
     }
 }
