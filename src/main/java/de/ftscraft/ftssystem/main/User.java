@@ -52,16 +52,23 @@ public class User {
     }
 
     public void save() {
+
         File file = new File(plugin.getDataFolder() + "//user//"+player.getUniqueId().toString()+".yml");
         YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
+
+        //Chat
         List<String> chNames = new ArrayList<>();
+
         for(Channel a : enabledChannels) {
             chNames.add(a.getName());
         }
+
         cfg.set("channels", chNames.toArray());
         cfg.set("activeChannel", activeChannel.getName());
-        cfg.set("muted", muted);
-        cfg.set("scoreboardOn", scoreboardEnabled);
+
+        //Punishment
+
+
         try {
             cfg.save(file);
         } catch (IOException e) {

@@ -8,6 +8,7 @@ package de.ftscraft.ftssystem.utils;
 public class Utils {
 
     public static String convertToTime(long millis) {
+        millis = millis - System.currentTimeMillis();
         long seconds = millis / 1000;
         long minutes = 0;
         long hours = 0;
@@ -32,6 +33,12 @@ public class Utils {
         }
 
         return seconds + " Sekunden" + " " + minutes + " Minuten" + " " + hours + " Stunden" + " " + days + " Tage" + " " + weeks + " Wochen";
+    }
+
+    public static String[] splitToNumbers(String str) {
+        if(str.length() != 2)
+            return null;
+        return str.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
     }
 
 

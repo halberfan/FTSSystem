@@ -23,6 +23,7 @@ public class Messages {
             UMFRAGE_STATED = PREFIX + "Die Umfrage wurde gestartet!",
             UMFRAGE_ENDED = PREFIX + "Die Umfrage wurde beendet!",
             UMFRAGE_ALREADY_CONFIG = PREFIX + "Es wird derzeit eine Umfrage erstellt / ist am laufen",
+            PLAYER_NOT_FOUND = PREFIX + "Der Spieler wurde nicht gefunden!",
             ONLY_PLAYER = PREFIX + "Dieser CMD ist nur für Spieler!";
 
     public static final String

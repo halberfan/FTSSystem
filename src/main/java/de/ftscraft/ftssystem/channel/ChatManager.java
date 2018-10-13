@@ -156,6 +156,7 @@ public class ChatManager {
 
         } else if (channel.getType() == ChannelType.FACTION_F) {
 
+
             Faction f = MPlayer.get(u.getPlayer()).getFaction();
 
             for (MPlayer b : f.getMPlayers()) {
@@ -182,7 +183,7 @@ public class ChatManager {
         }
     }
 
-    public String format(User u, Channel c, String msg) {
+    private String format(User u, Channel c, String msg) {
         String f = c.getFormat();
         String faction = "";
         String prefix = plugin.getChat().getPlayerPrefix(u.getPlayer());

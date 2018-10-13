@@ -48,6 +48,8 @@ public class Runner implements Runnable {
             time_to_update = Varriables.SCOREBOARD_UPDATE_COOLDOWN;
         }
 
+        plugin.getReisepunktManager().update();
+
 
     }
 

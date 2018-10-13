@@ -57,11 +57,19 @@ public class CMDftssystem implements FTSCommand {
                             tu.setMuted(true);
                         else tu.setMuted(false);
 
-                        if(tu.isMuted())
+                        if (tu.isMuted())
                             p.sendMessage("§7Der Spieler §c" + t.getName() + " §7wurde gemuted");
-                        else p.sendMessage("§7Der Spieler §c"+t.getName()+"§7 wurde entmuted");
+                        else p.sendMessage("§7Der Spieler §c" + t.getName() + "§7 wurde entmuted");
 
                     }
+            } else if (args[0].equalsIgnoreCase("test")) {
+                p.kickPlayer(
+                        "§4Du wurdest gebannt! \n" +
+                                "§eGebannt von: §b" + "Dir" + "\n" +
+                                "§eBis: §bPERMANENT \n" +
+                                "§eGrund: §b" + "test" + "\n" +
+                                " \n" +
+                                "§6Du kannst ein Entbannungsbeitrag im Forum schreiben");
             } else p.sendMessage(Messages.HELP_FTSSYSTEM);
         } else p.sendMessage(Messages.HELP_FTSSYSTEM);
 

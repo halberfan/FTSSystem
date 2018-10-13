@@ -13,8 +13,12 @@ public interface Punishment {
     UUID getPlayer();
     String getReason();
     String getAuthor();
+    String getMoreInformation();
     long getTime();
     int getID();
+    String createdOn();
+    boolean isActive();
+    void setActive(boolean active);
     void remove();
 
 }

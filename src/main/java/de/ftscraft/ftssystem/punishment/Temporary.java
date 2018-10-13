@@ -5,9 +5,10 @@
 
 package de.ftscraft.ftssystem.punishment;
 
-public interface Temporary {
+public interface Temporary extends Punishment {
 
     long untilInMillis();
     String untilAsString();
+    String untilAsCalString();
 
 }
