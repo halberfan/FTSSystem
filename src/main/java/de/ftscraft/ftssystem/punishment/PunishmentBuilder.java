@@ -10,10 +10,8 @@ import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.utils.TimeUnits;
 import de.ftscraft.ftssystem.utils.UUIDFetcher;
 import de.ftscraft.ftssystem.utils.Utils;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.lang.reflect.Member;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -146,20 +144,28 @@ public class PunishmentBuilder {
             return;
         }
         UUID target = UUIDFetcher.getUUID(player);
-        if(type == PunishmentType.NOTE) {
-            plugin.getPunishmentManager().addNote(reason, author, player, moreInfo);
-        } else if(type == PunishmentType.TEMPWARN) {
-            plugin.getPunishmentManager().addTempwarn(reason, author, player, moreInfo, until);
-        } else if(type == PunishmentType.WARN) {
-            plugin.getPunishmentManager().addWarn(reason, author, player, moreInfo);
-        } else if(type == PunishmentType.TEMPMUTE) {
-            plugin.getPunishmentManager().addTempMute(reason, author, player, moreInfo, until);
-        } else if(type == PunishmentType.TEMPBAN) {
-            plugin.getPunishmentManager().addTempBan(reason, author, player, moreInfo, until);
-        } else if(type == PunishmentType.BAN) {
-            plugin.getPunishmentManager().addBan(reason, author, player, moreInfo);
-        } else {
-            creator.sendMessage("§cIrgendwas ist schief gelaufen. Überprüfe nochmal deine Daten");
+        switch (type) {
+            case NOTE:
+                plugin.getPunishmentManager().addNote(reason, author, player, moreInfo);
+                break;
+            case TEMPWARN:
+                plugin.getPunishmentManager().addTempwarn(reason, author, player, moreInfo, until);
+                break;
+            case WARN:
+                plugin.getPunishmentManager().addWarn(reason, author, player, moreInfo);
+                break;
+            case TEMPMUTE:
+                plugin.getPunishmentManager().addTempMute(reason, author, player, moreInfo, until);
+                break;
+            case TEMPBAN:
+                plugin.getPunishmentManager().addTempBan(reason, author, player, moreInfo, until);
+                break;
+            case BAN:
+                plugin.getPunishmentManager().addBan(reason, author, player, moreInfo);
+                break;
+            default:
+                creator.sendMessage("§cIrgendwas ist schief gelaufen. Überprüfe nochmal deine Daten");
+                break;
         }
     }
 

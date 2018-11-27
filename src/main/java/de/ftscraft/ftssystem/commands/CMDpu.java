@@ -43,45 +43,48 @@ public class CMDpu implements FTSCommand {
             return true;
         }
 
-        if(args.length == 1) {
-            OfflinePlayer t = Bukkit.getOfflinePlayer(args[0]);
-            if(t == null) {
-                p.sendMessage(Messages.PLAYER_NOT_FOUND);
-                return true;
-            }
-
-            p.openInventory(new PunishmentInventory(plugin, t.getName()).getInv(PunishmentInventory.PunishmentInvType.MAIN));
-
-        } else if(args.length == 2) {
-            if(args[0].equalsIgnoreCase("remove")) {
-
-                p.sendMessage("§cBist du sicher? Das kann nicht rückgängig gemacht werden! Wenn ja, klicke: ");
-                TextComponent tc = new TextComponent("Hier");
-                tc.setColor(ChatColor.DARK_RED);
-                tc.setBold(true);
-                tc.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pu remove "+args[1]+" confirm"));
-                p.spigot().sendMessage(tc);
-            }
-        } else if(args.length == 3) {
-            if(args[0].equalsIgnoreCase("remove") && args[2].equalsIgnoreCase("confirm")) {
-
-                Integer id = Integer.valueOf(args[1]);
-
-                Punishment pu = plugin.getPunishmentManager().getPunishmentById(id);
-
-                if(pu == null) {
-                    p.sendMessage("§cIrgendwas ist schief gelaufen. Probier es nochmal");
+        switch (args.length) {
+            case 1:
+                OfflinePlayer t = Bukkit.getOfflinePlayer(args[0]);
+                if (t == null) {
+                    p.sendMessage(Messages.PLAYER_NOT_FOUND);
                     return true;
                 }
 
-                pu.setActive(false);
-                System.out.println(pu.isActive());
-                plugin.getPunishmentManager().savePlayer(pu.getPlayer());
+                p.openInventory(new PunishmentInventory(plugin, t.getName()).getInv(PunishmentInventory.PunishmentInvType.MAIN));
 
-                p.sendMessage("§cOkay. Die Strafe wurde Deaktiviert");
+                break;
+            case 2:
+                if (args[0].equalsIgnoreCase("remove")) {
+
+                    p.sendMessage("§cBist du sicher? Das kann nicht rückgängig gemacht werden! Wenn ja, klicke: ");
+                    TextComponent tc = new TextComponent("Hier");
+                    tc.setColor(ChatColor.DARK_RED);
+                    tc.setBold(true);
+                    tc.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pu remove " + args[1] + " confirm"));
+                    p.spigot().sendMessage(tc);
+                }
+                break;
+            case 3:
+                if (args[0].equalsIgnoreCase("remove") && args[2].equalsIgnoreCase("confirm")) {
+
+                    Integer id = Integer.valueOf(args[1]);
+
+                    Punishment pu = plugin.getPunishmentManager().getPunishmentById(id);
+
+                    if (pu == null) {
+                        p.sendMessage("§cIrgendwas ist schief gelaufen. Probier es nochmal");
+                        return true;
+                    }
+
+                    pu.setActive(false);
+                    plugin.getPunishmentManager().savePlayer(pu.getPlayer());
+
+                    p.sendMessage("§cOkay. Die Strafe wurde Deaktiviert");
 
 
-            }
+                }
+                break;
         }
 
         return false;

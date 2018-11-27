@@ -9,9 +9,7 @@ import de.ftscraft.ftssystem.main.FtsSystem;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import javax.annotation.Nonnull;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -71,9 +69,6 @@ public class PunishmentIO {
             cfg.set("punishment." + a.getID() + ".moreInfo", a.getMoreInformation());
             cfg.set("punishment." + a.getID() + ".creation", a.getTime());
             cfg.set("punishment."+a.getID()+".active", a.isActive());
-            System.out.println("..---..");
-            System.out.println(a.isActive());
-            System.out.println(a.getID());
             if (a instanceof Temporary) {
                 cfg.set("punishment." + a.getID() + ".until", ((Temporary) a).untilInMillis());
             }

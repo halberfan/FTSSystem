@@ -13,8 +13,8 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.BatchUpdateException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class User {
@@ -27,14 +27,13 @@ public class User {
     private Channel activeChannel;
     private List<Channel> enabledChannels;
 
-    private boolean muted;
-
-
+    private HashMap<Player, Integer> fights;
 
     public User(FtsSystem plugin, Player p) {
         this.player = p;
         this.plugin = plugin;
         enabledChannels = new ArrayList<>();
+        fights = new HashMap<>();
         plugin.getUser().put(p.getName(), this);
         getData();
     }
@@ -65,6 +64,7 @@ public class User {
 
         cfg.set("channels", chNames.toArray());
         cfg.set("activeChannel", activeChannel.getName());
+        cfg.set("scoreboardOn", isScoreboardEnabled());
 
         //Punishment
 
@@ -76,16 +76,17 @@ public class User {
         }
     }
 
-    private void getData() {
-        File file = new File(plugin.getDataFolder() + "//user//"+player.getUniqueId().toString()+".yml");
+    private void getData()
+    {
+        File file = new File(plugin.getDataFolder() + "//user//" + player.getUniqueId().toString() + ".yml");
         YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
-        if(!file.exists()) {
-            for(Player a : Bukkit.getOnlinePlayers()) {
-                a.sendMessage("§cDer Spieler §e"+player.getName()+" §cist das 1. mal hier. Sagt Hallo!");
+        if (!file.exists()) {
+            for (Player a : Bukkit.getOnlinePlayers()) {
+                a.sendMessage("§cDer Spieler §e" + player.getName() + " §cist das 1. mal hier. Sagt Hallo!");
             }
         }
         List channelList = cfg.getList("channels");
-        if(channelList != null) {
+        if (channelList != null) {
             String[] channels = (String[]) channelList.toArray(new String[channelList.size()]);
             for (String a : channels) {
                 Channel b = plugin.getChatManager().getChannel(a);
@@ -94,19 +95,18 @@ public class User {
                 }
             }
         }
-        if(enabledChannels.isEmpty()) {
-            for(Channel a : plugin.getChatManager().getChannels()) {
-                if(player.hasPermission(a.getPermission()) && a.isDefaultChannel()) {
+        if (enabledChannels.isEmpty()) {
+            for (Channel a : plugin.getChatManager().getChannels()) {
+                if (player.hasPermission(a.getPermission()) && a.isDefaultChannel()) {
                     enabledChannels.add(a);
                 }
             }
         }
         this.activeChannel = plugin.getChatManager().getChannel(cfg.getString("activeChannel"));
-        if(this.activeChannel == null)
+        if (this.activeChannel == null)
             this.activeChannel = plugin.getChatManager().getChannel("Local");
 
-        this.muted = cfg.getBoolean("muted");
-        this.scoreboardEnabled = cfg.getBoolean("scoreboardOn");
+        this.scoreboardEnabled = !cfg.contains("scoreboardOn") || cfg.getBoolean("scoreboardOn");
     }
 
     public void joinChannel(Channel channel) {
@@ -137,14 +137,6 @@ public class User {
         }
     }
 
-    public void setMuted(boolean muted) {
-        this.muted = muted;
-    }
-
-    public boolean isMuted() {
-        return muted;
-    }
-
     public boolean isScoreboardEnabled() {
         return scoreboardEnabled;
     }
@@ -153,4 +145,7 @@ public class User {
         this.scoreboardEnabled = scoreboardEnabled;
     }
 
+    public HashMap<Player, Integer> getFights() {
+        return fights;
+    }
 }

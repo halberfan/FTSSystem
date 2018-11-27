@@ -6,7 +6,7 @@
 package de.ftscraft.ftssystem.utils;
 
 import de.ftscraft.ftssystem.main.FtsSystem;
-import de.ftscraft.survivalminus.utils.Variables;
+import de.ftscraft.ftssystem.main.User;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -49,6 +49,28 @@ public class Runner implements Runnable {
         }
 
         plugin.getReisepunktManager().update();
+
+        for(User all : plugin.getUser().values()) {
+
+            //Combat
+
+            if(!all.getFights().isEmpty())
+            {
+
+                for(Player fights : all.getFights().keySet()) {
+                    if(all.getFights().get(fights) == 0) {
+                        all.getFights().remove(fights);
+                        if(all.getFights().isEmpty()) {
+                            all.getPlayer().sendMessage("§cDu bist nicht mehr im Kampf");
+                        }
+                        continue;
+                    }
+                    all.getFights().put(fights, all.getFights().get(fights)-1);
+                }
+
+            }
+
+        }
 
 
     }

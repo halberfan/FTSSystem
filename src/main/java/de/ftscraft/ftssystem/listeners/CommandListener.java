@@ -12,9 +12,6 @@ import de.ftscraft.ftssystem.main.User;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerCommandSendEvent;
-
-import java.rmi.MarshalException;
 
 public class CommandListener implements Listener {
 
@@ -27,7 +24,16 @@ public class CommandListener implements Listener {
 
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent event) {
-        String[] command = event.getMessage().replace("/", "").split(" ");
+
+        if(event.getMessage().equalsIgnoreCase("/home")) {
+            User user = plugin.getUser(event.getPlayer());
+            if(!user.getFights().isEmpty()) {
+                event.getPlayer().sendMessage("§cDu darfst dich nicht im Kampf tpn");
+                event.setCancelled(true);
+            }
+        }
+
+        String[] command = event.getMessage().replaceFirst("/", "").split(" ");
         String cmd = command[0];
 
         if(command.length == 1) {
@@ -46,12 +52,12 @@ public class CommandListener implements Listener {
                 plugin.getUser(event.getPlayer()).joinChannel(c);
                 return;
             }
-            String msg = "";
+            StringBuilder msg = new StringBuilder();
             for(int i = 1; i < command.length; i++) {
-                msg = msg + " " + command[i];
+                msg.append(" ").append(command[i]);
             }
-            msg = msg.replaceFirst(" ", "");
-            plugin.getChatManager().chat(plugin.getUser(event.getPlayer()), msg, c);
+            msg = new StringBuilder(msg.toString().replaceFirst(" ", ""));
+            plugin.getChatManager().chat(plugin.getUser(event.getPlayer()), msg.toString(), c);
         }
 
     }

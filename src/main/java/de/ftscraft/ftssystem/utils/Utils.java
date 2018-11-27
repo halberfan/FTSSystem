@@ -32,7 +32,7 @@ public class Utils {
             days -= 7;
         }
 
-        return seconds + " Sekunden" + " " + minutes + " Minuten" + " " + hours + " Stunden" + " " + days + " Tage" + " " + weeks + " Wochen";
+        return seconds + " Sekunden " + minutes + " Minuten " + hours + " Stunden " + days + " Tage " + weeks + " Wochen";
     }
 
     public static String[] splitToNumbers(String str) {

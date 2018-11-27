@@ -5,11 +5,6 @@
 
 package de.ftscraft.ftssystem.punishment;
 
-import de.ftscraft.ftssystem.main.FtsSystem;
-import de.ftscraft.ftssystem.utils.UUIDFetcher;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
 import java.util.Calendar;
 import java.util.UUID;
 
@@ -70,7 +65,7 @@ public class Ban implements Punishment {
 
     @Override
     public String getMoreInformation() {
-        return null;
+        return moreInfo;
     }
 
     @Override

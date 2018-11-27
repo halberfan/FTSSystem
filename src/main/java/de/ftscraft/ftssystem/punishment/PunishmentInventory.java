@@ -9,7 +9,6 @@ import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.utils.UUIDFetcher;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.Sheep;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -126,66 +125,79 @@ public class PunishmentInventory {
 
         for (Punishment a : puMa.getPlayers().get(UUIDFetcher.getUUID(player))) {
 
-            if (a.getType() == PunishmentType.NOTE) {
-                //Note
-                ItemStack note = new ItemStack(Material.PAPER, 1);
-                ItemMeta mnote = note.getItemMeta();
-                mnote.setLore(Arrays.asList("§cErstellt von: " + a.getAuthor(), "§cAm: " + a.createdOn(), "§cGrund: " + a.getReason(), ""+a.getID(), "§eDeaktiviert: "+(!a.isActive() ? "Ja" : "Nein")));
-                mnote.setDisplayName("§7Notiz");
-                note.setItemMeta(mnote);
-                int id = Integer.valueOf(mnote.getLore().get(3));
-                if (!akte.contains(note))
-                    map.put(id, note);
-            } else if (a.getType() == PunishmentType.TEMPWARN) {
-                //Tempwarn
-                ItemStack tempwarn = new ItemStack(Material.LIGHT_GRAY_DYE, 1);
-                ItemMeta mtempwarn = tempwarn.getItemMeta();
-                mtempwarn.setDisplayName("§6Tempwarn");
-                mtempwarn.setLore(Arrays.asList("§cErstellt von: " + a.getAuthor(), "§cAm: " + a.createdOn(), "§cGrund: " + a.getReason(), ""+a.getID(), "§eDeaktiviert: "+(!a.isActive() ? "Ja" : "Nein")));
-                tempwarn.setItemMeta(mtempwarn);
-                int id = Integer.valueOf(mtempwarn.getLore().get(3));
-                if (!akte.contains(tempwarn))
-                    map.put(id, tempwarn);
-            } else if (a.getType() == PunishmentType.WARN) {
-                //Warn
-                ItemStack warn = new ItemStack(Material.GRAY_DYE, 1);
-                ItemMeta mwarn = warn.getItemMeta();
-                mwarn.setDisplayName("§6Warn");
-                mwarn.setLore(Arrays.asList("§cErstellt von: " + a.getAuthor(), "§cAm: " + a.createdOn(), "§cGrund: " + a.getReason(), ""+a.getID(), "§eDeaktiviert: "+(!a.isActive() ? "Ja" : "Nein")));
-                warn.setItemMeta(mwarn);
-                int id = Integer.valueOf(mwarn.getLore().get(3));
-                if (!akte.contains(warn))
-                    map.put(id, warn);
-            } else if (a.getType() == PunishmentType.TEMPMUTE) {
-                //Tempmute
-                ItemStack mute = new ItemStack(Material.CACTUS_GREEN, 1);
-                ItemMeta mmute = mute.getItemMeta();
-                mmute.setDisplayName("§cTempmute");
-                mmute.setLore(Arrays.asList("§cErstellt von: " + a.getAuthor(), "§cAm: " + a.createdOn(), "§cGrund: " + a.getReason(), ""+a.getID(), "§eDeaktiviert: "+(!a.isActive() ? "Ja" : "Nein")));
-                mute.setItemMeta(mmute);
-                int id = Integer.valueOf(mmute.getLore().get(3));
-                if (!akte.contains(mute))
-                    map.put(id, mute);
-            } else if (a.getType() == PunishmentType.TEMPBAN) {
-                //Tempban
-                ItemStack tempban = new ItemStack(Material.ORANGE_DYE, 1);
-                ItemMeta mtempban = tempban.getItemMeta();
-                mtempban.setDisplayName("§4Tempban");
-                mtempban.setLore(Arrays.asList("§cErstellt von: " + a.getAuthor(), "§cAm: " + a.createdOn(), "§cGrund: " + a.getReason(), ""+a.getID(), "§eDeaktiviert: "+(!a.isActive() ? "Ja" : "Nein")));
-                tempban.setItemMeta(mtempban);
-                int id = Integer.valueOf(mtempban.getLore().get(3));
-                if (!akte.contains(tempban))
-                    map.put(id, tempban);
-            } else if (a.getType() == PunishmentType.BAN) {
-                //Ban
-                ItemStack ban = new ItemStack(Material.ROSE_RED, 1);
-                ItemMeta mban = ban.getItemMeta();
-                mban.setDisplayName("§4Ban");
-                mban.setLore(Arrays.asList("§cErstellt von: " + a.getAuthor(), "§cAm: " + a.createdOn(), "§cGrund: " + a.getReason(), ""+a.getID(), "§eDeaktiviert: "+(!a.isActive() ? "Ja" : "Nein")));
-                ban.setItemMeta(mban);
-                int id = Integer.valueOf(mban.getLore().get(3));
-                if (!akte.contains(ban))
-                    map.put(id, ban);
+            switch (a.getType()) {
+                case NOTE: {
+                    //Note
+                    ItemStack note = new ItemStack(Material.PAPER, 1);
+                    ItemMeta mnote = note.getItemMeta();
+                    mnote.setLore(Arrays.asList("§cErstellt von: " + a.getAuthor(), "§cAm: " + a.createdOn(), "§cGrund: " + a.getReason(), "" + a.getID(), "§eDeaktiviert: " + (!a.isActive() ? "Ja" : "Nein")));
+                    mnote.setDisplayName("§7Notiz");
+                    note.setItemMeta(mnote);
+                    int id = Integer.valueOf(mnote.getLore().get(3));
+                    if (!akte.contains(note))
+                        map.put(id, note);
+                    break;
+                }
+                case TEMPWARN: {
+                    //Tempwarn
+                    ItemStack tempwarn = new ItemStack(Material.LIGHT_GRAY_DYE, 1);
+                    ItemMeta mtempwarn = tempwarn.getItemMeta();
+                    mtempwarn.setDisplayName("§6Tempwarn");
+                    mtempwarn.setLore(Arrays.asList("§cErstellt von: " + a.getAuthor(), "§cAm: " + a.createdOn(), "§cGrund: " + a.getReason(), "" + a.getID(), "§eDeaktiviert: " + (!a.isActive() ? "Ja" : "Nein")));
+                    tempwarn.setItemMeta(mtempwarn);
+                    int id = Integer.valueOf(mtempwarn.getLore().get(3));
+                    if (!akte.contains(tempwarn))
+                        map.put(id, tempwarn);
+                    break;
+                }
+                case WARN: {
+                    //Warn
+                    ItemStack warn = new ItemStack(Material.GRAY_DYE, 1);
+                    ItemMeta mwarn = warn.getItemMeta();
+                    mwarn.setDisplayName("§6Warn");
+                    mwarn.setLore(Arrays.asList("§cErstellt von: " + a.getAuthor(), "§cAm: " + a.createdOn(), "§cGrund: " + a.getReason(), "" + a.getID(), "§eDeaktiviert: " + (!a.isActive() ? "Ja" : "Nein")));
+                    warn.setItemMeta(mwarn);
+                    int id = Integer.valueOf(mwarn.getLore().get(3));
+                    if (!akte.contains(warn))
+                        map.put(id, warn);
+                    break;
+                }
+                case TEMPMUTE: {
+                    //Tempmute
+                    ItemStack mute = new ItemStack(Material.CACTUS_GREEN, 1);
+                    ItemMeta mmute = mute.getItemMeta();
+                    mmute.setDisplayName("§cTempmute");
+                    mmute.setLore(Arrays.asList("§cErstellt von: " + a.getAuthor(), "§cAm: " + a.createdOn(), "§cGrund: " + a.getReason(), "" + a.getID(), "§eDeaktiviert: " + (!a.isActive() ? "Ja" : "Nein")));
+                    mute.setItemMeta(mmute);
+                    int id = Integer.valueOf(mmute.getLore().get(3));
+                    if (!akte.contains(mute))
+                        map.put(id, mute);
+                    break;
+                }
+                case TEMPBAN: {
+                    //Tempban
+                    ItemStack tempban = new ItemStack(Material.ORANGE_DYE, 1);
+                    ItemMeta mtempban = tempban.getItemMeta();
+                    mtempban.setDisplayName("§4Tempban");
+                    mtempban.setLore(Arrays.asList("§cErstellt von: " + a.getAuthor(), "§cAm: " + a.createdOn(), "§cGrund: " + a.getReason(), "" + a.getID(), "§eDeaktiviert: " + (!a.isActive() ? "Ja" : "Nein")));
+                    tempban.setItemMeta(mtempban);
+                    int id = Integer.valueOf(mtempban.getLore().get(3));
+                    if (!akte.contains(tempban))
+                        map.put(id, tempban);
+                    break;
+                }
+                case BAN: {
+                    //Ban
+                    ItemStack ban = new ItemStack(Material.ROSE_RED, 1);
+                    ItemMeta mban = ban.getItemMeta();
+                    mban.setDisplayName("§4Ban");
+                    mban.setLore(Arrays.asList("§cErstellt von: " + a.getAuthor(), "§cAm: " + a.createdOn(), "§cGrund: " + a.getReason(), "" + a.getID(), "§eDeaktiviert: " + (!a.isActive() ? "Ja" : "Nein")));
+                    ban.setItemMeta(mban);
+                    int id = Integer.valueOf(mban.getLore().get(3));
+                    if (!akte.contains(ban))
+                        map.put(id, ban);
+                    break;
+                }
             }
         }
 

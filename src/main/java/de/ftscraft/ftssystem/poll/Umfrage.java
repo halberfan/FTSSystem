@@ -6,7 +6,6 @@
 package de.ftscraft.ftssystem.poll;
 
 import de.ftscraft.ftssystem.configs.Messages;
-import de.ftscraft.ftssystem.main.FtsSystem;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;

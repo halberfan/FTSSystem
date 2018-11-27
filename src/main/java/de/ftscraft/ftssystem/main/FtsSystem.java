@@ -1,6 +1,5 @@
 package de.ftscraft.ftssystem.main;
 
-import de.ftscraft.ftssystem.channel.Channel;
 import de.ftscraft.ftssystem.channel.ChatManager;
 import de.ftscraft.ftssystem.commands.*;
 import de.ftscraft.ftssystem.configs.ConfigManager;
@@ -17,7 +16,6 @@ import net.milkbowl.vault.permission.Permission;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.Objective;
 
 import java.util.HashMap;
 
@@ -30,7 +28,7 @@ public class FtsSystem extends JavaPlugin {
     public static final String PREFIX = "§7[§cFTS-System§7] ";
 
     private Economy econ;
-    private Permission perm;
+    private Permission perms;
     private Chat chat;
 
     private ChatManager chatManager;
@@ -42,6 +40,7 @@ public class FtsSystem extends JavaPlugin {
 
     private PunishmentManager punishmentManager;
     private ReisepunktManager reisepunktManager;
+    //private Disease disease;
 
     @Override
     public void onEnable() {
@@ -54,13 +53,11 @@ public class FtsSystem extends JavaPlugin {
 
     private void hook() {
         factionHooked = getServer().getPluginManager().getPlugin("Factions") != null;
-        RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
-        chat = rsp.getProvider();
-        RegisteredServiceProvider<Economy> rsp2 = getServer().getServicesManager().getRegistration(Economy.class);
-        econ = rsp2.getProvider();
-        RegisteredServiceProvider<Permission> rsp3 = getServer().getServicesManager().getRegistration(Permission.class);
-        perm = rsp3.getProvider();
-        survival = (Survival) getServer().getPluginManager().getPlugin("SurvivalMinus");
+        setupEconomy();
+        setupChat();
+        setupPermissions();
+        survival = (Survival) getServer().getPluginManager().getPlugin("FTSSurvival");
+        //disease = (Disease) getServer().getPluginManager().getPlugin("Disease");
     }
 
     @Override
@@ -87,12 +84,16 @@ public class FtsSystem extends JavaPlugin {
         new CMDumfrage(this);
         new CMDtogglesidebar(this);
         new CMDpu(this);
+
+        new DeathListener(this);
         new CommandListener(this);
         new ChatListener(this);
         new JoinListener(this);
         new QuitListener(this);
         new LoginListener(this);
         new InvClickListener(this);
+        new EntityDeathListener(this);
+        new PlayerAttackListener(this);
         new Runner(this);
     }
 
@@ -108,8 +109,8 @@ public class FtsSystem extends JavaPlugin {
         return econ;
     }
 
-    public Permission getPerm() {
-        return perm;
+    public Permission getPerms() {
+        return perms;
     }
 
     public Chat getChat() {
@@ -146,5 +147,33 @@ public class FtsSystem extends JavaPlugin {
 
     public ReisepunktManager getReisepunktManager() {
         return reisepunktManager;
+    }
+
+    //public Disease getDisease() {
+    //    return disease;
+    //}
+
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
+    }
+
+    private boolean setupChat() {
+        RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
+        chat = rsp.getProvider();
+        return chat != null;
+    }
+
+    private boolean setupPermissions() {
+        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
+        perms = rsp.getProvider();
+        return perms != null;
     }
 }

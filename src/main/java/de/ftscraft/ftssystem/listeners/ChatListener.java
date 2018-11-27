@@ -5,8 +5,6 @@
 
 package de.ftscraft.ftssystem.listeners;
 
-import com.massivecraft.factions.predicate.PredicateMPlayerRole;
-import de.ftscraft.ftssystem.channel.ChatManager;
 import de.ftscraft.ftssystem.configs.Messages;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.main.User;
@@ -15,7 +13,6 @@ import de.ftscraft.ftssystem.punishment.PunishmentManager;
 import de.ftscraft.ftssystem.punishment.PunishmentType;
 import de.ftscraft.ftssystem.punishment.Temporary;
 import de.ftscraft.ftssystem.utils.Utils;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -36,60 +33,66 @@ public class ChatListener implements Listener {
         if (plugin.getPunishmentManager().getBuilders().get(event.getPlayer()) != null) {
             event.setCancelled(true);
             PunishmentBuilder prog = plugin.getPunishmentManager().getBuilders().get(event.getPlayer());
-            if (prog.getChatProgress() == PunishmentManager.ChatProgress.REASON) {
-                prog.setReason(event.getMessage());
-                event.getPlayer().sendMessage(Messages.PREFIX + "Okay. Bitte schreibe jetzt weitere Infos (zB Beweise, wer es Bemerkt hat). Schreibe wenn es nicht in den Chat passt ein + am Ende. Dann kannst du mit der nächsten Nachricht weiterschreiben");
-                prog.setChatProgress(PunishmentManager.ChatProgress.MOREINFO);
-            } else if (prog.getChatProgress() == PunishmentManager.ChatProgress.MOREINFO) {
+            switch (prog.getChatProgress()) {
+                case REASON:
+                    prog.setReason(event.getMessage());
+                    event.getPlayer().sendMessage(Messages.PREFIX + "Okay. Bitte schreibe jetzt weitere Infos (zB Beweise, wer es Bemerkt hat). Schreibe wenn es nicht in den Chat passt ein + am Ende. Dann kannst du mit der nächsten Nachricht weiterschreiben");
+                    prog.setChatProgress(PunishmentManager.ChatProgress.MOREINFO);
+                    break;
+                case MOREINFO:
 
-                if (event.getMessage().endsWith("+")) {
-                    if (prog.getMoreInfo() == null)
-                        prog.setMoreInfo("");
-                    prog.setMoreInfo(prog.getMoreInfo() + " " + event.getMessage().substring(0, event.getMessage().length() - 1));
-                    return;
-                } else {
-                    prog.setMoreInfo(event.getMessage());
-                    if (PunishmentType.isTemporary(prog.getType())) {
-                        event.getPlayer().sendMessage(Messages.PREFIX + "Okay. Bitte schreibe jetzt wie lange es andauern soll. zB(3d; 3w)");
-                        prog.setChatProgress(PunishmentManager.ChatProgress.TIME);
+                    if (event.getMessage().endsWith("+")) {
+                        if (prog.getMoreInfo() == null)
+                            prog.setMoreInfo("");
+                        prog.setMoreInfo(prog.getMoreInfo() + " " + event.getMessage().substring(0, event.getMessage().length() - 1));
                         return;
+                    } else {
+                        prog.setMoreInfo(prog.getMoreInfo() + " " + event.getMessage());
+                        if (PunishmentType.isTemporary(prog.getType())) {
+                            event.getPlayer().sendMessage(Messages.PREFIX + "Okay. Bitte schreibe jetzt wie lange es andauern soll. zB(3d; 3w)");
+                            prog.setChatProgress(PunishmentManager.ChatProgress.TIME);
+                            return;
+                        }
                     }
-                }
 
-                prog.setChatProgress(PunishmentManager.ChatProgress.PROOF);
-                event.getPlayer().sendMessage(Messages.PREFIX + "Bitte überprüfe nochmal deine Daten. Du kannst diese später NICHT ändern. Schreibe dann Ja oder Nein");
-                event.getPlayer().sendMessage(Messages.PREFIX + "Target: §e" + prog.getPlayer());
-                event.getPlayer().sendMessage(Messages.PREFIX + "Grund: §e" + prog.getReason());
-                event.getPlayer().sendMessage(Messages.PREFIX + "Weitere Infos: §e" + prog.getMoreInfo());
-                if (prog.getUntil() != null)
-                    event.getPlayer().sendMessage(Messages.PREFIX + "Zeitraum: §e" + Utils.convertToTime(prog.getUntilInMillis()));
+                    prog.setChatProgress(PunishmentManager.ChatProgress.PROOF);
+                    event.getPlayer().sendMessage(Messages.PREFIX + "Bitte überprüfe nochmal deine Daten. Du kannst diese später NICHT ändern. Schreibe dann Ja oder Nein");
+                    event.getPlayer().sendMessage(Messages.PREFIX + "Target: §e" + prog.getPlayer());
+                    event.getPlayer().sendMessage(Messages.PREFIX + "Grund: §e" + prog.getReason());
+                    event.getPlayer().sendMessage(Messages.PREFIX + "Weitere Infos: §e" + prog.getMoreInfo());
+                    if (prog.getUntil() != null)
+                        event.getPlayer().sendMessage(Messages.PREFIX + "Zeitraum: §e" + Utils.convertToTime(prog.getUntilInMillis()));
 
 
-            } else if (prog.getChatProgress() == PunishmentManager.ChatProgress.TIME) {
+                    break;
+                case TIME:
 
-                prog.setUntil(event.getMessage());
+                    prog.setUntil(event.getMessage());
 
-                prog.setChatProgress(PunishmentManager.ChatProgress.PROOF);
-                event.getPlayer().sendMessage(Messages.PREFIX + "Bitte überprüfe nochmal deine Daten. Du kannst diese später NICHT ändern. Schreibe dann Ja oder Nein");
-                event.getPlayer().sendMessage(Messages.PREFIX + "Target: §e" + prog.getPlayer());
-                event.getPlayer().sendMessage(Messages.PREFIX + "Grund: §e" + prog.getReason());
-                event.getPlayer().sendMessage(Messages.PREFIX + "Weitere Infos: §e" + prog.getMoreInfo());
-                if (prog.getUntil() != null)
-                    event.getPlayer().sendMessage(Messages.PREFIX + "Zeitraum: §e" + Utils.convertToTime(prog.getUntilInMillis()));
+                    prog.setChatProgress(PunishmentManager.ChatProgress.PROOF);
+                    event.getPlayer().sendMessage(Messages.PREFIX + "Bitte überprüfe nochmal deine Daten. Du kannst diese später NICHT ändern. Schreibe dann Ja oder Nein");
+                    event.getPlayer().sendMessage(Messages.PREFIX + "Target: §e" + prog.getPlayer());
+                    event.getPlayer().sendMessage(Messages.PREFIX + "Grund: §e" + prog.getReason());
+                    event.getPlayer().sendMessage(Messages.PREFIX + "Weitere Infos: §e" + prog.getMoreInfo());
+                    if (prog.getUntil() != null)
+                        event.getPlayer().sendMessage(Messages.PREFIX + "Zeitraum: §e" + Utils.convertToTime(prog.getUntilInMillis()));
 
-            } else if (prog.getChatProgress() == PunishmentManager.ChatProgress.PROOF) {
-                if (event.getMessage().equalsIgnoreCase("Ja")) {
+                    break;
+                case PROOF:
+                    if (event.getMessage().equalsIgnoreCase("Ja")) {
 
-                    prog.setProofed(true);
+                        prog.setProofed(true);
+                        plugin.getPunishmentManager().getBuilders().remove(event.getPlayer());
 
-                    event.getPlayer().sendMessage(Messages.PREFIX + "§cOkay. Deine Anfrage wird bearbeitet");
-                    prog.build();
-                    event.getPlayer().sendMessage(Messages.PREFIX + "§cFertig. §eDer Spieler hat seine Strafe erhalten.");
+                        event.getPlayer().sendMessage(Messages.PREFIX + "§cOkay. Deine Anfrage wird bearbeitet");
+                        prog.build();
+                        event.getPlayer().sendMessage(Messages.PREFIX + "§cFertig. §eDer Spieler hat seine Strafe erhalten.");
 
-                } else if (event.getMessage().equalsIgnoreCase("Nein")) {
-                    prog.abort();
-                    event.getPlayer().sendMessage(Messages.PREFIX + "Okay. Das Setup wurde abgebrochen. Wenn du es erneut versuchen willst, gebe wieder /pu SPIELER ein");
-                }
+                    } else if (event.getMessage().equalsIgnoreCase("Nein")) {
+                        prog.abort();
+                        event.getPlayer().sendMessage(Messages.PREFIX + "Okay. Das Setup wurde abgebrochen. Wenn du es erneut versuchen willst, gebe wieder /pu SPIELER ein");
+                    }
+                    break;
             }
         }
 

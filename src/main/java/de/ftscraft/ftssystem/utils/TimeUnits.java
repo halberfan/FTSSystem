@@ -5,8 +5,6 @@
 
 package de.ftscraft.ftssystem.utils;
 
-import javax.annotation.Nonnull;
-
 public enum TimeUnits {
 
     SECOND(1000, "s"),

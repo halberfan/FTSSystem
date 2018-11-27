@@ -7,7 +7,6 @@ package de.ftscraft.ftssystem.listeners;
 
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.punishment.Punishment;
-import de.ftscraft.ftssystem.punishment.PunishmentIO;
 import de.ftscraft.ftssystem.punishment.PunishmentType;
 import de.ftscraft.ftssystem.punishment.Temporary;
 import org.bukkit.entity.Player;

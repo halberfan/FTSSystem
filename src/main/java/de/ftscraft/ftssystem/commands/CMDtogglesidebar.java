@@ -7,7 +7,6 @@ package de.ftscraft.ftssystem.commands;
 
 import de.ftscraft.ftssystem.configs.Messages;
 import de.ftscraft.ftssystem.main.FtsSystem;
-import de.ftscraft.ftssystem.main.User;
 import de.ftscraft.ftssystem.utils.FTSCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

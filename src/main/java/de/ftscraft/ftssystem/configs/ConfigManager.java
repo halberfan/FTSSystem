@@ -7,12 +7,9 @@ package de.ftscraft.ftssystem.configs;
 
 import de.ftscraft.ftssystem.main.FtsSystem;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.scoreboard.Objective;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 public class ConfigManager {

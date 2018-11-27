@@ -10,10 +10,8 @@ import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.utils.TimeUnits;
 import de.ftscraft.ftssystem.utils.UUIDFetcher;
 import de.ftscraft.ftssystem.utils.Utils;
-import de.ftscraft.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Objective;
 
 import java.util.*;
 
@@ -38,9 +36,6 @@ public class PunishmentManager {
         if (players.get(player) == null) {
             players.put(player, new ArrayList<>());
             players.get(player).add(pu);
-            System.out.println(1);
-            if (players.get(player) == null)
-                System.out.println(2);
         } else {
             players.get(player).add(pu);
         }
@@ -48,19 +43,28 @@ public class PunishmentManager {
 
     public void loadPunishmentFromData(UUID player, PunishmentType type, String reason, String author, String moreInfo, long time, long until, int id, boolean active) {
         Punishment pu;
-        if (type == PunishmentType.WARN) {
-            pu = new Warn(reason, author, time, player, moreInfo, id, active);
-        } else if (type == PunishmentType.TEMPWARN) {
-            pu = new TempWarn(reason, author, time, until, player, moreInfo, id, active);
-        } else if (type == PunishmentType.NOTE) {
-            pu = new Note(reason, author, time, player, moreInfo, id, active);
-        } else if (type == PunishmentType.TEMPBAN) {
-            pu = new TempBan(player, reason, author, time, until, moreInfo, id, active);
-        } else if (type == PunishmentType.TEMPMUTE) {
-            pu = new TempMute(reason, author, time, until, player, moreInfo, id, active);
-        } else if (type == PunishmentType.BAN) {
-            pu = new Ban(reason, author, time, player, moreInfo, id, active);
-        } else return;
+        switch (type) {
+            case WARN:
+                pu = new Warn(reason, author, time, player, moreInfo, id, active);
+                break;
+            case TEMPWARN:
+                pu = new TempWarn(reason, author, time, until, player, moreInfo, id, active);
+                break;
+            case NOTE:
+                pu = new Note(reason, author, time, player, moreInfo, id, active);
+                break;
+            case TEMPBAN:
+                pu = new TempBan(player, reason, author, time, until, moreInfo, id, active);
+                break;
+            case TEMPMUTE:
+                pu = new TempMute(reason, author, time, until, player, moreInfo, id, active);
+                break;
+            case BAN:
+                pu = new Ban(reason, author, time, player, moreInfo, id, active);
+                break;
+            default:
+                return;
+        }
         addPunishmentToPlayer(player, pu);
     }
 
@@ -310,11 +314,9 @@ public class PunishmentManager {
             return null;
         for (Punishment a : players.get(player.getUniqueId())) {
             if (a.getType() == PunishmentType.BAN) {
-                System.out.println(a.isActive());
                 if (a.isActive())
                     return a;
             } else if (a.getType() == PunishmentType.TEMPBAN) {
-                System.out.println(a.isActive());
                 if (a.isActive())
                     if (((Temporary) a).untilInMillis() > System.currentTimeMillis())
                         return a;

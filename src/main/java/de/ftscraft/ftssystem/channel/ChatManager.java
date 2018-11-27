@@ -5,16 +5,13 @@
 
 package de.ftscraft.ftssystem.channel;
 
-import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPlayer;
-import com.massivecraft.factions.integration.Econ;
 import de.ftscraft.ftssystem.configs.Messages;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.main.User;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -45,10 +42,6 @@ public class ChatManager {
     }
 
     public void chat(User u, String msg) {
-        if (u.isMuted()) {
-            u.getPlayer().sendMessage("§cDu bist gemuted!");
-            return;
-        }
         Channel a = u.getActiveChannel();
         if (a == null) {
             u.getPlayer().sendMessage(Messages.CHOOSE_CHANNEL);
@@ -109,10 +102,6 @@ public class ChatManager {
     }
 
     public void chat(User u, String msg, Channel channel) {
-        if (u.isMuted()) {
-            u.getPlayer().sendMessage("§cDu bist gemuted!");
-            return;
-        }
         if (channel == null) {
             u.getPlayer().sendMessage(Messages.CHOOSE_CHANNEL);
             return;
@@ -200,6 +189,7 @@ public class ChatManager {
         f = f.replace("&", "§");
 
         f = f.replace("%msg", msg);
+        f = f.replace("((", "§7((");
 
         return f;
     }
