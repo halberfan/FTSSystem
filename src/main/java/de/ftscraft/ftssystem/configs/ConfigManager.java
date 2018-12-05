@@ -52,7 +52,7 @@ public class ConfigManager {
 
     }
 
-    public void setConfig(ConfigValue val, Object obj) {
+    public void setConfig(ConfigVal val, Object obj) {
         plugin.getConfig().set(val.getPath(), obj);
     }
 
@@ -68,13 +68,13 @@ public class ConfigManager {
         plugin.saveConfig();
     }
 
-    public enum ConfigValue {
+    public enum ConfigVal {
 
         LATEST_PUNISH_ID("latestPunishID");
 
         private String path;
 
-        ConfigValue(String path) {
+        ConfigVal(String path) {
             this.path = path;
         }
 

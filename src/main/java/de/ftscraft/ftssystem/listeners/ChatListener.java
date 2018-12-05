@@ -22,13 +22,15 @@ public class ChatListener implements Listener {
 
     private FtsSystem plugin;
 
-    public ChatListener(FtsSystem plugin) {
+    public ChatListener(FtsSystem plugin)
+    {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onChat(AsyncPlayerChatEvent event) {
+    public void onChat(AsyncPlayerChatEvent event)
+    {
 
         if (plugin.getPunishmentManager().getBuilders().get(event.getPlayer()) != null) {
             event.setCancelled(true);
@@ -46,8 +48,15 @@ public class ChatListener implements Listener {
                             prog.setMoreInfo("");
                         prog.setMoreInfo(prog.getMoreInfo() + " " + event.getMessage().substring(0, event.getMessage().length() - 1));
                         return;
-                    } else {
-                        prog.setMoreInfo(prog.getMoreInfo() + " " + event.getMessage());
+                    }
+                    else {
+                        if (prog.getMoreInfo() == null)
+                            //Wenn es noch keine Nachricht davor gab, setzt er es zu der Nachricht die gerade kam
+                            prog.setMoreInfo(event.getMessage());
+                        else
+                            //Sonst das was schon da ist mit nem Leerzeichen und der Nachricht die gerade kam verbinden
+                            prog.setMoreInfo(prog.getMoreInfo() + " " + event.getMessage());
+
                         if (PunishmentType.isTemporary(prog.getType())) {
                             event.getPlayer().sendMessage(Messages.PREFIX + "Okay. Bitte schreibe jetzt wie lange es andauern soll. zB(3d; 3w)");
                             prog.setChatProgress(PunishmentManager.ChatProgress.TIME);
@@ -88,7 +97,8 @@ public class ChatListener implements Listener {
                         prog.build();
                         event.getPlayer().sendMessage(Messages.PREFIX + "§cFertig. §eDer Spieler hat seine Strafe erhalten.");
 
-                    } else if (event.getMessage().equalsIgnoreCase("Nein")) {
+                    }
+                    else if (event.getMessage().equalsIgnoreCase("Nein")) {
                         prog.abort();
                         event.getPlayer().sendMessage(Messages.PREFIX + "Okay. Das Setup wurde abgebrochen. Wenn du es erneut versuchen willst, gebe wieder /pu SPIELER ein");
                     }
@@ -96,9 +106,9 @@ public class ChatListener implements Listener {
             }
         }
 
-        if(plugin.getPunishmentManager().isMuted(event.getPlayer()) != null) {
+        if (plugin.getPunishmentManager().isMuted(event.getPlayer()) != null) {
             Temporary mute = (Temporary) plugin.getPunishmentManager().isMuted(event.getPlayer());
-            event.getPlayer().sendMessage(Messages.PREFIX+"Du bist noch " + mute.untilAsString() + " lang gemuted aufgrund von: §e"+mute.getReason());
+            event.getPlayer().sendMessage(Messages.PREFIX + "Du bist noch " + mute.untilAsString() + " lang gemuted aufgrund von: §e" + mute.getReason());
             event.setCancelled(true);
         }
 

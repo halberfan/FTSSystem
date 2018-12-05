@@ -51,16 +51,28 @@ public class InvClickListener implements Listener {
                 PunishmentBuilder prog = new PunishmentBuilder(plugin, PunishmentType.BAN, p, target);
                 prog.setChatProgress(PunishmentManager.ChatProgress.REASON);
                 p.closeInventory();
+                if(plugin.getPunishmentManager().isBanned(UUIDFetcher.getUUID(target))) {
+                    p.sendMessage("§cDieser Spieler ist schon gebannt!");
+                    return;
+                }
                 p.sendMessage("§cBitte schreibe den Grund");
             } else if(itemMeta.getDisplayName().equalsIgnoreCase("§4Tempban")) {
                 PunishmentBuilder prog = new PunishmentBuilder(plugin, PunishmentType.TEMPBAN, p, target);
                 prog.setChatProgress(PunishmentManager.ChatProgress.REASON);
                 p.closeInventory();
+                if(plugin.getPunishmentManager().isBanned(UUIDFetcher.getUUID(target))) {
+                    p.sendMessage("§cDieser Spieler ist schon gebannt!");
+                    return;
+                }
                 p.sendMessage("§cBitte schreibe den Grund");
             } else if(itemMeta.getDisplayName().equalsIgnoreCase("§cTempmute")) {
                 PunishmentBuilder prog = new PunishmentBuilder(plugin, PunishmentType.TEMPMUTE, p, target);
                 prog.setChatProgress(PunishmentManager.ChatProgress.REASON);
                 p.closeInventory();
+                if(plugin.getPunishmentManager().isMuted(UUIDFetcher.getUUID(target))) {
+                    p.sendMessage("§cDieser Spieler ist schon gemutet!");
+                    return;
+                }
                 p.sendMessage("§cBitte schreibe den Grund");
             } else if(itemMeta.getDisplayName().equalsIgnoreCase("§6Warn")) {
                 PunishmentBuilder prog = new PunishmentBuilder(plugin, PunishmentType.WARN, p, target);
@@ -87,6 +99,8 @@ public class InvClickListener implements Listener {
         if(event.getInventory().getName().startsWith("§2Akte")) {
             event.setCancelled(true);
             ItemStack item = event.getCurrentItem();
+            if(item == null)
+                return;
             ItemMeta meta = item.getItemMeta();
             if(!meta.getDisplayName().equalsIgnoreCase(" ")) {
 

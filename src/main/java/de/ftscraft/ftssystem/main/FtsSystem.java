@@ -13,6 +13,7 @@ import de.ftscraft.survivalminus.main.Survival;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -43,15 +44,23 @@ public class FtsSystem extends JavaPlugin {
     //private Disease disease;
 
     @Override
-    public void onEnable() {
+    public void onEnable()
+    {
         super.onEnable();
         hook();
         init();
 
+        //NPC Reload
+
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            getServer().dispatchCommand(getServer().getConsoleSender(), "citizens reload");
+        }, 20 * 20);
+
     }
 
 
-    private void hook() {
+    private void hook()
+    {
         factionHooked = getServer().getPluginManager().getPlugin("Factions") != null;
         setupEconomy();
         setupChat();
@@ -61,18 +70,21 @@ public class FtsSystem extends JavaPlugin {
     }
 
     @Override
-    public void onDisable() {
+    public void onDisable()
+    {
         super.onDisable();
         save();
     }
 
-    private void save() {
-        configManager.setConfig(ConfigManager.ConfigValue.LATEST_PUNISH_ID, getPunishmentManager().getLatestID());
+    private void save()
+    {
+        configManager.setConfig(ConfigManager.ConfigVal.LATEST_PUNISH_ID, getPunishmentManager().getLatestID());
 
         configManager.save();
     }
 
-    private void init() {
+    private void init()
+    {
         user = new HashMap<>();
         configManager = new ConfigManager(this);
         chatManager = new ChatManager(this);
@@ -97,55 +109,68 @@ public class FtsSystem extends JavaPlugin {
         new Runner(this);
     }
 
-    public User getUser(Player player) {
+    public User getUser(Player player)
+    {
         return user.get(player.getName());
     }
 
-    public HashMap<String, User> getUser() {
+    public HashMap<String, User> getUser()
+    {
         return user;
     }
 
-    public Economy getEcon() {
+    public Economy getEcon()
+    {
         return econ;
     }
 
-    public Permission getPerms() {
+    public Permission getPerms()
+    {
         return perms;
     }
 
-    public Chat getChat() {
+    public Chat getChat()
+    {
         return chat;
     }
 
-    public ChatManager getChatManager() {
+    public ChatManager getChatManager()
+    {
         return chatManager;
     }
 
-    public ConfigManager getConfigManager() {
+    public ConfigManager getConfigManager()
+    {
         return configManager;
     }
 
-    public Umfrage getUmfrage() {
+    public Umfrage getUmfrage()
+    {
         return umfrage;
     }
 
-    public void setUmfrage(Umfrage umfrage) {
+    public void setUmfrage(Umfrage umfrage)
+    {
         this.umfrage = umfrage;
     }
 
-    public Survival getSurvival() {
+    public Survival getSurvival()
+    {
         return survival;
     }
 
-    public FTSScoreboard getFtsScoreboard() {
+    public FTSScoreboard getFtsScoreboard()
+    {
         return ftsScoreboard;
     }
 
-    public PunishmentManager getPunishmentManager() {
+    public PunishmentManager getPunishmentManager()
+    {
         return punishmentManager;
     }
 
-    public ReisepunktManager getReisepunktManager() {
+    public ReisepunktManager getReisepunktManager()
+    {
         return reisepunktManager;
     }
 
@@ -153,7 +178,8 @@ public class FtsSystem extends JavaPlugin {
     //    return disease;
     //}
 
-    private boolean setupEconomy() {
+    private boolean setupEconomy()
+    {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             return false;
         }
@@ -165,13 +191,15 @@ public class FtsSystem extends JavaPlugin {
         return econ != null;
     }
 
-    private boolean setupChat() {
+    private boolean setupChat()
+    {
         RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
         chat = rsp.getProvider();
         return chat != null;
     }
 
-    private boolean setupPermissions() {
+    private boolean setupPermissions()
+    {
         RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
         perms = rsp.getProvider();
         return perms != null;

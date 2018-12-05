@@ -32,12 +32,10 @@ public class Utils {
             days -= 7;
         }
 
-        return seconds + " Sekunden " + minutes + " Minuten " + hours + " Stunden " + days + " Tage " + weeks + " Wochen";
+        return weeks + " Wochen " + days + " Tage " + hours + " Stunden " + minutes + " Minuten " + seconds + " Sekunden";
     }
 
     public static String[] splitToNumbers(String str) {
-        if(str.length() != 2)
-            return null;
         return str.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
     }
 

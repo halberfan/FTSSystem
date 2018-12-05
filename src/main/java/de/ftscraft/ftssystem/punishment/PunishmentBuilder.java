@@ -89,7 +89,6 @@ public class PunishmentBuilder {
 
         String[] u = Utils.splitToNumbers(this.until);
         //Check if its 2 size big for 1 Number + 1 Unit
-        assert u != null;
         if (u.length != 2) {
             return 0;
         }
