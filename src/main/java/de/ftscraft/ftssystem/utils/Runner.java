@@ -11,12 +11,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import java.util.Collection;
+import java.util.Queue;
+import java.util.Random;
+
 public class Runner implements Runnable {
 
     private FtsSystem plugin;
 
     private int time_to_message = Varriables.AUTO_MESSAGE_COOLDOWN;
-    private int lastmessage = 0;
 
     private int time_to_update = de.ftscraft.ftssystem.utils.Varriables.SCOREBOARD_UPDATE_COOLDOWN;
 
@@ -34,13 +37,11 @@ public class Runner implements Runnable {
         if(time_to_message == 0) {
 
             time_to_message = Varriables.AUTO_MESSAGE_COOLDOWN;
-            lastmessage++;
-            String msg = plugin.getConfigManager().getAutoMessages().get(lastmessage - 1);
+            int index = new Random().nextInt(plugin.getConfigManager().getAutoMessages().size());
+            String msg = plugin.getConfigManager().getAutoMessages().get(index);
             for(Player a : Bukkit.getOnlinePlayers()) {
                 a.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
             }
-            if(plugin.getConfigManager().getAutoMessages().size() == lastmessage)
-                lastmessage = 0;
 
         }
         if(time_to_update == 0) {

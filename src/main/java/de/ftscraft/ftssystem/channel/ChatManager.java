@@ -12,6 +12,7 @@ import de.ftscraft.ftssystem.configs.Messages;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.main.User;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -137,7 +138,7 @@ public class ChatManager {
                 }
             }
 
-            
+
 
             if (!anyoneRecived) {
                 u.getPlayer().sendMessage("§cNiemand hat deine Nachricht gelesen. Schreibe ein ! vor deine Nachricht um in den Globalchat zu schreiben");
@@ -188,7 +189,7 @@ public class ChatManager {
         f = f.replace("%cp", c.getPrefix());
         f = f.replace("&", "§");
 
-        f = f.replace("%msg", msg);
+        f = f.replace("%msg", (u.getPlayer().hasPermission("ftssystem.chat.color") ? ChatColor.translateAlternateColorCodes('&', msg) : msg));
         f = f.replace("((", "§7((");
 
         return f;

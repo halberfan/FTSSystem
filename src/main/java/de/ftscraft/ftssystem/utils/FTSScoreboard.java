@@ -12,19 +12,24 @@ import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
+import java.util.ArrayList;
+
 public class FTSScoreboard {
 
     private FtsSystem plugin;
     private ScoreboardManager scoreboardManager;
+    public ArrayList<Player> roleplayMode;
 
     public FTSScoreboard(FtsSystem plugin) {
         this.plugin = plugin;
+        this.roleplayMode = new ArrayList<>();
         scoreboardManager = Bukkit.getScoreboardManager();
     }
 
     public void update() {
         for(Player a : Bukkit.getOnlinePlayers()) {
             Scoreboard scoreboard = scoreboardManager.getNewScoreboard();
+            setupScoreboardTeams(scoreboard);
             User u = plugin.getSurvival().getUser(a.getName());
 
             Objective objective;
@@ -56,5 +61,60 @@ public class FTSScoreboard {
             a.setScoreboard(scoreboard);
         }
     }
+
+    public void setupScoreboardTeams(Scoreboard sb) {
+        for(Team t : sb.getTeams()) {
+            t.unregister();
+        }
+        Team team;
+        if (sb.getTeam("roleplay_modus") == null)
+            team = sb.registerNewTeam("roleplay_modus");
+        else team = sb.getTeam("roleplay_modus");
+        team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
+        for (Player player : roleplayMode) {
+            team.addEntry(player.getName());
+        }
+        try
+        {
+            sb.registerNewTeam("0000Admin");
+            sb.registerNewTeam("0002Moderator");
+            sb.registerNewTeam("0003Helfer");
+            sb.registerNewTeam("0004Walkure");
+            sb.registerNewTeam("0005Einherjer");
+            sb.registerNewTeam("0006Architekt");
+            sb.registerNewTeam("0007Ehrenburger");
+            sb.registerNewTeam("0008Rauber");
+            sb.registerNewTeam("0009Richter");
+            sb.registerNewTeam("0010Mejster");
+            sb.registerNewTeam("0011Konig");
+            sb.registerNewTeam("0012Herzog");
+            sb.registerNewTeam("0013Furst");
+            sb.registerNewTeam("0014Graf");
+            sb.registerNewTeam("0015Burgherr");
+            sb.registerNewTeam("0016Ritter");
+            sb.registerNewTeam("0017Intendant");
+            sb.registerNewTeam("0018Kurator");
+            sb.registerNewTeam("0019Kaufmann");
+            sb.registerNewTeam("0020Gildenherr");
+            sb.registerNewTeam("0021Stadtherr");
+            sb.registerNewTeam("0022BMeister");
+            sb.registerNewTeam("0023Siedler");
+            sb.registerNewTeam("0024Vogt");
+            sb.registerNewTeam("0025Herold");
+            sb.registerNewTeam("0026Knappe");
+            sb.registerNewTeam("0027SchauSpieler");
+            sb.registerNewTeam("0028Musiker");
+            sb.registerNewTeam("0029Schreiber");
+            sb.registerNewTeam("0030Seefahrer");
+            sb.registerNewTeam("0031Hafenmeister");
+            sb.registerNewTeam("0032Handler");
+            sb.registerNewTeam("0033Burger");
+            sb.registerNewTeam("0034Reisender");
+        } catch (Exception ignore) {
+            ignore.printStackTrace();
+        }
+    }
+
+
 
 }
