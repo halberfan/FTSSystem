@@ -20,14 +20,13 @@ public class PunishmentManager {
     private FtsSystem plugin;
     private int latestID;
 
-    private HashMap<UUID, List<Punishment>> players;
+    private HashMap<UUID, List<Punishment>> players = new HashMap<>();
     private HashMap<Player, PunishmentBuilder> builders;
     private PunishmentIO punishmentIO;
 
     public PunishmentManager(FtsSystem plugin)
     {
         this.plugin = plugin;
-        players = new HashMap<>();
         builders = new HashMap<>();
         punishmentIO = new PunishmentIO(plugin, this);
         this.latestID = plugin.getConfigManager().getLatestPunID();
@@ -35,14 +34,63 @@ public class PunishmentManager {
 
     private void addPunishmentToPlayer(UUID player, Punishment pu)
     {
-        System.out.println("#addPunishmentToPlayer()");
         if (players.get(player) == null) {
             players.put(player, new ArrayList<>());
             players.get(player).add(pu);
         }
         else {
+
             players.get(player).add(pu);
+
         }
+
+    }
+
+    public void checkForAutoBan(UUID player) {
+
+        int numberOfPunishments = 0;
+        for (Punishment punishment : players.get(player)) {
+            if(punishment.getType() != PunishmentType.NOTE) {
+
+                if(punishment.isActive()) {
+
+                    System.out.println(punishment.getType());
+
+                    if(punishment instanceof TempWarn) {
+                        if (((Temporary) punishment).untilInMillis() < System.currentTimeMillis()) {
+                            continue;
+                        }
+                    }
+
+                    numberOfPunishments++;
+                }
+
+            }
+
+        }
+
+        if(!isBanned(player)) {
+
+            if (numberOfPunishments == 3) {
+
+                addTempBan("System: 3 Strafen erhalten",
+                        "System",
+                        UUIDFetcher.getName(player),
+                        "Der Spieler hat 3 Strafen erhalten und wurde deshalb bestraft.",
+                        "2d");
+
+            }
+
+            if (numberOfPunishments > 6) {
+
+                addBan("System: 6 Strafen (oder mehr) erhalten",
+                        "System",
+                        UUIDFetcher.getName(player),
+                        "Der Spieler hat 6 (oder mehr) Strafen erhalten und wurde deshalb bestraft.");
+
+            }
+        }
+
     }
 
     public void loadPunishmentFromData(UUID player, PunishmentType type, String reason, String author, String moreInfo, long time, long until, int id, boolean active)
@@ -100,6 +148,8 @@ public class PunishmentManager {
                 all.sendMessage(Messages.PREFIX + playerName + " wurde von " + warn.getAuthor() + " ein Permanenten Warn erhalten wegen: " + warn.getReason());
             }
         }
+
+        checkForAutoBan(uuid);
 
         return true;
     }
@@ -160,6 +210,9 @@ public class PunishmentManager {
             }
         }
 
+
+        checkForAutoBan(uuid);
+
         return true;
     }
 
@@ -172,6 +225,7 @@ public class PunishmentManager {
         latestID++;
         addPunishmentToPlayer(uuid, note);
         punishmentIO.savePlayerData(uuid);
+
         return true;
     }
 
@@ -237,6 +291,8 @@ public class PunishmentManager {
 
         addPunishmentToPlayer(uuid, tempBan);
         punishmentIO.savePlayerData(uuid);
+
+        checkForAutoBan(uuid);
         return true;
     }
 
@@ -316,6 +372,8 @@ public class PunishmentManager {
         latestID++;
         addPunishmentToPlayer(uuid, tempMute);
         punishmentIO.savePlayerData(uuid);
+
+        checkForAutoBan(uuid);
         return true;
     }
 
@@ -424,6 +482,8 @@ public class PunishmentManager {
         return null;
 
     }
+
+
 
     public void savePlayer(UUID player)
     {

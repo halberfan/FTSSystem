@@ -11,17 +11,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import java.util.Collection;
-import java.util.Queue;
 import java.util.Random;
 
 public class Runner implements Runnable {
 
     private FtsSystem plugin;
 
-    private int time_to_message = Varriables.AUTO_MESSAGE_COOLDOWN;
+    private int time_to_message = Variables.AUTO_MESSAGE_COOLDOWN;
 
-    private int time_to_update = de.ftscraft.ftssystem.utils.Varriables.SCOREBOARD_UPDATE_COOLDOWN;
+    private int time_to_update = Variables.SCOREBOARD_UPDATE_COOLDOWN;
 
     public Runner(FtsSystem plugin) {
         this.plugin = plugin;
@@ -36,7 +34,7 @@ public class Runner implements Runnable {
 
         if(time_to_message == 0) {
 
-            time_to_message = Varriables.AUTO_MESSAGE_COOLDOWN;
+            time_to_message = Variables.AUTO_MESSAGE_COOLDOWN;
             int index = new Random().nextInt(plugin.getConfigManager().getAutoMessages().size());
             String msg = plugin.getConfigManager().getAutoMessages().get(index);
             for(Player a : Bukkit.getOnlinePlayers()) {
@@ -46,10 +44,8 @@ public class Runner implements Runnable {
         }
         if(time_to_update == 0) {
             plugin.getFtsScoreboard().update();
-            time_to_update = Varriables.SCOREBOARD_UPDATE_COOLDOWN;
+            time_to_update = Variables.SCOREBOARD_UPDATE_COOLDOWN;
         }
-
-        plugin.getReisepunktManager().update();
 
         for(User all : plugin.getUser().values()) {
 

@@ -5,9 +5,10 @@
 
 package de.ftscraft.ftssystem.utils;
 
-public class Varriables {
+public class Variables {
 
     public static final int AUTO_MESSAGE_COOLDOWN = 60 * 10,
             SCOREBOARD_UPDATE_COOLDOWN = 5;
+
 
 }

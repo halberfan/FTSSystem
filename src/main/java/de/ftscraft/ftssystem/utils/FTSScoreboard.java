@@ -8,10 +8,11 @@ package de.ftscraft.ftssystem.utils;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.survivalminus.user.User;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 public class FTSScoreboard {
@@ -48,9 +49,8 @@ public class FTSScoreboard {
             Score s4 = objective.getScore("§6Vitamine: §c"+u.getVitamine());
             //Score s6 = objective.getScore("§6Krankheit: §c"+plugin.getDisease().getDisease(a));
             Score s7 = objective.getScore("§4--------");
-            Score s8 = objective.getScore("§6Geld: §c"+plugin.getEcon().getBalance(a));
-            Score s9 = objective.getScore("§6Ping: §c"+((CraftPlayer)a).getHandle().ping);
-            s9.setScore(0);
+
+            Score s8 = objective.getScore("§6Geld: §c"+round(plugin.getEcon().getBalance(a), 0));
             s8.setScore(1);
             s7.setScore(2);
             //s6.setScore(3);
@@ -60,6 +60,14 @@ public class FTSScoreboard {
             s1.setScore(8);
             a.setScoreboard(scoreboard);
         }
+    }
+
+    public double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 
     public void setupScoreboardTeams(Scoreboard sb) {

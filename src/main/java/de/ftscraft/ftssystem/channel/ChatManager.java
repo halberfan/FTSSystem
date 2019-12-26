@@ -81,7 +81,8 @@ public class ChatManager {
 
             for (MPlayer b : f.getMPlayers()) {
                 if (b.isOnline())
-                    b.getPlayer().sendMessage(c);
+                    if (b.getPlayer() != null)
+                        b.getPlayer().sendMessage(c);
             }
         } else if (a.getType() == ChannelType.FACTION_ALLY) {
             Faction f = MPlayer.get(u.getPlayer()).getFaction();
@@ -139,7 +140,6 @@ public class ChatManager {
             }
 
 
-
             if (!anyoneRecived) {
                 u.getPlayer().sendMessage("§cNiemand hat deine Nachricht gelesen. Schreibe ein ! vor deine Nachricht um in den Globalchat zu schreiben");
             }
@@ -151,7 +151,8 @@ public class ChatManager {
 
             for (MPlayer b : f.getMPlayers()) {
                 if (b.isOnline())
-                    b.getPlayer().sendMessage(c);
+                    if (b.getPlayer() != null)
+                        b.getPlayer().sendMessage(c);
             }
 
         } else if (channel.getType() == ChannelType.FACTION_ALLY) {
@@ -191,6 +192,7 @@ public class ChatManager {
 
         f = f.replace("%msg", (u.getPlayer().hasPermission("ftssystem.chat.color") ? ChatColor.translateAlternateColorCodes('&', msg) : msg));
         f = f.replace("((", "§7((");
+        f = f.replace("))", "§r))");
 
         return f;
     }

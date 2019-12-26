@@ -11,6 +11,7 @@ import de.ftscraft.ftssystem.punishment.PunishmentType;
 import de.ftscraft.ftssystem.punishment.Temporary;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 
@@ -23,10 +24,14 @@ public class LoginListener implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onLogin(PlayerLoginEvent event) {
 
         Player p = event.getPlayer();
+
+        if(event.getResult() != PlayerLoginEvent.Result.ALLOWED) {
+            return;
+        }
 
         Punishment pu = plugin.getPunishmentManager().isBanned(p);
         if (pu == null) {

@@ -1,8 +1,8 @@
 name: FTSSystem
-version: 0.2
+version: 1.0.1
 main: de.ftscraft.ftssystem.main.FtsSystem
 author: halberfan
-api-version: 1.13
+api-version: 1.14
 depend: [Vault]
 
 commands:
@@ -11,3 +11,5 @@ commands:
     umfrage:
     togglesidebar:
     pu:
+    tutorialbook:
+    akte:

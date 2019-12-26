@@ -63,6 +63,7 @@ public class PunishmentIO {
     public boolean savePlayerData(UUID player) {
         File file = new File(folder + "//" + player.toString() + ".yml");
         YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
+
         for (Punishment a : punishmentManager.getPlayers().get(player)) {
             cfg.set("punishment." + a.getID() + ".type", a.getType().toString());
             cfg.set("punishment." + a.getID() + ".reason", a.getReason());

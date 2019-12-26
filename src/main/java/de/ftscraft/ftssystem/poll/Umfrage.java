@@ -51,7 +51,7 @@ public class Umfrage {
         sendPollMessage();
     }
 
-    private void sendPollMessage() {
+    public void sendPollMessage() {
         Bukkit.broadcastMessage(Messages.PREFIX+"Es wurde eine Umfrage gestartet:");
         Bukkit.broadcastMessage("§7Frage: §c"+frage);
         for (int i1 = 0; i1 < antwortmoglichkeiten.size(); i1++) {

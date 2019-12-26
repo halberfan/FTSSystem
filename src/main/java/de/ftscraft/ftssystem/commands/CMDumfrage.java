@@ -126,6 +126,15 @@ public class CMDumfrage implements FTSCommand {
                     //Add Vote to Umfrage
                     umfrage.addVote(p, id);
                 }
+            } else if(args[0].equalsIgnoreCase("resend")) {
+
+                if(!cs.hasPermission("ftssystem.umfrage")) {
+                    return true;
+                }
+
+                Umfrage umfrage = plugin.getUmfrage();
+                umfrage.sendPollMessage();
+
             }
         }
 

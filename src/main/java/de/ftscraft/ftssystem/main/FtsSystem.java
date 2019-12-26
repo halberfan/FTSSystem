@@ -6,8 +6,8 @@ import de.ftscraft.ftssystem.configs.ConfigManager;
 import de.ftscraft.ftssystem.listeners.*;
 import de.ftscraft.ftssystem.poll.Umfrage;
 import de.ftscraft.ftssystem.punishment.PunishmentManager;
-import de.ftscraft.ftssystem.reisepunkte.ReisepunktManager;
 import de.ftscraft.ftssystem.utils.FTSScoreboard;
+import de.ftscraft.ftssystem.utils.FileManager;
 import de.ftscraft.ftssystem.utils.Runner;
 import de.ftscraft.survivalminus.main.Survival;
 import net.milkbowl.vault.chat.Chat;
@@ -34,14 +34,16 @@ public class FtsSystem extends JavaPlugin {
 
     private ChatManager chatManager;
     private ConfigManager configManager;
+    private FileManager fileManager;
 
     private Survival survival;
 
     private FTSScoreboard ftsScoreboard;
 
     private PunishmentManager punishmentManager;
-    private ReisepunktManager reisepunktManager;
     //private Disease disease;
+
+
 
     @Override
     public void onEnable()
@@ -87,15 +89,17 @@ public class FtsSystem extends JavaPlugin {
     {
         user = new HashMap<>();
         configManager = new ConfigManager(this);
+        fileManager = new FileManager(this);
         chatManager = new ChatManager(this);
         punishmentManager = new PunishmentManager(this);
-        reisepunktManager = new ReisepunktManager(this);
         ftsScoreboard = new FTSScoreboard(this);
         new CMDftssystem(this);
         new CMDchannel(this);
         new CMDumfrage(this);
         new CMDtogglesidebar(this);
         new CMDpu(this);
+        new CMDtutorialbuch(this);
+        new CMDakte(this);
 
         new DeathListener(this);
         new CommandListener(this);
@@ -169,11 +173,6 @@ public class FtsSystem extends JavaPlugin {
         return punishmentManager;
     }
 
-    public ReisepunktManager getReisepunktManager()
-    {
-        return reisepunktManager;
-    }
-
     //public Disease getDisease() {
     //    return disease;
     //}
@@ -203,5 +202,9 @@ public class FtsSystem extends JavaPlugin {
         RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
         perms = rsp.getProvider();
         return perms != null;
+    }
+
+    public FileManager getFileManager() {
+        return fileManager;
     }
 }

@@ -66,7 +66,7 @@ public class PunishmentInventory {
         warn.setItemMeta(mwarn);
 
         //Mute
-        ItemStack mute = new ItemStack(Material.CACTUS_GREEN, 1);
+        ItemStack mute = new ItemStack(Material.GREEN_DYE, 1);
         ItemMeta mmute = mute.getItemMeta();
         mmute.setDisplayName("§cTempmute");
         mute.setItemMeta(mmute);
@@ -78,7 +78,7 @@ public class PunishmentInventory {
         tempban.setItemMeta(mtempban);
 
         //Ban
-        ItemStack ban = new ItemStack(Material.ROSE_RED, 1);
+        ItemStack ban = new ItemStack(Material.RED_DYE, 1);
         ItemMeta mban = ban.getItemMeta();
         mban.setDisplayName("§4Ban");
         ban.setItemMeta(mban);
@@ -176,7 +176,7 @@ public class PunishmentInventory {
                 }
                 case TEMPMUTE: {
                     //Tempmute
-                    ItemStack mute = new ItemStack(Material.CACTUS_GREEN, 1);
+                    ItemStack mute = new ItemStack(Material.GREEN_DYE, 1);
                     ItemMeta mmute = mute.getItemMeta();
                     mmute.setDisplayName("§cTempmute");
                     mmute.setLore(Arrays.asList("§cErstellt von: " + a.getAuthor(), "§cAm: " + a.createdOn(), "§cGrund: " + a.getReason(), "" + a.getID(), "§eDeaktiviert: " + (!a.isActive() ? "Ja" : "Nein")));
@@ -200,7 +200,7 @@ public class PunishmentInventory {
                 }
                 case BAN: {
                     //Ban
-                    ItemStack ban = new ItemStack(Material.ROSE_RED, 1);
+                    ItemStack ban = new ItemStack(Material.RED_DYE, 1);
                     ItemMeta mban = ban.getItemMeta();
                     mban.setDisplayName("§4Ban");
                     mban.setLore(Arrays.asList("§cErstellt von: " + a.getAuthor(), "§cAm: " + a.createdOn(), "§cGrund: " + a.getReason(), "" + a.getID(), "§eDeaktiviert: " + (!a.isActive() ? "Ja" : "Nein")));

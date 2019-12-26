@@ -30,7 +30,7 @@ public class InvClickListener implements Listener {
 
     @EventHandler
     public void onInvClick(InventoryClickEvent event) {
-        if(event.getInventory().getName().startsWith("§cPunishment")) {
+        if(event.getView().getTitle().startsWith("§cPunishment")) {
             event.setCancelled(true);
 
             ItemStack item = event.getCurrentItem();
@@ -96,7 +96,7 @@ public class InvClickListener implements Listener {
 
         }
 
-        if(event.getInventory().getName().startsWith("§2Akte")) {
+        if(event.getView().getTitle().startsWith("§2Akte")) {
             event.setCancelled(true);
             ItemStack item = event.getCurrentItem();
             if(item == null)

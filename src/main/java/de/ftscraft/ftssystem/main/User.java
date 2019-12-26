@@ -81,9 +81,15 @@ public class User {
         File file = new File(plugin.getDataFolder() + "//user//" + player.getUniqueId().toString() + ".yml");
         YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
         if (!file.exists()) {
+
+            player.performCommand("tutorialbook");
+
             for (Player a : Bukkit.getOnlinePlayers()) {
                 a.sendMessage("§cDer Spieler §e" + player.getName() + " §cist das 1. mal hier. Sagt Hallo!");
             }
+
+
+
         }
         List channelList = cfg.getList("channels");
         if (channelList != null) {
