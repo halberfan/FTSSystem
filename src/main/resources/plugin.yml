@@ -1,5 +1,5 @@
 name: FTSSystem
-version: 1.0.1
+version: 1.0.2
 main: de.ftscraft.ftssystem.main.FtsSystem
 author: halberfan
 api-version: 1.14
@@ -13,3 +13,4 @@ commands:
     pu:
     tutorialbook:
     akte:
+    roleplay:

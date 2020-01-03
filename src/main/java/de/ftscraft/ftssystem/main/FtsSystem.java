@@ -6,6 +6,7 @@ import de.ftscraft.ftssystem.configs.ConfigManager;
 import de.ftscraft.ftssystem.listeners.*;
 import de.ftscraft.ftssystem.poll.Umfrage;
 import de.ftscraft.ftssystem.punishment.PunishmentManager;
+import de.ftscraft.ftssystem.scoreboard.FTSScoreboardManager;
 import de.ftscraft.ftssystem.utils.FTSScoreboard;
 import de.ftscraft.ftssystem.utils.FileManager;
 import de.ftscraft.ftssystem.utils.Runner;
@@ -36,9 +37,9 @@ public class FtsSystem extends JavaPlugin {
     private ConfigManager configManager;
     private FileManager fileManager;
 
-    private Survival survival;
+    private FTSScoreboardManager scoreboardManager;
 
-    private FTSScoreboard ftsScoreboard;
+    private Survival survival;
 
     private PunishmentManager punishmentManager;
     //private Disease disease;
@@ -92,7 +93,7 @@ public class FtsSystem extends JavaPlugin {
         fileManager = new FileManager(this);
         chatManager = new ChatManager(this);
         punishmentManager = new PunishmentManager(this);
-        ftsScoreboard = new FTSScoreboard(this);
+        scoreboardManager = new FTSScoreboardManager(this);
         new CMDftssystem(this);
         new CMDchannel(this);
         new CMDumfrage(this);
@@ -100,6 +101,7 @@ public class FtsSystem extends JavaPlugin {
         new CMDpu(this);
         new CMDtutorialbuch(this);
         new CMDakte(this);
+        new CMDroleplay(this);
 
         new DeathListener(this);
         new CommandListener(this);
@@ -163,9 +165,8 @@ public class FtsSystem extends JavaPlugin {
         return survival;
     }
 
-    public FTSScoreboard getFtsScoreboard()
-    {
-        return ftsScoreboard;
+    public FTSScoreboardManager getScoreboardManager() {
+        return scoreboardManager;
     }
 
     public PunishmentManager getPunishmentManager()

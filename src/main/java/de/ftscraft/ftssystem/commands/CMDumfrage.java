@@ -133,7 +133,7 @@ public class CMDumfrage implements FTSCommand {
                 }
 
                 Umfrage umfrage = plugin.getUmfrage();
-                umfrage.sendPollMessage();
+                umfrage.sendPollMessage(true);
 
             }
         }

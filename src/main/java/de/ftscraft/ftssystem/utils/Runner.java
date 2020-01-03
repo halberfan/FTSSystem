@@ -7,6 +7,7 @@ package de.ftscraft.ftssystem.utils;
 
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.main.User;
+import de.ftscraft.ftssystem.scoreboard.FTSScoreboardManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -21,8 +22,11 @@ public class Runner implements Runnable {
 
     private int time_to_update = Variables.SCOREBOARD_UPDATE_COOLDOWN;
 
+    FTSScoreboardManager scoreboardManager;
+
     public Runner(FtsSystem plugin) {
         this.plugin = plugin;
+        this.scoreboardManager = plugin.getScoreboardManager();
         plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, this, 20, 20);
     }
 
@@ -43,7 +47,7 @@ public class Runner implements Runnable {
 
         }
         if(time_to_update == 0) {
-            plugin.getFtsScoreboard().update();
+            scoreboardManager.sendToAllScoreboard();
             time_to_update = Variables.SCOREBOARD_UPDATE_COOLDOWN;
         }
 
@@ -68,6 +72,8 @@ public class Runner implements Runnable {
             }
 
         }
+
+
 
 
     }

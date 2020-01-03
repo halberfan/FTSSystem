@@ -103,11 +103,12 @@ public class User {
         }
         if (enabledChannels.isEmpty()) {
             for (Channel a : plugin.getChatManager().getChannels()) {
-                if (player.hasPermission(a.getPermission()) && a.isDefaultChannel()) {
+                if (player.hasPermission(a.getPermission())) {
                     enabledChannels.add(a);
                 }
             }
         }
+
         this.activeChannel = plugin.getChatManager().getChannel(cfg.getString("activeChannel"));
         if (this.activeChannel == null)
             this.activeChannel = plugin.getChatManager().getChannel("Local");

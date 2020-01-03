@@ -54,8 +54,6 @@ public class PunishmentManager {
 
                 if(punishment.isActive()) {
 
-                    System.out.println(punishment.getType());
-
                     if(punishment instanceof TempWarn) {
                         if (((Temporary) punishment).untilInMillis() < System.currentTimeMillis()) {
                             continue;
