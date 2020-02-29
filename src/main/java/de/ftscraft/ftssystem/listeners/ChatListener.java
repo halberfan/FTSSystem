@@ -5,6 +5,7 @@
 
 package de.ftscraft.ftssystem.listeners;
 
+import de.ftscraft.ftsengine.utils.Ausweis;
 import de.ftscraft.ftssystem.configs.Messages;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.main.User;
@@ -13,6 +14,8 @@ import de.ftscraft.ftssystem.punishment.PunishmentManager;
 import de.ftscraft.ftssystem.punishment.PunishmentType;
 import de.ftscraft.ftssystem.punishment.Temporary;
 import de.ftscraft.ftssystem.utils.Utils;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -122,6 +125,62 @@ public class ChatListener implements Listener {
         }
         event.setCancelled(true);
         if (event.getMessage().startsWith("*")) {
+            if (event.getMessage().startsWith(String.valueOf('*'))) {
+
+                String[] msgs = event.getMessage().split(" ");
+
+                for (int i = 0; i < msgs.length; i++) {
+                    for (Player a : Bukkit.getOnlinePlayers()) {
+                        if (plugin.getEngine().hasAusweis(a)) {
+                            if (a.getName().equalsIgnoreCase(msgs[i])) {
+                                msgs[i] = plugin.getEngine().getAusweis(a).getFirstName() + " " + plugin.getEngine().getAusweis(a).getLastName();
+                            }
+                        }
+                    }
+                }
+
+                String msg;
+
+                Ausweis a = plugin.getEngine().getAusweis(event.getPlayer());
+
+                if (a == null) {
+                    event.getPlayer().sendMessage("§cBitte erstell dir erst einen Ausweis");
+                    return;
+                }
+
+                msgs[0] = msgs[0].substring(1);
+
+                if(!event.getMessage().startsWith("**")) {
+
+                    msg = "§e" + a.getFirstName() + " " + a.getLastName() + " (" + event.getPlayer().getName()+") ";
+
+                } else {
+                    msgs[0] = msgs[0].substring(1);
+                    msg = "§e";
+                }
+
+                //msgs[0].replace("*", "");
+
+                for (String m : msgs) {
+                    msg += m + " ";
+                }
+
+                msg = msg.replace("((", "§7((");
+                msg = msg.replace("))", "§7))§e");
+
+                msg = msg.replace("\"", "§7\"");
+                msg = msg.replace("\"", "§7\"§e");
+
+                event.setCancelled(true);
+
+                for (User b : plugin.getUser().values()) {
+                    if (b.getPlayer().getWorld().getName().equalsIgnoreCase(u.getPlayer().getWorld().getName())) {
+                        if (b.getPlayer().getLocation().distance(u.getPlayer().getLocation()) <= 15) {
+                            b.getPlayer().sendMessage(msg);
+                        }
+                    }
+                }
+            }
             return;
         }
         if (event.getMessage().startsWith("!")) {

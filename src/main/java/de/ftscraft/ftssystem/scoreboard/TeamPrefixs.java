@@ -45,7 +45,8 @@ public enum  TeamPrefixs {
     HAFENMEISTER("§6Hafenmeister", "ftsengine.hafenmeister", "033HMeister"),
     HANDLER("§6Händler", "ftsengine.handler", "034Handler"),
     BURGER("§6Bürger", "ftsengine.burger", "035Burger"),
-    REISENDER("§6Reisender", "", "036Reisender");
+    REISENDER("§6Reisender", "ftsengine.reisender", "036Reisender"),
+    NEULING("§6Neuling", "ftsengine.neuling", "037Neuling");
 
     String prefix;
     String permission;
@@ -69,18 +70,6 @@ public enum  TeamPrefixs {
     public String getPrefix()
     {
         return prefix;
-    }
-
-    public static TeamPrefixs setPlayerPrefix(Player p) {
-        for(TeamPrefixs a : TeamPrefixs.values()) {
-            if(p.hasPermission(a.getPermission()))
-            {
-                p.setPlayerListName(a.getPrefix() + " §7| §r"+p.getName());
-                return a;
-            }
-        }
-        p.setPlayerListName(REISENDER.getPrefix() + " §7| §r"+p.getName());
-        return REISENDER;
     }
 
 }

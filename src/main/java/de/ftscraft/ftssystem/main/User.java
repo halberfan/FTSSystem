@@ -24,6 +24,8 @@ public class User {
 
     private boolean scoreboardEnabled = true;
 
+    private boolean approved = false;
+
     private Channel activeChannel;
     private List<Channel> enabledChannels;
 
@@ -65,6 +67,7 @@ public class User {
         cfg.set("channels", chNames.toArray());
         cfg.set("activeChannel", activeChannel.getName());
         cfg.set("scoreboardOn", isScoreboardEnabled());
+        cfg.set("approved", approved);
 
         //Punishment
 
@@ -114,6 +117,7 @@ public class User {
             this.activeChannel = plugin.getChatManager().getChannel("Local");
 
         this.scoreboardEnabled = !cfg.contains("scoreboardOn") || cfg.getBoolean("scoreboardOn");
+        this.approved = cfg.contains("approved") && cfg.getBoolean("approved");
     }
 
     public void joinChannel(Channel channel) {
@@ -154,5 +158,13 @@ public class User {
 
     public HashMap<Player, Integer> getFights() {
         return fights;
+    }
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean b) {
+        approved = b;
     }
 }

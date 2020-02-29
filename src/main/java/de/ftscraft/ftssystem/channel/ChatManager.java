@@ -8,6 +8,7 @@ package de.ftscraft.ftssystem.channel;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPlayer;
+import de.ftscraft.ftsengine.utils.Ausweis;
 import de.ftscraft.ftssystem.configs.Messages;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.main.User;
@@ -82,14 +83,17 @@ public class ChatManager {
             for (MPlayer b : f.getMPlayers()) {
                 if (b.isOnline())
                     if (b.getPlayer() != null)
-                        b.getPlayer().sendMessage(c);
+                        if (plugin.getUser(b.getPlayer()).getEnabledChannels().contains(a))
+                            b.getPlayer().sendMessage(c);
+
             }
         } else if (a.getType() == ChannelType.FACTION_ALLY) {
             Faction f = MPlayer.get(u.getPlayer()).getFaction();
 
             for (MPlayer b : f.getMPlayers()) {
                 if (b.getPlayer() != null)
-                    b.getPlayer().sendMessage(c);
+                    if (plugin.getUser(b.getPlayer()).getEnabledChannels().contains(a))
+                        b.getPlayer().sendMessage(c);
             }
 
             for (Player i : Bukkit.getOnlinePlayers()) {
@@ -151,8 +155,11 @@ public class ChatManager {
 
             for (MPlayer b : f.getMPlayers()) {
                 if (b.isOnline())
-                    if (b.getPlayer() != null)
-                        b.getPlayer().sendMessage(c);
+                    if (b.getPlayer() != null) {
+                        if((plugin.getUser(b.getPlayer()).getEnabledChannels().contains(channel))) {
+                            b.getPlayer().sendMessage(c);
+                        }
+                    }
             }
 
         } else if (channel.getType() == ChannelType.FACTION_ALLY) {
@@ -185,14 +192,22 @@ public class ChatManager {
 
         f = f.replace("%fa", faction);
         f = f.replace("%pr", prefix);
-        f = f.replace("%na", name);
+        //Wenn der Spieler im RP Modus ist, wird der eigentliche Name mit dem Namen ausgetauscht der im Ausweis angegeben ist, wenn ein Ausweis vorhanden ist
+        if(plugin.getScoreboardManager().isInRoleplayMode(u.getPlayer())) {
+            Ausweis ausweis = plugin.getEngine().getAusweis(u.getPlayer());
+            //Wenn der Ausweis nicht existiert, die Variable mit dem normalen Spielernamen ergenzen
+            if(ausweis == null)
+                f = f.replace("%na", name);
+            f = f.replace("%na", ChatColor.GREEN + ausweis.getFirstName() + " " + ausweis.getLastName() + ChatColor.RESET);
+        } else
+            f = f.replace("%na", name);
         f = f.replace("%ch", channelName);
         f = f.replace("%cp", c.getPrefix());
         f = f.replace("&", "§");
 
         f = f.replace("%msg", (u.getPlayer().hasPermission("ftssystem.chat.color") ? ChatColor.translateAlternateColorCodes('&', msg) : msg));
         f = f.replace("((", "§7((");
-        f = f.replace("))", "§r))");
+        f = f.replace("))", "§7))§r");
 
         return f;
     }

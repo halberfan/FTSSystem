@@ -10,6 +10,7 @@ import de.ftscraft.ftssystem.main.User;
 import de.ftscraft.ftssystem.poll.Umfrage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -30,16 +31,28 @@ public class JoinListener implements Listener {
 
         Player p = event.getPlayer();
 
-        String joinMessage = "%s" + ChatColor.WHITE + " hat das Kaiserreich betreten!";
+        plugin.getScoreboardManager().setPlayerPrefix(p);
+
+        String joinMessage = "%s" + ChatColor.WHITE + " hat Parsifal betreten!";
 
         boolean isChanged = false;
 
+        if(p.hasPermission("ftssystem.join.lightblue")) {
+            isChanged = true;
+            joinMessage = joinMessage.replace("%s", ChatColor.AQUA + p.getName());
+        }
+        if(p.hasPermission("ftssystem.join.darkred")) {
+            isChanged = true;
+            joinMessage = joinMessage.replace("%s", ChatColor.DARK_RED + p.getName());
+        }
+        if(p.hasPermission("ftssystem.join.darkgreen")) {
+            isChanged = true;
+            joinMessage = joinMessage.replace("%s", ChatColor.DARK_GREEN + p.getName());
+        }
         if (p.hasPermission("ftssystem.join.red")) {
             isChanged = true;
             joinMessage = joinMessage.replace("%s", ChatColor.RED + p.getName());
-
         }
-
         if (p.hasPermission("ftssystem.join.blue")) {
             isChanged = true;
             joinMessage = joinMessage.replace("%s", ChatColor.BLUE + p.getName());
@@ -76,6 +89,18 @@ public class JoinListener implements Listener {
 
 
             }
+        }
+
+        if(!u.isApproved()) {
+
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+
+                p.sendMessage("§4Achtung: §cDu bist noch nicht freigeschalten! Wenn du das erste mal auf dem Server bist, mach das Tutorial. Wenn du soweit bist, lese das Regelwerk auf https://ftscraft.de/regelwerk/ und suche nach einem Wort welches nicht in den Kontext passt! Dies ist das Passwort. Schalte dich frei mit §e/passwort PASSWORT");
+
+                p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+
+            }, 20 * 4);
+
         }
 
     }

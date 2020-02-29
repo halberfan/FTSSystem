@@ -34,6 +34,9 @@ public class PlayerAttackListener implements Listener {
             if (event.getEntity() instanceof Player) {
 
                 Player bp = (Player) event.getEntity();
+                if(bp.hasMetadata("NPC")) {
+                    return;
+                }
 
                 User a = plugin.getUser(ap);
                 User b = plugin.getUser(bp);

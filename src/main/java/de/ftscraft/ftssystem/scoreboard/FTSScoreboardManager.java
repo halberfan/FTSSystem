@@ -26,6 +26,8 @@ public class FTSScoreboardManager {
 
     private List<Player> playerInRpMode = new ArrayList<>();
 
+    private List<Player> blinkingPlayers = new ArrayList<>();
+
     private FtsSystem plugin;
 
     public FTSScoreboardManager(FtsSystem plugin) {
@@ -38,6 +40,8 @@ public class FTSScoreboardManager {
 
         for (Player p : Bukkit.getOnlinePlayers()) {
 
+            setPlayerPrefix(p);
+
             Scoreboard s = sm.getNewScoreboard();
 
             Team rpTeam = s.registerNewTeam("100rpmode");
@@ -45,31 +49,45 @@ public class FTSScoreboardManager {
 
             User u = plugin.getSurvival().getUser(p.getName());
 
-            Objective objective;
-            if (s.getObjective(p.getName()) == null)
-                objective = s.registerNewObjective(p.getName(), "dummy");
-            else {
-                objective = s.getObjective(p.getName());
-                objective.unregister();
-                objective = s.registerNewObjective(p.getName(), "dummy");
-            }
-            objective.setDisplayName("§lGesundheit");
-            objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-            Score s1 = objective.getScore("§6Kohlenhydrate: §c" + u.getKohlenhydrate());
-            Score s2 = objective.getScore("§6Durst: §c" + u.getThirst());
-            Score s3 = objective.getScore("§6Proteine: §c" + u.getProteine());
-            Score s4 = objective.getScore("§6Vitamine: §c" + u.getVitamine());
-            //Score s6 = objective.getScore("§6Krankheit: §c"+plugin.getDisease().getDisease(a));
-            Score s7 = objective.getScore("§4--------");
+            if (plugin.getUser(p).isScoreboardEnabled()) {
 
-            Score s8 = objective.getScore("§6Geld: §c" + round(plugin.getEcon().getBalance(p), 0));
-            s8.setScore(1);
-            s7.setScore(2);
-            //s6.setScore(3);
-            s4.setScore(5);
-            s3.setScore(6);
-            s2.setScore(7);
-            s1.setScore(8);
+                Objective objective;
+                if (s.getObjective(p.getName()) == null)
+                    objective = s.registerNewObjective(p.getName(), "dummy");
+                else {
+                    objective = s.getObjective(p.getName());
+                    objective.unregister();
+                    objective = s.registerNewObjective(p.getName(), "dummy");
+                }
+                objective.setDisplayName("§lGesundheit");
+                if (u.getKohlenhydrate() <= 5 || u.getProteine() <= 5 || u.getThirst() <= 5 || u.getVitamine() <= 5) {
+                    System.out.println("hallo");
+                    if (blinkingPlayers.contains(p)) {
+                        blinkingPlayers.remove(p);
+                        objective.setDisplayName("§4§lGesundheit");
+                    } else blinkingPlayers.add(p);
+                } else {
+                    blinkingPlayers.remove(p);
+                }
+                objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+                Score s1 = objective.getScore("§6Kohlenhydrate: §c" + u.getKohlenhydrate());
+                Score s2 = objective.getScore("§6Durst: §c" + u.getThirst());
+                Score s3 = objective.getScore("§6Proteine: §c" + u.getProteine());
+                Score s4 = objective.getScore("§6Vitamine: §c" + u.getVitamine());
+                if (plugin.getDisease() != null) {
+                    Score s6 = objective.getScore("§6Krankheit: §c" + plugin.getDisease().getDisease(p));
+                    s6.setScore(3);
+                }
+                Score s7 = objective.getScore("§4--------");
+
+                Score s8 = objective.getScore("§6Geld: §c" + round(plugin.getEcon().getBalance(p), 0));
+                s8.setScore(1);
+                s7.setScore(2);
+                s4.setScore(5);
+                s3.setScore(6);
+                s2.setScore(7);
+                s1.setScore(8);
+            }
 
             ArrayList<Player> isRanked = new ArrayList<>();
 
@@ -119,5 +137,28 @@ public class FTSScoreboardManager {
 
     }
 
+    public TeamPrefixs setPlayerPrefix(Player p) {
+        for (TeamPrefixs a : TeamPrefixs.values()) {
+            if (p.hasPermission(a.getPermission())) {
+                if (!playerInRpMode.contains(p))
+                    p.setPlayerListName(a.getPrefix() + " §7| §r" + p.getName());
+                else
+                    p.setPlayerListName(a.getPrefix() + " §7| §r" + p.getName() + " §7[RP]");
+                return a;
+            }
+        }
+        TeamPrefixs a = TeamPrefixs.NEULING;
+        if (!playerInRpMode.contains(p))
+            p.setPlayerListName(a.getPrefix() + " §7| §r" + p.getName());
+        else
+            p.setPlayerListName(a.getPrefix() + " §7| §r" + p.getName() + " §7[RP]");
+        return a;
+    }
+
+    public boolean isInRoleplayMode(Player p) {
+
+        return playerInRpMode.contains(p);
+
+    }
 
 }

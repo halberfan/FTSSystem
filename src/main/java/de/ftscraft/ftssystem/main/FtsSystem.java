@@ -1,5 +1,7 @@
 package de.ftscraft.ftssystem.main;
 
+import com.hmmcrunchy.disease.Disease;
+import de.ftscraft.ftsengine.main.Engine;
 import de.ftscraft.ftssystem.channel.ChatManager;
 import de.ftscraft.ftssystem.commands.*;
 import de.ftscraft.ftssystem.configs.ConfigManager;
@@ -11,6 +13,7 @@ import de.ftscraft.ftssystem.utils.FTSScoreboard;
 import de.ftscraft.ftssystem.utils.FileManager;
 import de.ftscraft.ftssystem.utils.Runner;
 import de.ftscraft.survivalminus.main.Survival;
+import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -40,15 +43,16 @@ public class FtsSystem extends JavaPlugin {
     private FTSScoreboardManager scoreboardManager;
 
     private Survival survival;
+    private Engine engine;
 
     private PunishmentManager punishmentManager;
-    //private Disease disease;
+    private Disease disease = null;
 
+    private LuckPerms luckPermsApi;
 
 
     @Override
-    public void onEnable()
-    {
+    public void onEnable() {
         super.onEnable();
         hook();
         init();
@@ -62,32 +66,36 @@ public class FtsSystem extends JavaPlugin {
     }
 
 
-    private void hook()
-    {
+    private void hook() {
         factionHooked = getServer().getPluginManager().getPlugin("Factions") != null;
         setupEconomy();
         setupChat();
         setupPermissions();
         survival = (Survival) getServer().getPluginManager().getPlugin("FTSSurvival");
-        //disease = (Disease) getServer().getPluginManager().getPlugin("Disease");
+        engine = (Engine) getServer().getPluginManager().getPlugin("FTSEngine");
+        if (getServer().getPluginManager().isPluginEnabled("Disease"))
+            disease = (Disease) getServer().getPluginManager().getPlugin("Disease");
+        /*RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+        if (provider != null) {
+            LuckPerms api = provider.getProvider();
+        }
+
+         */
     }
 
     @Override
-    public void onDisable()
-    {
+    public void onDisable() {
         super.onDisable();
         save();
     }
 
-    private void save()
-    {
+    private void save() {
         configManager.setConfig(ConfigManager.ConfigVal.LATEST_PUNISH_ID, getPunishmentManager().getLatestID());
 
         configManager.save();
     }
 
-    private void init()
-    {
+    private void init() {
         user = new HashMap<>();
         configManager = new ConfigManager(this);
         fileManager = new FileManager(this);
@@ -102,6 +110,7 @@ public class FtsSystem extends JavaPlugin {
         new CMDtutorialbuch(this);
         new CMDakte(this);
         new CMDroleplay(this);
+        new CMDpasswort(this);
 
         new DeathListener(this);
         new CommandListener(this);
@@ -115,53 +124,43 @@ public class FtsSystem extends JavaPlugin {
         new Runner(this);
     }
 
-    public User getUser(Player player)
-    {
+    public User getUser(Player player) {
         return user.get(player.getName());
     }
 
-    public HashMap<String, User> getUser()
-    {
+    public HashMap<String, User> getUser() {
         return user;
     }
 
-    public Economy getEcon()
-    {
+    public Economy getEcon() {
         return econ;
     }
 
-    public Permission getPerms()
-    {
+    public Permission getPerms() {
         return perms;
     }
 
-    public Chat getChat()
-    {
+    public Chat getChat() {
         return chat;
     }
 
-    public ChatManager getChatManager()
-    {
+    public ChatManager getChatManager() {
         return chatManager;
     }
 
-    public ConfigManager getConfigManager()
-    {
+    public ConfigManager getConfigManager() {
         return configManager;
     }
 
-    public Umfrage getUmfrage()
-    {
+    public Umfrage getUmfrage() {
         return umfrage;
     }
 
-    public void setUmfrage(Umfrage umfrage)
-    {
+    public void setUmfrage(Umfrage umfrage) {
         this.umfrage = umfrage;
     }
 
-    public Survival getSurvival()
-    {
+    public Survival getSurvival() {
         return survival;
     }
 
@@ -169,17 +168,15 @@ public class FtsSystem extends JavaPlugin {
         return scoreboardManager;
     }
 
-    public PunishmentManager getPunishmentManager()
-    {
+    public PunishmentManager getPunishmentManager() {
         return punishmentManager;
     }
 
-    //public Disease getDisease() {
-    //    return disease;
-    //}
+    public Disease getDisease() {
+        return disease;
+    }
 
-    private boolean setupEconomy()
-    {
+    private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             return false;
         }
@@ -191,15 +188,13 @@ public class FtsSystem extends JavaPlugin {
         return econ != null;
     }
 
-    private boolean setupChat()
-    {
+    private boolean setupChat() {
         RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
         chat = rsp.getProvider();
         return chat != null;
     }
 
-    private boolean setupPermissions()
-    {
+    private boolean setupPermissions() {
         RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
         perms = rsp.getProvider();
         return perms != null;
@@ -207,5 +202,13 @@ public class FtsSystem extends JavaPlugin {
 
     public FileManager getFileManager() {
         return fileManager;
+    }
+
+    public LuckPerms getLuckPermsApi() {
+        return luckPermsApi;
+    }
+
+    public Engine getEngine() {
+        return engine;
     }
 }
