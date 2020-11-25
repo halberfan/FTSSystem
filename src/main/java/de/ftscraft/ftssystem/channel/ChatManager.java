@@ -5,9 +5,10 @@
 
 package de.ftscraft.ftssystem.channel;
 
-import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.MPlayer;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.perms.Relation;
 import de.ftscraft.ftsengine.utils.Ausweis;
 import de.ftscraft.ftssystem.configs.Messages;
 import de.ftscraft.ftssystem.main.FtsSystem;
@@ -37,8 +38,11 @@ public class ChatManager {
     private FtsSystem plugin;
     public List<Channel> channels = new ArrayList<>();
 
+    private FPlayers fPlayers;
+
     public ChatManager(FtsSystem plugin) {
         this.plugin = plugin;
+        this.fPlayers = FPlayers.getInstance();
         //channels = new ArrayList<>();
         loadChannels();
     }
@@ -78,9 +82,9 @@ public class ChatManager {
             }
 
         } else if (a.getType() == ChannelType.FACTION_F) {
-            Faction f = MPlayer.get(u.getPlayer()).getFaction();
+            Faction f = fPlayers.getByPlayer(u.getPlayer()).getFaction();
 
-            for (MPlayer b : f.getMPlayers()) {
+            for (FPlayer b : f.getFPlayers()) {
                 if (b.isOnline())
                     if (b.getPlayer() != null)
                         if (plugin.getUser(b.getPlayer()).getEnabledChannels().contains(a))
@@ -88,17 +92,17 @@ public class ChatManager {
 
             }
         } else if (a.getType() == ChannelType.FACTION_ALLY) {
-            Faction f = MPlayer.get(u.getPlayer()).getFaction();
+            Faction f = fPlayers.getByPlayer(u.getPlayer()).getFaction();
 
-            for (MPlayer b : f.getMPlayers()) {
+            for (FPlayer b : f.getFPlayers()) {
                 if (b.getPlayer() != null)
                     if (plugin.getUser(b.getPlayer()).getEnabledChannels().contains(a))
                         b.getPlayer().sendMessage(c);
             }
 
             for (Player i : Bukkit.getOnlinePlayers()) {
-                MPlayer mPlayer = MPlayer.get(i);
-                if (mPlayer.getFaction().getRelationTo(f) == Rel.ALLY || mPlayer.getFaction().getRelationTo(f) == Rel.TRUCE) {
+                FPlayer mPlayer = fPlayers.getByPlayer(i);
+                if (mPlayer.getFaction().getRelationTo(f) == Relation.ALLY || mPlayer.getFaction().getRelationTo(f) == Relation.TRUCE) {
                     i.sendMessage(c);
                 }
             }
@@ -151,12 +155,12 @@ public class ChatManager {
         } else if (channel.getType() == ChannelType.FACTION_F) {
 
 
-            Faction f = MPlayer.get(u.getPlayer()).getFaction();
+            Faction f = fPlayers.getByPlayer(u.getPlayer()).getFaction();
 
-            for (MPlayer b : f.getMPlayers()) {
+            for (FPlayer b : f.getFPlayers()) {
                 if (b.isOnline())
                     if (b.getPlayer() != null) {
-                        if((plugin.getUser(b.getPlayer()).getEnabledChannels().contains(channel))) {
+                        if ((plugin.getUser(b.getPlayer()).getEnabledChannels().contains(channel))) {
                             b.getPlayer().sendMessage(c);
                         }
                     }
@@ -164,16 +168,16 @@ public class ChatManager {
 
         } else if (channel.getType() == ChannelType.FACTION_ALLY) {
 
-            Faction f = MPlayer.get(u.getPlayer()).getFaction();
+            Faction f = fPlayers.getByPlayer(u.getPlayer()).getFaction();
 
-            for (MPlayer b : f.getMPlayers()) {
+            for (FPlayer b : f.getFPlayers()) {
                 if (b.getPlayer() != null)
                     b.getPlayer().sendMessage(c);
             }
 
             for (Player i : Bukkit.getOnlinePlayers()) {
-                MPlayer mPlayer = MPlayer.get(i);
-                if (mPlayer.getFaction().getRelationTo(f) == Rel.ALLY || mPlayer.getFaction().getRelationTo(f) == Rel.TRUCE) {
+                FPlayer mPlayer = fPlayers.getByPlayer(i);
+                if (mPlayer.getFaction().getRelationTo(f) == Relation.ALLY || mPlayer.getFaction().getRelationTo(f) == Relation.TRUCE) {
                     i.sendMessage(c);
                 }
             }
@@ -188,17 +192,19 @@ public class ChatManager {
         String name = u.getPlayer().getName();
         String channelName = c.getName();
         if (plugin.factionHooked)
-            faction = (MPlayer.get(u.getPlayer()).getFaction().getName());
+            faction = (fPlayers.getByPlayer(u.getPlayer()).getFaction().getTag());
 
         f = f.replace("%fa", faction);
         f = f.replace("%pr", prefix);
         //Wenn der Spieler im RP Modus ist, wird der eigentliche Name mit dem Namen ausgetauscht der im Ausweis angegeben ist, wenn ein Ausweis vorhanden ist
-        if(plugin.getScoreboardManager().isInRoleplayMode(u.getPlayer())) {
+        if (plugin.getScoreboardManager().isInRoleplayMode(u.getPlayer())) {
             Ausweis ausweis = plugin.getEngine().getAusweis(u.getPlayer());
             //Wenn der Ausweis nicht existiert, die Variable mit dem normalen Spielernamen ergenzen
-            if(ausweis == null)
+            if (ausweis == null || c.getName().equalsIgnoreCase("Global") || c.getName().equalsIgnoreCase("OOC")) {
                 f = f.replace("%na", name);
-            f = f.replace("%na", ChatColor.GREEN + ausweis.getFirstName() + " " + ausweis.getLastName() + ChatColor.RESET);
+            } else {
+                f = f.replace("%na", ChatColor.GREEN + ausweis.getFirstName() + " " + ausweis.getLastName() + ChatColor.RESET);
+            }
         } else
             f = f.replace("%na", name);
         f = f.replace("%ch", channelName);

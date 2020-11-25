@@ -110,6 +110,7 @@ public class FtsSystem extends JavaPlugin {
         new CMDtutorialbuch(this);
         new CMDakte(this);
         new CMDroleplay(this);
+        new CMDpremium(this);
         new CMDpasswort(this);
 
         new DeathListener(this);
@@ -119,6 +120,7 @@ public class FtsSystem extends JavaPlugin {
         new QuitListener(this);
         new LoginListener(this);
         new InvClickListener(this);
+        new SneakListener(this);
         new EntityDeathListener(this);
         new PlayerAttackListener(this);
         new Runner(this);

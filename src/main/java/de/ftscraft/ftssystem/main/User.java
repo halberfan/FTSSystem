@@ -29,6 +29,8 @@ public class User {
     private Channel activeChannel;
     private List<Channel> enabledChannels;
 
+    private boolean turnedServerMessagesOn;
+
     private HashMap<Player, Integer> fights;
 
     public User(FtsSystem plugin, Player p) {
@@ -68,6 +70,7 @@ public class User {
         cfg.set("activeChannel", activeChannel.getName());
         cfg.set("scoreboardOn", isScoreboardEnabled());
         cfg.set("approved", approved);
+        cfg.set("turnedServerMessagesOn", turnedServerMessagesOn);
 
         //Punishment
 
@@ -118,6 +121,9 @@ public class User {
 
         this.scoreboardEnabled = !cfg.contains("scoreboardOn") || cfg.getBoolean("scoreboardOn");
         this.approved = cfg.contains("approved") && cfg.getBoolean("approved");
+        if(cfg.contains("turnedServerMessagesOn")) {
+            this.turnedServerMessagesOn = cfg.getBoolean("turnedServerMessagesOn");
+        } else this.turnedServerMessagesOn = true;
     }
 
     public void joinChannel(Channel channel) {
@@ -166,5 +172,13 @@ public class User {
 
     public void setApproved(boolean b) {
         approved = b;
+    }
+
+    public boolean turnedServerMessagesOn() {
+        return turnedServerMessagesOn;
+    }
+
+    public void setTurnedServerMessagesOn(boolean turnedServerMessagesOn) {
+        this.turnedServerMessagesOn = turnedServerMessagesOn;
     }
 }

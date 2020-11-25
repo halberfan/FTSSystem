@@ -42,6 +42,9 @@ public class Runner implements Runnable {
             int index = new Random().nextInt(plugin.getConfigManager().getAutoMessages().size());
             String msg = plugin.getConfigManager().getAutoMessages().get(index);
             for(Player a : Bukkit.getOnlinePlayers()) {
+                //If player turned the messages off and do have the permission, go to next player
+                if(!plugin.getUser(a).turnedServerMessagesOn() && a.hasPermission("ftssystem.toggleservermessages"))
+                    continue;
                 a.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
             }
 

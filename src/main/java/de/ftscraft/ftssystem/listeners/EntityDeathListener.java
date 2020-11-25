@@ -29,9 +29,8 @@ public class EntityDeathListener implements Listener {
         if(event.getEntity().getType() == EntityType.PLAYER)
             return;
 
-        for(ItemStack is : event.getDrops()) {
-            if(is.getType() == Material.GOLD_NUGGET || is.getType() == Material.GOLD_INGOT)
-                is.setAmount(0);
+        if(event.getEntity().getType() == EntityType.PIG_ZOMBIE) {
+            event.getDrops().clear();
         }
 
     }

@@ -28,6 +28,8 @@ public class FTSScoreboardManager {
 
     private List<Player> blinkingPlayers = new ArrayList<>();
 
+    private List<Player> sneakingPlayers = new ArrayList<>();
+
     private FtsSystem plugin;
 
     public FTSScoreboardManager(FtsSystem plugin) {
@@ -36,61 +38,69 @@ public class FTSScoreboardManager {
 
     public void sendToAllScoreboard() {
 
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            sendScoreboardToPlayer(onlinePlayer, true);
+        }
+
+    }
+
+    public void sendScoreboardToPlayer(Player p, boolean all) {
         ScoreboardManager sm = Bukkit.getScoreboardManager();
 
-        for (Player p : Bukkit.getOnlinePlayers()) {
+        setPlayerPrefix(p);
 
-            setPlayerPrefix(p);
+        Scoreboard s = sm.getNewScoreboard();
 
-            Scoreboard s = sm.getNewScoreboard();
-
-            Team rpTeam = s.registerNewTeam("100rpmode");
+        Team rpTeam = s.registerNewTeam("100rpmode");
+        if (!sneakingPlayers.contains(p))
             rpTeam.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
 
-            User u = plugin.getSurvival().getUser(p.getName());
+        User u = plugin.getSurvival().getUser(p.getName());
 
-            if (plugin.getUser(p).isScoreboardEnabled()) {
+        if (plugin.getUser(p).isScoreboardEnabled()) {
 
-                Objective objective;
-                if (s.getObjective(p.getName()) == null)
-                    objective = s.registerNewObjective(p.getName(), "dummy");
-                else {
-                    objective = s.getObjective(p.getName());
-                    objective.unregister();
-                    objective = s.registerNewObjective(p.getName(), "dummy");
-                }
-                objective.setDisplayName("§lGesundheit");
-                if (u.getKohlenhydrate() <= 5 || u.getProteine() <= 5 || u.getThirst() <= 5 || u.getVitamine() <= 5) {
-                    System.out.println("hallo");
-                    if (blinkingPlayers.contains(p)) {
-                        blinkingPlayers.remove(p);
-                        objective.setDisplayName("§4§lGesundheit");
-                    } else blinkingPlayers.add(p);
-                } else {
-                    blinkingPlayers.remove(p);
-                }
-                objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-                Score s1 = objective.getScore("§6Kohlenhydrate: §c" + u.getKohlenhydrate());
-                Score s2 = objective.getScore("§6Durst: §c" + u.getThirst());
-                Score s3 = objective.getScore("§6Proteine: §c" + u.getProteine());
-                Score s4 = objective.getScore("§6Vitamine: §c" + u.getVitamine());
-                if (plugin.getDisease() != null) {
-                    Score s6 = objective.getScore("§6Krankheit: §c" + plugin.getDisease().getDisease(p));
-                    s6.setScore(3);
-                }
-                Score s7 = objective.getScore("§4--------");
-
-                Score s8 = objective.getScore("§6Geld: §c" + round(plugin.getEcon().getBalance(p), 0));
-                s8.setScore(1);
-                s7.setScore(2);
-                s4.setScore(5);
-                s3.setScore(6);
-                s2.setScore(7);
-                s1.setScore(8);
+            Objective objective;
+            if (s.getObjective(p.getName()) == null)
+                objective = s.registerNewObjective(p.getName(), "dummy");
+            else {
+                objective = s.getObjective(p.getName());
+                objective.unregister();
+                objective = s.registerNewObjective(p.getName(), "dummy");
             }
+            objective.setDisplayName("§lGesundheit");
+            if (u.getKohlenhydrate() <= 5 || u.getProteine() <= 5 || u.getThirst() <= 5 || u.getVitamine() <= 5) {
+                if (blinkingPlayers.contains(p)) {
+                    blinkingPlayers.remove(p);
+                    objective.setDisplayName("§4§lGesundheit");
+                } else blinkingPlayers.add(p);
+            } else {
+                blinkingPlayers.remove(p);
+            }
+            objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+            Score s1 = objective.getScore("§6Kohlenhydrate: §c" + u.getKohlenhydrate());
+            Score s2 = objective.getScore("§6Durst: §c" + u.getThirst());
+            Score s3 = objective.getScore("§6Proteine: §c" + u.getProteine());
+            Score s4 = objective.getScore("§6Vitamine: §c" + u.getVitamine());
+            if (plugin.getDisease() != null) {
+                Score s6 = objective.getScore("§6Krankheit: §c" + plugin.getDisease().getDisease(p));
+                Score s7 = objective.getScore("§6Temperatur: §c" + plugin.getDisease().getTemperature(p));
+                s6.setScore(3);
+                s7.setScore(2);
+            }
+            Score s8 = objective.getScore("§4--------");
 
-            ArrayList<Player> isRanked = new ArrayList<>();
+            Score s9 = objective.getScore("§6Geld: §c" + round(plugin.getEcon().getBalance(p), 0));
+            s9.setScore(1);
+            s8.setScore(4);
+            s4.setScore(5);
+            s3.setScore(6);
+            s2.setScore(7);
+            s1.setScore(8);
+        }
 
+        ArrayList<Player> isRanked = new ArrayList<>();
+
+        if (all) {
             for (TeamPrefixs value : TeamPrefixs.values()) {
                 Team team = s.registerNewTeam(value.getTeamName());
 
@@ -104,17 +114,16 @@ public class FTSScoreboardManager {
                 }
 
             }
-
-            for (Player player : playerInRpMode) {
-                if (player != null) {
-                    rpTeam.addEntry(player.getName());
-                }
-            }
-
-
-            p.setScoreboard(s);
-
         }
+
+        for (Player player : playerInRpMode) {
+            if (player != null) {
+                rpTeam.addEntry(player.getName());
+            }
+        }
+
+
+        p.setScoreboard(s);
 
     }
 
@@ -159,6 +168,14 @@ public class FTSScoreboardManager {
 
         return playerInRpMode.contains(p);
 
+    }
+
+    public void toggleSneakingMode(Player p) {
+        if (!sneakingPlayers.contains(p))
+            sneakingPlayers.add(p);
+        else sneakingPlayers.remove(p);
+
+        sendScoreboardToPlayer(p, false);
     }
 
 }
