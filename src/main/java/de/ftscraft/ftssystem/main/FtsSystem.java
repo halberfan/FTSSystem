@@ -5,6 +5,7 @@ import de.ftscraft.ftsengine.main.Engine;
 import de.ftscraft.ftssystem.channel.ChatManager;
 import de.ftscraft.ftssystem.commands.*;
 import de.ftscraft.ftssystem.configs.ConfigManager;
+import de.ftscraft.ftssystem.configs.ConfigVal;
 import de.ftscraft.ftssystem.listeners.*;
 import de.ftscraft.ftssystem.poll.Umfrage;
 import de.ftscraft.ftssystem.punishment.PunishmentManager;
@@ -90,7 +91,7 @@ public class FtsSystem extends JavaPlugin {
     }
 
     private void save() {
-        configManager.setConfig(ConfigManager.ConfigVal.LATEST_PUNISH_ID, getPunishmentManager().getLatestID());
+        configManager.setConfig(ConfigVal.LATEST_PUNISH_ID, getPunishmentManager().getLatestID());
 
         configManager.save();
     }
@@ -111,6 +112,7 @@ public class FtsSystem extends JavaPlugin {
         new CMDakte(this);
         new CMDroleplay(this);
         new CMDpremium(this);
+        new CMDfts(this);
         new CMDpasswort(this);
 
         new DeathListener(this);

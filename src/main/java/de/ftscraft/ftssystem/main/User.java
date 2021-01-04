@@ -26,6 +26,8 @@ public class User {
 
     private boolean approved = false;
 
+    private boolean noobProtection = true;
+
     private Channel activeChannel;
     private List<Channel> enabledChannels;
 
@@ -71,6 +73,7 @@ public class User {
         cfg.set("scoreboardOn", isScoreboardEnabled());
         cfg.set("approved", approved);
         cfg.set("turnedServerMessagesOn", turnedServerMessagesOn);
+        cfg.set("noobschutz", noobProtection);
 
         //Punishment
 
@@ -120,6 +123,7 @@ public class User {
             this.activeChannel = plugin.getChatManager().getChannel("Local");
 
         this.scoreboardEnabled = !cfg.contains("scoreboardOn") || cfg.getBoolean("scoreboardOn");
+        this.noobProtection = !cfg.contains("noobschutz") || cfg.getBoolean("noobschutz");
         this.approved = cfg.contains("approved") && cfg.getBoolean("approved");
         if(cfg.contains("turnedServerMessagesOn")) {
             this.turnedServerMessagesOn = cfg.getBoolean("turnedServerMessagesOn");
@@ -180,5 +184,13 @@ public class User {
 
     public void setTurnedServerMessagesOn(boolean turnedServerMessagesOn) {
         this.turnedServerMessagesOn = turnedServerMessagesOn;
+    }
+
+    public boolean hasNoobProtection() {
+        return noobProtection;
+    }
+
+    public void setNoobProtection(boolean noobProtection) {
+        this.noobProtection = noobProtection;
     }
 }

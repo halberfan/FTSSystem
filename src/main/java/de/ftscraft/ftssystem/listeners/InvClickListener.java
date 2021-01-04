@@ -5,7 +5,9 @@
 
 package de.ftscraft.ftssystem.listeners;
 
+import de.ftscraft.ftssystem.configs.Messages;
 import de.ftscraft.ftssystem.main.FtsSystem;
+import de.ftscraft.ftssystem.main.User;
 import de.ftscraft.ftssystem.punishment.*;
 import de.ftscraft.ftssystem.utils.UUIDFetcher;
 import net.md_5.bungee.api.ChatColor;
@@ -133,6 +135,26 @@ public class InvClickListener implements Listener {
 
                 p.spigot().sendMessage(bTC,rTC,bTC);
 
+            }
+
+        }
+
+        if(event.getView().getTitle().endsWith("Dein Menü")) {
+
+            event.setCancelled(true);
+            ItemStack item = event.getCurrentItem();
+            if(item == null)
+                return;
+
+            ItemMeta meta = item.getItemMeta();
+
+            if(meta.getDisplayName().equalsIgnoreCase("§cNoobschutz")) {
+                User u = plugin.getUser((Player) event.getWhoClicked());
+                if(u.hasNoobProtection()) {
+                    u.setNoobProtection(false);
+                    event.getWhoClicked().sendMessage(Messages.PREFIX + "Du hast deinen Noobschutz erfolgreich aufgegeben. Viel Spaß!");
+                    event.getWhoClicked().closeInventory();
+                }
             }
 
         }

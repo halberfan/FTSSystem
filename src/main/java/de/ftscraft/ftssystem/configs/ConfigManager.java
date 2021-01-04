@@ -68,20 +68,5 @@ public class ConfigManager {
         plugin.saveConfig();
     }
 
-    public enum ConfigVal {
-
-        LATEST_PUNISH_ID("latestPunishID");
-
-        private String path;
-
-        ConfigVal(String path) {
-            this.path = path;
-        }
-
-        public String getPath() {
-            return path;
-        }
-    }
-
 }
 

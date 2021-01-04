@@ -5,6 +5,7 @@
 
 package de.ftscraft.ftssystem.listeners;
 
+import de.ftscraft.ftssystem.configs.Messages;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.main.User;
 import de.ftscraft.ftssystem.poll.Umfrage;
@@ -37,15 +38,15 @@ public class JoinListener implements Listener {
 
         boolean isChanged = false;
 
-        if(p.hasPermission("ftssystem.join.lightblue")) {
+        if (p.hasPermission("ftssystem.join.lightblue")) {
             isChanged = true;
             joinMessage = joinMessage.replace("%s", ChatColor.AQUA + p.getName());
         }
-        if(p.hasPermission("ftssystem.join.darkred")) {
+        if (p.hasPermission("ftssystem.join.darkred")) {
             isChanged = true;
             joinMessage = joinMessage.replace("%s", ChatColor.DARK_RED + p.getName());
         }
-        if(p.hasPermission("ftssystem.join.darkgreen")) {
+        if (p.hasPermission("ftssystem.join.darkgreen")) {
             isChanged = true;
             joinMessage = joinMessage.replace("%s", ChatColor.DARK_GREEN + p.getName());
         }
@@ -63,7 +64,7 @@ public class JoinListener implements Listener {
             joinMessage = joinMessage.replace("%s", ChatColor.DARK_RED + p.getName());
         }
 
-        if(!isChanged) {
+        if (!isChanged) {
 
             joinMessage = joinMessage.replace("%s", ChatColor.GOLD + p.getName());
 
@@ -91,7 +92,7 @@ public class JoinListener implements Listener {
             }
         }
 
-        if(!u.isApproved()) {
+        if (!u.isApproved()) {
 
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
 
@@ -101,6 +102,15 @@ public class JoinListener implements Listener {
 
             }, 20 * 4);
 
+        }
+
+        if (u.hasNoobProtection()) {
+            if (p.hasPermission("ftssystem.burger")) {
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    u.setNoobProtection(false);
+                    p.sendMessage(Messages.PREFIX + "Da du jetzt Bürger bist und du immer noch die Noobprotection an hattest, wurde sie jetzt entfernt");
+                }, 20 * 4);
+            }
         }
 
     }
