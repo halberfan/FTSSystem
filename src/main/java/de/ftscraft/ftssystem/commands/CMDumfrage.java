@@ -46,7 +46,7 @@ public class CMDumfrage implements FTSCommand {
                         stringBuilder.append(args[i]);
                         stringBuilder.append(" ");
                     }
-                    plugin.setUmfrage(new Umfrage(stringBuilder.toString()));
+                    plugin.setUmfrage(new Umfrage(stringBuilder.toString(), plugin));
                     p.sendMessage(Messages.UMFRAGE_CREATED.replace("%s", stringBuilder.toString()));
                 }
             } else if (args[0].equalsIgnoreCase("addoption")) {

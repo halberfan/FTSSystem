@@ -17,7 +17,7 @@ import java.util.Arrays;
 
 public class CMDpasswort implements CommandExecutor {
 
-    private final String password = "melone";
+    private final String password = "beere", password_blockreich = "glasflasche";
     private ArrayList<String> commands = new ArrayList<>(Arrays.asList("lp user %s promote spieler", "warp taufeld %s"));
 
     private FtsSystem plugin;
@@ -38,7 +38,7 @@ public class CMDpasswort implements CommandExecutor {
 
         if(args.length == 1) {
 
-            if(args[0].equalsIgnoreCase(password)) {
+            if(args[0].equalsIgnoreCase(password) || args[0].equalsIgnoreCase(password_blockreich)) {
 
                 User user = plugin.getUser(p);
 

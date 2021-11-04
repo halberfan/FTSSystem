@@ -74,21 +74,24 @@ public class JoinListener implements Listener {
 
         User u = new User(plugin, event.getPlayer());
 
-        Umfrage umfrage = plugin.getUmfrage();
-        if (umfrage != null && umfrage.isStarted()) {
-            if (!umfrage.getTeilnehmer().contains(event.getPlayer())) {
+        if (!u.getDisturbStatus().equals(User.DoNotDisturbStatus.ON)) {
 
-                Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-                    @Override
-                    public void run() {
+            Umfrage umfrage = plugin.getUmfrage();
+            if (umfrage != null && umfrage.isStarted()) {
+                if (!umfrage.getTeilnehmer().contains(event.getPlayer())) {
 
-
-                        umfrage.sendToPlayer(event.getPlayer());
-
-                    }
-                }, 20 * 2);
+                    Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+                        @Override
+                        public void run() {
 
 
+                            umfrage.sendToPlayer(event.getPlayer());
+
+                        }
+                    }, 20 * 2);
+
+
+                }
             }
         }
 

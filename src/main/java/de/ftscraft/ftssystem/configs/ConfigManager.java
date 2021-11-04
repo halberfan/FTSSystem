@@ -18,6 +18,8 @@ public class ConfigManager {
 
     private int latestPunID = 0;
 
+    private boolean wartung = false;
+
     private FtsSystem plugin;
 
     public ConfigManager(FtsSystem plugin) {
@@ -32,6 +34,7 @@ public class ConfigManager {
         autoMessages.add("§6Du möchtest den Server kostenlos unterstützen? §cHier kannst du voten: https://ftscraft.de/vote/");
         cfg.addDefault("messages", autoMessages);
         cfg.addDefault("latestPunishID", 0);
+        cfg.addDefault("wartung", false);
         cfg.options().copyDefaults(true);
         plugin.saveConfig();
 
@@ -49,6 +52,8 @@ public class ConfigManager {
 
         //Latest ID for Punishments
         latestPunID = cfg.getInt("latestPunishID");
+
+        wartung = cfg.getBoolean("wartung");
 
     }
 
@@ -68,5 +73,8 @@ public class ConfigManager {
         plugin.saveConfig();
     }
 
+    public boolean isWartung() {
+        return wartung;
+    }
 }
 

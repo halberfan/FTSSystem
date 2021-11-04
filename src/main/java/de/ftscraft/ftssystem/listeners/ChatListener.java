@@ -21,6 +21,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class ChatListener implements Listener {
 
     private FtsSystem plugin;
@@ -175,11 +178,13 @@ public class ChatListener implements Listener {
 
                 for (User b : plugin.getUser().values()) {
                     if (b.getPlayer().getWorld().getName().equalsIgnoreCase(u.getPlayer().getWorld().getName())) {
-                        if (b.getPlayer().getLocation().distance(u.getPlayer().getLocation()) <= 15) {
+                        if (b.getPlayer().getLocation().distance(u.getPlayer().getLocation()) <= u.getActiveChannel().getRange()) {
                             b.getPlayer().sendMessage(msg);
                         }
                     }
                 }
+
+                Logger.getLogger("Minecraft").log(Level.INFO, "[Chat] " + event.getPlayer().getName() + " [RP] " + event.getMessage());
             }
             return;
         }
@@ -191,5 +196,6 @@ public class ChatListener implements Listener {
         plugin.getChatManager().chat(u, event.getMessage());
 
     }
+
 
 }

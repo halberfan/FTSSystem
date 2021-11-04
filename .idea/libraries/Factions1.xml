@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Factions1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../FTS/Programmieren/APIs/Factions.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

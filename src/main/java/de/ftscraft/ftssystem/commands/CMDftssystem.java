@@ -5,6 +5,7 @@ import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.utils.FTSCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Statistic;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -82,9 +83,48 @@ public class CMDftssystem implements FTSCommand {
 
                 }
 
-            } else p.sendMessage(Messages.HELP_FTSSYSTEM);
-        } else p.sendMessage(Messages.HELP_FTSSYSTEM);
+            } else if(args[0].equalsIgnoreCase("playtime")) {
 
+                if(p.hasPermission("ftssystem.admin")) {
+
+                    p.sendMessage("§cFolgende online Spieler haben bereits über 50h Spielzeit aber noch nicht den Bürgerrang: ");
+
+                    boolean someone = false;
+
+                    for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                        if(onlinePlayer.hasPermission("group.burger")) {
+                            continue;
+                        }
+
+                        double ticks = onlinePlayer.getStatistic(Statistic.PLAY_ONE_MINUTE);
+                        double seconds = ticks / 20;
+                        double minutes = seconds / 60;
+                        double hours = minutes / 60;
+
+
+                        if(hours > 50.0) {
+                            someone = true;
+                            p.sendMessage("§e- " + onlinePlayer.getName() + " §c("+hours+"h)");
+                        }
+                    }
+
+                    if(!someone)
+                        p.sendMessage("§eNiemand");
+
+                } else {
+                    double ticks = p.getStatistic(Statistic.PLAY_ONE_MINUTE);
+                    double seconds = ticks / 20;
+                    double minutes = seconds / 60;
+                    double hours = minutes / 60;
+
+                    hours = Math.round(hours * 100d) / 100d;
+
+                    p.sendMessage("§cDu hast " + hours + " Stunden Spielzeit");
+                }
+
+
+            }
+        } else p.sendMessage(Messages.HELP_FTSSYSTEM);
         return false;
     }
 

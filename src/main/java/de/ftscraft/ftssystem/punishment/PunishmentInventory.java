@@ -6,6 +6,7 @@
 package de.ftscraft.ftssystem.punishment;
 
 import de.ftscraft.ftssystem.main.FtsSystem;
+import de.ftscraft.ftssystem.utils.ItemBuilder;
 import de.ftscraft.ftssystem.utils.UUIDFetcher;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -216,6 +217,10 @@ public class PunishmentInventory {
         for (ItemStack all : map.values()) {
             akte.addItem(all);
         }
+
+
+        ItemStack printToTelegraph = new ItemBuilder(Material.DROPPER).name("§6Druck mir das aus!").make();
+        akte.setItem(akte.getSize()-1, printToTelegraph);
 
         for (int i = 0; i < akte.getSize(); i++) {
             if (akte.getItem(i) == null) {

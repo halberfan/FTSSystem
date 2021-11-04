@@ -32,13 +32,22 @@ public class FTSMenuInventory {
         this.plugin = plugin;
 
         this.user = plugin.getUser(p);
-        this.inv = init();
+        init();
     }
 
     private Inventory init() {
 
         Inventory inv = Bukkit.createInventory(null, 9 * 5, "§6" + player.getName() + ": Dein Menü");
 
+        this.inv = inv;
+
+        load();
+
+        return inv;
+
+    }
+
+    private void load() {
         ItemStack filler = new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1);
         ItemMeta fillerMeta = filler.getItemMeta();
         fillerMeta.setDisplayName(" ");
@@ -54,14 +63,35 @@ public class FTSMenuInventory {
             inv.setItem(22, noobschutz);
         }
 
+        if(user.isMsgSoundEnabled()) {
+            inv.setItem(10, plugin.getMenuItems().getMessageSoundOn());
+        } else inv.setItem(10, plugin.getMenuItems().getMessageSoundOff());
+
+        switch (user.getDisturbStatus()) {
+            case ON:
+                inv.setItem(11, plugin.getMenuItems().getDoNotDisturbOn());
+                break;
+            case RP:
+                inv.setItem(11, plugin.getMenuItems().getDoNotDisturbOnRP());
+                break;
+            case OFF:
+                inv.setItem(11, plugin.getMenuItems().getDoNotDisturbOff());
+                break;
+        }
+
+        if(user.isScoreboardEnabled())
+            inv.setItem(12, plugin.getMenuItems().getScoreboardOn());
+        else inv.setItem(12, plugin.getMenuItems().getScoreboardOff());
+
         for (int i = 0; i < 9 * 5; i++) {
             if(inv.getItem(i) == null) {
                 inv.setItem(i, filler.clone());
             }
         }
+    }
 
-        return inv;
-
+    public void refresh() {
+        load();
     }
 
     public Inventory getInventory() {

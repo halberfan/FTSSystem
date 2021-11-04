@@ -22,7 +22,7 @@ public class Channel {
 
     private ChannelType type;
 
-    Channel(FtsSystem plugin, String name, String prefix, String format, boolean defaultChannel, String permission, int range, ChannelType type) {
+    public Channel(FtsSystem plugin, String name, String prefix, String format, boolean defaultChannel, String permission, int range, ChannelType type) {
         this.plugin = plugin;
         this.name = name;
         this.prefix = prefix;

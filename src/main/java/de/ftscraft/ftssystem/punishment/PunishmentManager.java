@@ -143,7 +143,7 @@ public class PunishmentManager {
 
         for (Player all : Bukkit.getOnlinePlayers()) {
             if (all.hasPermission("ftssystem.punish")) {
-                all.sendMessage(Messages.PREFIX + playerName + " wurde von " + warn.getAuthor() + " ein Permanenten Warn erhalten wegen: " + warn.getReason());
+                all.sendMessage(Messages.PREFIX + playerName + " hat von " + warn.getAuthor() + " einen Permanenten Warn erhalten wegen: " + warn.getReason());
             }
         }
 
@@ -204,7 +204,7 @@ public class PunishmentManager {
 
         for (Player all : Bukkit.getOnlinePlayers()) {
             if (all.hasPermission("ftssystem.punish")) {
-                all.sendMessage(Messages.PREFIX + playerName + " wurde von " + tempWarn.getAuthor() + " ein Temp Warn erhalten wegen: " + tempWarn.getReason());
+                all.sendMessage(Messages.PREFIX + playerName + " hat von " + tempWarn.getAuthor() + " einen Temp Warn erhalten wegen: " + tempWarn.getReason());
             }
         }
 

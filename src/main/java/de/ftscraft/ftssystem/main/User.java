@@ -7,6 +7,7 @@ package de.ftscraft.ftssystem.main;
 
 import de.ftscraft.ftssystem.channel.Channel;
 import de.ftscraft.ftssystem.configs.Messages;
+import de.ftscraft.ftssystem.menus.fts.FTSMenuInventory;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -27,11 +28,15 @@ public class User {
     private boolean approved = false;
 
     private boolean noobProtection = true;
+    private boolean msgSound = true;
+    private DoNotDisturbStatus disturbStatus = DoNotDisturbStatus.OFF;
 
     private Channel activeChannel;
     private List<Channel> enabledChannels;
 
     private boolean turnedServerMessagesOn;
+
+    private FTSMenuInventory menu;
 
     private HashMap<Player, Integer> fights;
 
@@ -72,7 +77,9 @@ public class User {
         cfg.set("activeChannel", activeChannel.getName());
         cfg.set("scoreboardOn", isScoreboardEnabled());
         cfg.set("approved", approved);
+        cfg.set("msgSound", msgSound);
         cfg.set("turnedServerMessagesOn", turnedServerMessagesOn);
+        cfg.set("disturbStatus", getDisturbStatus().toString());
         cfg.set("noobschutz", noobProtection);
 
         //Punishment
@@ -124,10 +131,14 @@ public class User {
 
         this.scoreboardEnabled = !cfg.contains("scoreboardOn") || cfg.getBoolean("scoreboardOn");
         this.noobProtection = !cfg.contains("noobschutz") || cfg.getBoolean("noobschutz");
+        this.msgSound = cfg.contains("msgSound") && cfg.getBoolean("msgSound");
         this.approved = cfg.contains("approved") && cfg.getBoolean("approved");
         if(cfg.contains("turnedServerMessagesOn")) {
             this.turnedServerMessagesOn = cfg.getBoolean("turnedServerMessagesOn");
         } else this.turnedServerMessagesOn = true;
+        if(cfg.contains("disturbStatus")) {
+            this.disturbStatus = DoNotDisturbStatus.valueOf(cfg.getString("disturbStatus"));
+        }
     }
 
     public void joinChannel(Channel channel) {
@@ -186,11 +197,53 @@ public class User {
         this.turnedServerMessagesOn = turnedServerMessagesOn;
     }
 
+    public void setMsgSound(boolean msgSound) {
+        this.msgSound = msgSound;
+    }
+
+    public boolean isMsgSoundEnabled() {
+        return msgSound;
+    }
+
     public boolean hasNoobProtection() {
         return noobProtection;
     }
 
     public void setNoobProtection(boolean noobProtection) {
         this.noobProtection = noobProtection;
+    }
+
+    public void setMenu(FTSMenuInventory menu) {
+        this.menu = menu;
+    }
+
+    public void refreshMenu() {
+        menu.refresh();
+    }
+
+    public void openMenu() {
+        if(menu == null) {
+            menu = new FTSMenuInventory(player, plugin);
+        }
+        menu.refresh();
+        player.openInventory(menu.getInventory());
+    }
+
+    public enum DoNotDisturbStatus {
+        ON, OFF, RP
+    }
+
+    public DoNotDisturbStatus getDisturbStatus() {
+        return disturbStatus;
+    }
+
+    public void setDisturbStatus(DoNotDisturbStatus disturbStatus) {
+        this.disturbStatus = disturbStatus;
+    }
+
+    public boolean isDisturbable() {
+
+        return disturbStatus == DoNotDisturbStatus.OFF || !(plugin.getScoreboardManager().isInRoleplayMode(player) && disturbStatus == DoNotDisturbStatus.RP);
+
     }
 }

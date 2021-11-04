@@ -6,12 +6,16 @@
 package de.ftscraft.ftssystem.poll;
 
 import de.ftscraft.ftssystem.configs.Messages;
+import de.ftscraft.ftssystem.main.FtsSystem;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+
+import static de.ftscraft.ftssystem.utils.Utils.sendMessageToAllExceptDisturb;
+import static de.ftscraft.ftssystem.utils.Utils.sendMessageToAllPlayers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,9 +27,11 @@ public class Umfrage {
     private HashMap<String, Integer> antworten;
     private ArrayList<Player> teilnehmer;
     private boolean started = false;
+    private FtsSystem plugin;
 
-    public Umfrage(String frage) {
+    public Umfrage(String frage, FtsSystem plugin) {
         this.frage = frage;
+        this.plugin = plugin;
         antworten = new HashMap<>();
         teilnehmer = new ArrayList<>();
         antwortmoglichkeiten = new ArrayList<>();
@@ -53,38 +59,48 @@ public class Umfrage {
     }
 
     public void sendPollMessage(boolean resend) {
-        if (!resend) {
-            Bukkit.broadcastMessage(Messages.PREFIX + "Es wurde eine Umfrage gestartet:");
-        } else
-            Bukkit.broadcastMessage(Messages.PREFIX + "Es läuft derzeit eine Umfrage");
-        Bukkit.broadcastMessage("§7Frage: §c" + frage);
-        for (int i1 = 0; i1 < antwortmoglichkeiten.size(); i1++) {
-            String i = antwortmoglichkeiten.get(i1);
-            TextComponent a = new TextComponent(i);
-            a.setColor(ChatColor.BLUE);
-            a.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/umfrage vote " + i1));
-            for (Player all : Bukkit.getOnlinePlayers()) {
-                all.spigot().sendMessage(a);
-                if (i1 == antwortmoglichkeiten.size() - 1) {
-                    if (teilnehmer.contains(all)) {
-                        all.sendMessage("§c(Keine Sorge, du hast schon abgestimmt)");
-                    } else {
-                        all.playSound(all.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+
+        for (Player all : Bukkit.getOnlinePlayers()) {
+
+            if (plugin.getUser(all).isDisturbable()) {
+
+                if (!resend) {
+                    all.sendMessage(Messages.PREFIX + "Es wurde eine Umfrage gestartet:");
+                } else
+                    all.sendMessage(Messages.PREFIX + "Es läuft derzeit eine Umfrage");
+                all.sendMessage("§7Frage: §c" + frage);
+                for (int i1 = 0; i1 < antwortmoglichkeiten.size(); i1++) {
+                    String i = antwortmoglichkeiten.get(i1);
+                    TextComponent a = new TextComponent(i);
+                    a.setColor(ChatColor.BLUE);
+                    a.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/umfrage vote " + i1));
+
+                    all.spigot().sendMessage(a);
+                    if (i1 == antwortmoglichkeiten.size() - 1) {
+                        if (teilnehmer.contains(all)) {
+                            all.sendMessage("§c(Keine Sorge, du hast schon abgestimmt)");
+                        } else {
+                            all.playSound(all.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+                        }
                     }
                 }
+
             }
+
         }
+
+
     }
 
     public void end() {
         started = false;
-        Bukkit.broadcastMessage(Messages.PREFIX + "Die Umfrage wurde beendet!");
+        sendMessageToAllExceptDisturb(Messages.PREFIX + "Die Umfrage wurde beendet!", plugin);
         sendResultMessage();
     }
 
     private void sendResultMessage() {
         int teilnehmerzahl = teilnehmer.size();
-        Bukkit.broadcastMessage(Messages.PREFIX + "Es haben " + teilnehmerzahl + " Leute abgestimmt");
+        sendMessageToAllExceptDisturb(Messages.PREFIX + "Es haben " + teilnehmerzahl + " Leute abgestimmt", plugin);
         for (String a : antwortmoglichkeiten) {
             int w = antworten.get(a);
             String p = ((double) w / (double) teilnehmerzahl * (double) 100) + "%";

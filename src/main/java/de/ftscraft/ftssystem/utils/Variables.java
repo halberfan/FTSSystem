@@ -10,5 +10,7 @@ public class Variables {
     public static final int AUTO_MESSAGE_COOLDOWN = 60 * 10,
             SCOREBOARD_UPDATE_COOLDOWN = 5;
 
+    public static final int DUEL_PREPARE_TIME = 5, DUEL_FIGHT_TIME = 5 * 60;
+
 
 }

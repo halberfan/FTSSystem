@@ -29,7 +29,7 @@ public class EntityDeathListener implements Listener {
         if(event.getEntity().getType() == EntityType.PLAYER)
             return;
 
-        if(event.getEntity().getType() == EntityType.PIG_ZOMBIE) {
+        if(event.getEntity().getType() == EntityType.ZOMBIFIED_PIGLIN) {
             event.getDrops().clear();
         }
 
