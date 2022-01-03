@@ -63,13 +63,13 @@ public class User {
 
     public void save() {
 
-        File file = new File(plugin.getDataFolder() + "//user//"+player.getUniqueId().toString()+".yml");
+        File file = new File(plugin.getDataFolder() + "//user//" + player.getUniqueId().toString() + ".yml");
         YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 
         //Chat
         List<String> chNames = new ArrayList<>();
 
-        for(Channel a : enabledChannels) {
+        for (Channel a : enabledChannels) {
             chNames.add(a.getName());
         }
 
@@ -92,8 +92,7 @@ public class User {
         }
     }
 
-    private void getData()
-    {
+    private void getData() {
         File file = new File(plugin.getDataFolder() + "//user//" + player.getUniqueId().toString() + ".yml");
         YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
         if (!file.exists()) {
@@ -103,7 +102,6 @@ public class User {
             for (Player a : Bukkit.getOnlinePlayers()) {
                 a.sendMessage("§cDer Spieler §e" + player.getName() + " §cist das 1. mal hier. Sagt Hallo!");
             }
-
 
 
         }
@@ -133,34 +131,38 @@ public class User {
         this.noobProtection = !cfg.contains("noobschutz") || cfg.getBoolean("noobschutz");
         this.msgSound = cfg.contains("msgSound") && cfg.getBoolean("msgSound");
         this.approved = cfg.contains("approved") && cfg.getBoolean("approved");
-        if(cfg.contains("turnedServerMessagesOn")) {
+        if (cfg.contains("turnedServerMessagesOn")) {
             this.turnedServerMessagesOn = cfg.getBoolean("turnedServerMessagesOn");
         } else this.turnedServerMessagesOn = true;
-        if(cfg.contains("disturbStatus")) {
+        if (cfg.contains("disturbStatus")) {
             this.disturbStatus = DoNotDisturbStatus.valueOf(cfg.getString("disturbStatus"));
         }
     }
 
     public void joinChannel(Channel channel) {
-        enabledChannels.add(channel);
-        if(activeChannel == null)
-            activeChannel = channel;
+        if (player.hasPermission(channel.getPermission())) {
+            enabledChannels.add(channel);
+            if (activeChannel == null)
+                activeChannel = channel;
+        }
     }
 
     public void leaveChannel(Channel channel) {
         enabledChannels.remove(channel);
-        if(activeChannel == channel)
+        if (activeChannel == channel)
             activeChannel = null;
     }
 
     public void setActiveChannel(Channel activeChannel) {
-        this.activeChannel = activeChannel;
-        if(!enabledChannels.contains(activeChannel))
-            enabledChannels.add(activeChannel);
+        if (player.hasPermission(activeChannel.getPermission())) {
+            this.activeChannel = activeChannel;
+            if (!enabledChannels.contains(activeChannel))
+                enabledChannels.add(activeChannel);
+        }
     }
 
     public void toggleChannel(Channel channel) {
-        if(enabledChannels.contains(channel)) {
+        if (enabledChannels.contains(channel)) {
             leaveChannel(channel);
             player.sendMessage(Messages.LEFT_CHANNEL.replace("%s", channel.getName()));
         } else {
@@ -222,7 +224,7 @@ public class User {
     }
 
     public void openMenu() {
-        if(menu == null) {
+        if (menu == null) {
             menu = new FTSMenuInventory(player, plugin);
         }
         menu.refresh();

@@ -152,6 +152,7 @@ public class InvClickListener implements Listener {
                     for (int i = 0; i < plugin.getPunishmentManager().getPlayers().get(p).size(); i++) {
                         Punishment pun = plugin.getPunishmentManager().getPlayers().get(p).get(i);
                         stringBuilder.append("Strafe ").append(i + 1).append(": ").append(pun.getReason()).append("%5Cn");
+                        stringBuilder.append("  - Weitere Infos: ").append(pun.getMoreInformation()).append("%5Cn");
                         stringBuilder.append("  - Typ: ").append(pun.getType()).append("%5Cn");
                         if(pun instanceof Temporary) {
                             stringBuilder.append("  - Bis: ").append(((Temporary) pun).untilAsCalString()).append("%5Cn");
