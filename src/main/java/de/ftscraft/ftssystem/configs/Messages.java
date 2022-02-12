@@ -37,6 +37,6 @@ public class Messages {
     HELP_FTSSYSTEM =
             "§c---- §e/ftssystem §c----\n" +
                     "§e/ftssystem fake <Join|Leave> §b- Täusche alle Spieler mit diesem einfachen Trick!\n" +
-                    "§e/ftssystem mute <Spieler> §b- Mute einen Spieler mit diesem Command";
+                    "§e/ftssystem mute <Spieler> §b- Mute einen Spieler mit diesem Command.";
 
 }
