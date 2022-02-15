@@ -4,7 +4,7 @@ public class Messages {
 
     public static final String
             PREFIX = "§7[§4FTS-System§7]" + " ",
-            NO_PERM = PREFIX + "Duzu hast du keine Rechte!",
+            NO_PERM = PREFIX + "Dazu hast du keine Rechte!",
             NUMBER = PREFIX + "Bitte benutz eine gültige Zahl",
             NO_ACTIVE_CHANNEL = PREFIX + "Du hast keinen aktiven Channel ausgewählt. Mache dies mit /channel aktiv <Name>",
             NOW_ACTIVE_CHANNEL = PREFIX + "%s ist nun dein aktiver Channel!",
@@ -37,6 +37,6 @@ public class Messages {
     HELP_FTSSYSTEM =
             "§c---- §e/ftssystem §c----\n" +
                     "§e/ftssystem fake <Join|Leave> §b- Täusche alle Spieler mit diesem einfachen Trick!\n" +
-                    "§e/ftssystem mute <Spieler> §b- Mute einen Spieler mit diesem Command";
+                    "§e/ftssystem mute <Spieler> §b- Mute einen Spieler mit diesem Command.";
 
 }
