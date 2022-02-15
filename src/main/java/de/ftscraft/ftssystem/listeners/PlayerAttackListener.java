@@ -36,25 +36,27 @@ public class PlayerAttackListener implements Listener {
             if (event.getEntity() instanceof Player) {
 
                 Player bp = (Player) event.getEntity();
-                if(bp.hasMetadata("NPC")) {
+                if (bp.hasMetadata("NPC")) {
                     return;
                 }
 
                 User a = plugin.getUser(ap);
                 User b = plugin.getUser(bp);
 
-                if(a.hasNoobProtection()) {
+                if (a.hasNoobProtection()) {
                     ap.sendMessage(Messages.PREFIX + "Du hast noch Noobschutz! Um zu kämpfen, musst du ihn mit /fts deaktivieren.");
                     event.setCancelled(true);
                     return;
                 }
 
-                if(b.hasNoobProtection()) {
-                    ap.sendMessage(Messages.PREFIX+"Dieser Spieler hat noch Noobschutz!");
+                if (b.hasNoobProtection()) {
+                    ap.sendMessage(Messages.PREFIX + "Dieser Spieler hat noch Noobschutz!");
                     event.setCancelled(true);
                     return;
                 }
 
+                // Disable Fighting System
+                /*
                 if (!a.getFights().containsKey(bp)) {
                     ap.sendMessage("§cDu bist nun im Kampf");
                 }
@@ -67,7 +69,7 @@ public class PlayerAttackListener implements Listener {
 
                 a.getFights().put(bp, 20);
                 Objects.requireNonNull(b).getFights().put(ap, 20);
-
+                */
             }
         }
     }
@@ -76,14 +78,14 @@ public class PlayerAttackListener implements Listener {
     @EventHandler
     public void onTarget(EntityTargetEvent event) {
 
-        if(event.getTarget() instanceof Player) {
+        if (event.getTarget() instanceof Player) {
 
             Player p = (Player) event.getTarget();
             User user = plugin.getUser(p);
 
-            if(user.hasNoobProtection()) {
+            if (user.hasNoobProtection()) {
 
-                if(event.getReason() != EntityTargetEvent.TargetReason.TARGET_ATTACKED_ENTITY) {
+                if (event.getReason() != EntityTargetEvent.TargetReason.TARGET_ATTACKED_ENTITY) {
                     event.setCancelled(true);
                 }
 
