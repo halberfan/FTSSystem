@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="FTSSystem:jar">
-    <output-path>$PROJECT_DIR$/../../FTS/Programmieren/Testserver/plugins</output-path>
-    <root id="archive" name="FTSSystem.jar">
-      <element id="module-output" name="FTSSystem" />
-    </root>
-  </artifact>
-</component>

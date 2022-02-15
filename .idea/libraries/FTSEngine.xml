@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="FTSEngine">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../FTS/Programmieren/APIs/FTSEngine.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

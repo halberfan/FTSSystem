@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="FTSPest">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../FTS/Programmieren/APIs/FTSPest.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
