@@ -30,3 +30,12 @@ commands:
     premium:
     fts:
     wartung:
+
+    tc:
+        permission: ftssystem.chat.team
+        description: Der Team-Chat
+    g:
+    l:
+    ooc:
+    fl:
+    sc:

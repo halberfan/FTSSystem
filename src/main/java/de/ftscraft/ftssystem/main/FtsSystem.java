@@ -16,7 +16,6 @@ import de.ftscraft.ftssystem.scoreboard.FTSScoreboardManager;
 import de.ftscraft.ftssystem.utils.FileManager;
 import de.ftscraft.ftssystem.utils.Runner;
 import de.ftscraft.survivalminus.main.Survival;
-import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -55,8 +54,6 @@ public class FtsSystem extends JavaPlugin {
 
     private PunishmentManager punishmentManager;
     private FTSPest pest = null;
-
-    private LuckPerms luckPermsApi;
 
     private boolean wartung;
 
@@ -246,10 +243,6 @@ public class FtsSystem extends JavaPlugin {
 
     public FileManager getFileManager() {
         return fileManager;
-    }
-
-    public LuckPerms getLuckPermsApi() {
-        return luckPermsApi;
     }
 
     public Engine getEngine() {

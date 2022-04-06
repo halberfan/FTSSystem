@@ -110,7 +110,7 @@ public class User {
             String[] channels = (String[]) channelList.toArray(new String[channelList.size()]);
             for (String a : channels) {
                 Channel b = plugin.getChatManager().getChannel(a);
-                if (b != null) {
+                if (b != null && player.hasPermission(b.getPermission())) {
                     enabledChannels.add(b);
                 }
             }
