@@ -5,7 +5,6 @@
 
 package de.ftscraft.ftssystem.listeners;
 
-import com.destroystokyo.paper.util.SneakyThrow;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.main.User;
 import net.ess3.api.events.AfkStatusChangeEvent;
@@ -44,22 +43,6 @@ public class EssentialsListener implements Listener {
         }
 
     }
-
-     @EventHandler
-     public void onBroadcast(BroadcastMessageEvent event) {
-
-         for (User value : plugin.getUser().values()) {
-
-             //Wenn der Spieler den Nicht-Stören-Modus an hat oder ihn nur für RP an hat aber auch im RP ist
-             if((value.getDisturbStatus() == User.DoNotDisturbStatus.ON) ||
-                     (value.getDisturbStatus() == User.DoNotDisturbStatus.RP && plugin.getScoreboardManager().isInRoleplayMode(value.getPlayer()))) {
-                 if(event.getRecipients().contains(value.getPlayer())) {
-                     event.getRecipients().remove(value.getPlayer());
-                 }
-             }
-         }
-
-     }
 
     @EventHandler
     public void onAfkChange(AfkStatusChangeEvent event) {

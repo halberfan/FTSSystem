@@ -22,13 +22,8 @@ import net.md_5.bungee.api.chat.*;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Zombie;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -54,7 +49,6 @@ public class FTSChatManager extends ChatManager {
         super(plugin);
         this.fPlayers = FPlayers.getInstance();
         //channels = new ArrayList<>();
-        loadChannels();
     }
 
     public void chat(User u, String msg) {
@@ -66,64 +60,8 @@ public class FTSChatManager extends ChatManager {
         if (u.getActiveChannel() == null) {
             u.getPlayer().sendMessage(Messages.NO_ACTIVE_CHANNEL);
         }
-        String formatted = format(u, a, msg);
-        ComponentBuilder componentBuilder = new ComponentBuilder(formatted);
-        componentBuilder.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(u.getPlayer().getName()).create()));
 
-        BaseComponent[] c = buildComponent(formatted, u.getPlayer().getName());
-        if (a.getType() == ChannelType.NORMAL || a.getType() == null) {
-            boolean anyoneRecived = false;
-            for (User b : plugin.getUser().values()) {
-                if (b.getEnabledChannels().contains(a)) {
-                    if (a.getRange() != -1) {
-                        if (b.getPlayer().getWorld().getName().equalsIgnoreCase(u.getPlayer().getWorld().getName())) {
-                            if (b.getPlayer().getLocation().distance(u.getPlayer().getLocation()) <= a.getRange()) {
-                                if (b != u)
-                                    anyoneRecived = true;
-                                b.getPlayer().sendMessage(c);
-                            }
-                        }
-                    } else {
-                        b.getPlayer().sendMessage(c);
-                        if (b != u)
-                            anyoneRecived = true;
-                    }
-                }
-            }
-
-            if (!anyoneRecived) {
-                u.getPlayer().sendMessage("§cNiemand hat deine Nachricht gelesen. Schreibe ein ! vor deine Nachricht um in den Globalchat zu schreiben");
-            }
-
-        } else if (a.getType() == ChannelType.FACTION_F) {
-            Faction f = fPlayers.getByPlayer(u.getPlayer()).getFaction();
-
-            for (FPlayer b : f.getFPlayers()) {
-                if (b.isOnline())
-                    if (b.getPlayer() != null)
-                        if (plugin.getUser(b.getPlayer()).getEnabledChannels().contains(a))
-                            b.getPlayer().sendMessage(c);
-
-            }
-        } else if (a.getType() == ChannelType.FACTION_ALLY) {
-            Faction f = fPlayers.getByPlayer(u.getPlayer()).getFaction();
-
-            for (FPlayer b : f.getFPlayers()) {
-                if (b.getPlayer() != null)
-                    if (plugin.getUser(b.getPlayer()).getEnabledChannels().contains(a))
-                        b.getPlayer().sendMessage(c);
-            }
-
-            for (Player i : Bukkit.getOnlinePlayers()) {
-                FPlayer mPlayer = fPlayers.getByPlayer(i);
-                if (mPlayer.getFaction().getRelationTo(f) == Relation.ALLY || mPlayer.getFaction().getRelationTo(f) == Relation.TRUCE) {
-                    i.sendMessage(c);
-                }
-            }
-
-        }
-
-        Logger.getLogger("Minecraft").log(Level.INFO, "[Chat] " + u.getPlayer().getName() + " [" + a.getPrefix() + "] " + msg);
+        chat(u, msg, a);
 
     }
 
@@ -135,7 +73,10 @@ public class FTSChatManager extends ChatManager {
             if (s.startsWith("§")) {
                 code = s.substring(1, 2);
             }
-            if (s.startsWith("https://") || s.startsWith("http://")) {
+            if (s.length() > 4 && (s.startsWith("https://") || s.startsWith("http://") || s.substring(2).startsWith("https://") || s.substring(2).startsWith("http://"))) {
+                if (s.substring(2).startsWith("https://") || s.substring(2).startsWith("http://")) {
+                    s = s.substring(2);
+                }
                 TextComponent textComponent = new TextComponent("§b[LINK]§r");
                 textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, s));
                 textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(Utils.getTitleFromWebsite(s) + "\n" + "§7" + s)));
@@ -183,6 +124,22 @@ public class FTSChatManager extends ChatManager {
             boolean anyoneRecived = false;
             for (User b : plugin.getUser().values()) {
                 if (b.getEnabledChannels().contains(channel)) {
+                    switch (channel.getPrefix().toLowerCase()) {
+                        case "g":
+                            if (b.getGlobalChannelStatus() == User.ChannelStatusSwitch.OFF) {
+                                continue;
+                            } else if (b.getGlobalChannelStatus() == User.ChannelStatusSwitch.RP && plugin.getScoreboardManager().isInRoleplayMode(b.getPlayer())) {
+                                continue;
+                            }
+                            break;
+                        case "ooc":
+                            if (b.getOocChannelStatus() == User.ChannelStatusSwitch.OFF) {
+                                continue;
+                            } else if (b.getOocChannelStatus() == User.ChannelStatusSwitch.RP && plugin.getScoreboardManager().isInRoleplayMode(b.getPlayer())) {
+                                continue;
+                            }
+                            break;
+                    }
                     if (channel.getRange() != -1) {
                         if (b.getPlayer().getWorld().getName().equalsIgnoreCase(u.getPlayer().getWorld().getName())) {
                             if (b.getPlayer().getLocation().distance(u.getPlayer().getLocation()) <= channel.getRange()) {
@@ -206,13 +163,18 @@ public class FTSChatManager extends ChatManager {
 
         } else if (channel.getType() == ChannelType.FACTION_F) {
 
-
             Faction f = fPlayers.getByPlayer(u.getPlayer()).getFaction();
 
             for (FPlayer b : f.getFPlayers()) {
                 if (b.isOnline())
                     if (b.getPlayer() != null) {
                         if ((plugin.getUser(b.getPlayer()).getEnabledChannels().contains(channel))) {
+                            User t = plugin.getUser(b.getPlayer());
+                            if (t.getFactionChannelStatus() == User.ChannelStatusSwitch.OFF) {
+                                continue;
+                            } else if (t.getFactionChannelStatus() == User.ChannelStatusSwitch.RP && plugin.getScoreboardManager().isInRoleplayMode(b.getPlayer())) {
+                                continue;
+                            }
                             b.getPlayer().sendMessage(c);
                         }
                     }
@@ -261,6 +223,9 @@ public class FTSChatManager extends ChatManager {
 
         f = f.replace("%fa", faction);
         f = f.replace("%pr", prefix);
+        f = f.replace("%ch", channelName);
+        f = f.replace("%cp", c.getPrefix());
+        f = f.replace("&", "§");
         //Wenn der Spieler im RP Modus ist, wird der eigentliche Name mit dem Namen ausgetauscht der im Ausweis angegeben ist, wenn ein Ausweis vorhanden ist
         if (plugin.getScoreboardManager().isInRoleplayMode(u.getPlayer())) {
             //Wenn der Ausweis nicht existiert, die Variable mit dem normalen Spielernamen ergenzen
@@ -268,12 +233,12 @@ public class FTSChatManager extends ChatManager {
                 f = f.replace("%na", name);
             } else {
                 f = f.replace("%na", ChatColor.GREEN + ausweis.getFirstName().replace(" ", "_") + "_" + ausweis.getLastName().replace(" ", "_") + ChatColor.RESET);
+                if (u.getPlayer().hasPermission("ftssystem.chat.color")) {
+                    f = f.replace("&", "§");
+                }
             }
         } else
             f = f.replace("%na", name);
-        f = f.replace("%ch", channelName);
-        f = f.replace("%cp", c.getPrefix());
-        f = f.replace("&", "§");
 
         f = f.replace("%msg", (u.getPlayer().hasPermission("ftssystem.chat.color") ? ChatColor.translateAlternateColorCodes('&', msg) : msg));
         f = f.replace("((", "§7((");

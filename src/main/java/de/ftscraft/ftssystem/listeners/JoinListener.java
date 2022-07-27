@@ -11,7 +11,6 @@ import de.ftscraft.ftssystem.main.User;
 import de.ftscraft.ftssystem.poll.Umfrage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -74,7 +73,7 @@ public class JoinListener implements Listener {
 
         User u = new User(plugin, event.getPlayer());
 
-        if (!u.getDisturbStatus().equals(User.DoNotDisturbStatus.ON)) {
+        if (!u.getDisturbStatus().equals(User.ChannelStatusSwitch.ON)) {
 
             Umfrage umfrage = plugin.getUmfrage();
             if (umfrage != null && umfrage.isStarted()) {
@@ -95,20 +94,8 @@ public class JoinListener implements Listener {
             }
         }
 
-        if (!u.isApproved()) {
-
-            Bukkit.getScheduler().runTaskLater(plugin, () -> {
-
-                p.sendMessage("§4Achtung: §cDu bist noch nicht freigeschalten! Wenn du das erste mal auf dem Server bist, mach das Tutorial. Wenn du soweit bist, lese das Regelwerk auf https://ftscraft.de/regelwerk/ und suche nach einem Wort welches nicht in den Kontext passt! Dies ist das Passwort. Schalte dich frei mit §e/passwort PASSWORT");
-
-                p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
-
-            }, 20 * 4);
-
-        }
-
         if (u.hasNoobProtection()) {
-            if (p.hasPermission("ftssystem.burger")) {
+            if (p.hasPermission("ftssystem.bürger")) {
                 Bukkit.getScheduler().runTaskLater(plugin, () -> {
                     u.setNoobProtection(false);
                     p.sendMessage(Messages.PREFIX + "Da du jetzt Bürger bist und du immer noch die Noobprotection an hattest, wurde sie jetzt entfernt");

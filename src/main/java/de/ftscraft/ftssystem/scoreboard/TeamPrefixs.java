@@ -11,8 +11,9 @@ import org.bukkit.entity.Player;
 public enum  TeamPrefixs {
 
     ADMIN("§bAdmin", "§bAdmin","ftsengine.admin", "000Admin"),
-    MODERATOR("§bModerator","§bModeratorin", "ftsengine.moderator", "001Moderator"),
-    HELFER("§bHelfer", "§bHelferin","ftsengine.helfer", "002Helfer"),
+    DEV("§bDev", "§bDev","ftsengine.dev", "001Dev"),
+    MODERATOR("§bModerator","§bModeratorin", "ftsengine.moderator", "002Moderator"),
+    HELFER("§bHelfer", "§bHelferin","ftsengine.helfer", "003Helfer"),
     PREMIUM("§cPremium", "§cPremium", "ftsengine.premium", "004Premium"),
     SCHREIBER("§cSchreiber", "§cSchreiberin", "ftsengine.schreiber", "0041Schreib"),
     ARCHITEKT("§eArchitekt", "§eArchitektin", "ftsengine.architekt", "005Architekt"),

@@ -9,7 +9,6 @@ import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.main.User;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
@@ -20,10 +19,10 @@ import java.util.Arrays;
 
 public class FTSMenuInventory {
 
-    private Player player;
-    private User user;
+    private final Player player;
+    private final User user;
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     private Inventory inv;
 
@@ -63,28 +62,38 @@ public class FTSMenuInventory {
             inv.setItem(22, noobschutz);
         }
 
-        if(user.isMsgSoundEnabled()) {
+        if (user.isMsgSoundEnabled()) {
             inv.setItem(10, plugin.getMenuItems().getMessageSoundOn());
         } else inv.setItem(10, plugin.getMenuItems().getMessageSoundOff());
 
-        switch (user.getDisturbStatus()) {
-            case ON:
-                inv.setItem(11, plugin.getMenuItems().getDoNotDisturbOn());
-                break;
-            case RP:
-                inv.setItem(11, plugin.getMenuItems().getDoNotDisturbOnRP());
-                break;
-            case OFF:
-                inv.setItem(11, plugin.getMenuItems().getDoNotDisturbOff());
-                break;
+        final int oocChannelSlot = 28;
+        switch (user.getOocChannelStatus()) {
+            case ON -> inv.setItem(oocChannelSlot, plugin.getMenuItems().getOocChannelOn());
+            case RP -> inv.setItem(oocChannelSlot, plugin.getMenuItems().getOocChannelRP());
+            case OFF -> inv.setItem(oocChannelSlot, plugin.getMenuItems().getOocChannelOff());
         }
 
-        if(user.isScoreboardEnabled())
-            inv.setItem(12, plugin.getMenuItems().getScoreboardOn());
-        else inv.setItem(12, plugin.getMenuItems().getScoreboardOff());
+        final int factionChannelSlot = 29;
+        switch (user.getFactionChannelStatus()) {
+            case ON -> inv.setItem(factionChannelSlot, plugin.getMenuItems().getFactionChannelOn());
+            case RP -> inv.setItem(factionChannelSlot, plugin.getMenuItems().getFactionChannelRP());
+            case OFF -> inv.setItem(factionChannelSlot, plugin.getMenuItems().getFactionChannelOff());
+        }
+
+        final int globalChannelSlot = 30;
+        switch (user.getGlobalChannelStatus()) {
+            case ON -> inv.setItem(globalChannelSlot, plugin.getMenuItems().getGlobalChannelOn());
+            case RP -> inv.setItem(globalChannelSlot, plugin.getMenuItems().getGlobalChannelRP());
+            case OFF -> inv.setItem(globalChannelSlot, plugin.getMenuItems().getGlobalChannelOff());
+        }
+
+        final int scoreboardSlot = 11;
+        if (user.isScoreboardEnabled())
+            inv.setItem(scoreboardSlot, plugin.getMenuItems().getScoreboardOn());
+        else inv.setItem(scoreboardSlot, plugin.getMenuItems().getScoreboardOff());
 
         for (int i = 0; i < 9 * 5; i++) {
-            if(inv.getItem(i) == null) {
+            if (inv.getItem(i) == null) {
                 inv.setItem(i, filler.clone());
             }
         }

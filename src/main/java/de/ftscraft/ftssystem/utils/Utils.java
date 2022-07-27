@@ -70,7 +70,8 @@ public class Utils {
         InputStream response = null;
         String title = "Website: ";
         try {
-            response = new URL(url).openStream();
+            URL urlc = new URL(url);
+            response = urlc.openStream();
 
             Scanner scanner = new Scanner(response);
             String responseBody = scanner.useDelimiter("\\A").next();

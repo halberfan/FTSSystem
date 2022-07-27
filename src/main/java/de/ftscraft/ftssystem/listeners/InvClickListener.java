@@ -21,7 +21,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -170,8 +169,6 @@ public class InvClickListener implements Listener {
                         e.printStackTrace();
                     }
 
-                    System.out.println(url.toString());
-
                     Scanner sc = null;
                     try {
                         sc = new Scanner(url.openStream());
@@ -185,7 +182,6 @@ public class InvClickListener implements Listener {
                     }
 
                     String result = sb.toString();
-                    System.out.println(result);
 
                     JSONParser parser = new JSONParser();
                     try {
@@ -265,21 +261,33 @@ public class InvClickListener implements Listener {
                     u.setMsgSound(true);
             } else if (id.equalsIgnoreCase("2")) {
                 switch (u.getDisturbStatus()) {
-                    case OFF:
-                        u.setDisturbStatus(User.DoNotDisturbStatus.RP);
-                        break;
-                    case RP:
-                        u.setDisturbStatus(User.DoNotDisturbStatus.ON);
-                        break;
-                    case ON:
-                        u.setDisturbStatus(User.DoNotDisturbStatus.OFF);
-                        break;
+                    case OFF -> u.setDisturbStatus(User.ChannelStatusSwitch.RP);
+                    case RP -> u.setDisturbStatus(User.ChannelStatusSwitch.ON);
+                    case ON -> u.setDisturbStatus(User.ChannelStatusSwitch.OFF);
                 }
             } else if (id.equalsIgnoreCase("3")) {
                 if (u.isScoreboardEnabled())
                     u.setScoreboardEnabled(false);
                 else
                     u.setScoreboardEnabled(true);
+            } else if(id.equalsIgnoreCase("5")) {
+                switch (u.getOocChannelStatus()) {
+                    case OFF -> u.setOocChannelStatus(User.ChannelStatusSwitch.RP);
+                    case RP -> u.setOocChannelStatus(User.ChannelStatusSwitch.ON);
+                    case ON -> u.setOocChannelStatus(User.ChannelStatusSwitch.OFF);
+                }
+            } else if(id.equalsIgnoreCase("6")) {
+                switch (u.getFactionChannelStatus()) {
+                    case OFF -> u.setFactionChannelStatus(User.ChannelStatusSwitch.RP);
+                    case RP -> u.setFactionChannelStatus(User.ChannelStatusSwitch.ON);
+                    case ON -> u.setFactionChannelStatus(User.ChannelStatusSwitch.OFF);
+                }
+            } else if(id.equalsIgnoreCase("7")) {
+                switch (u.getGlobalChannelStatus()) {
+                    case OFF -> u.setGlobalChannelStatus(User.ChannelStatusSwitch.RP);
+                    case RP -> u.setGlobalChannelStatus(User.ChannelStatusSwitch.ON);
+                    case ON -> u.setGlobalChannelStatus(User.ChannelStatusSwitch.OFF);
+                }
             }
 
             u.refreshMenu();

@@ -39,42 +39,15 @@ public class CMDchannel implements FTSCommand {
                     if (p.hasPermission(a.getPermission()))
                         p.sendMessage("- " + ChatColor.AQUA + ChatColor.BOLD + a.getName());
                 }
+
+                for (Channel channel : plugin.getChatManager().channels) {
+                    System.out.println("c" + " " + channel.getName());
+                }
+
             } else if (args[0].equalsIgnoreCase("join")) {
-                if (args.length == 2) {
-                    User u = plugin.getUser(p);
-                    Channel channel = plugin.getChatManager().getChannel(args[1]);
-                    if (channel == null) {
-                        p.sendMessage(Messages.NO_CHANNEL);
-                        return true;
-                    }
-                    if (u.getEnabledChannels().contains(channel)) {
-                        cs.sendMessage(Messages.ALREADY_IN_CHANNEL);
-                        return true;
-                    }
-                    if (!p.hasPermission(channel.getPermission())) {
-                        cs.sendMessage(Messages.NO_PERM);
-                        return true;
-                    }
-
-                    u.joinChannel(channel);
-                    p.sendMessage(Messages.JOINED_CHANNEL.replace("%s", channel.getName()));
-                } else p.sendMessage(Messages.HELP_CHANNEL);
+                p.sendMessage(Messages.PREFIX + "Bitte benutze /fts um Channel zu verlassen oder zu joinen.");
             } else if (args[0].equalsIgnoreCase("leave")) {
-                if (args.length == 2) {
-                    User u = plugin.getUser(p);
-                    Channel channel = plugin.getChatManager().getChannel(args[1]);
-                    if (channel == null) {
-                        p.sendMessage(Messages.NO_CHANNEL);
-                        return true;
-                    }
-                    if (!u.getEnabledChannels().contains(channel)) {
-                        cs.sendMessage(Messages.NOT_IN_CHANNEL);
-                        return true;
-                    }
-
-                    u.leaveChannel(channel);
-                    p.sendMessage(Messages.LEFT_CHANNEL.replace("%s", channel.getName()));
-                } else p.sendMessage(Messages.HELP_CHANNEL);
+                p.sendMessage(Messages.PREFIX + "Bitte benutze /fts um Channel zu verlassen.");
             } else if (args[0].equalsIgnoreCase("aktiv")) {
                 if (args.length == 2) {
                     User u = plugin.getUser(p);
@@ -95,20 +68,7 @@ public class CMDchannel implements FTSCommand {
 
                 } else p.sendMessage(Messages.HELP_CHANNEL);
             } else if (args[0].equalsIgnoreCase("toggle")) {
-                if (args.length == 2) {
-                    User u = plugin.getUser(p);
-                    Channel channel = plugin.getChatManager().getChannel(args[1]);
-                    if (channel == null) {
-                        p.sendMessage(Messages.NO_CHANNEL);
-                        return true;
-                    }
-                    if (!p.hasPermission(channel.getPermission())) {
-                        cs.sendMessage(Messages.NO_PERM);
-                        return true;
-                    }
-
-                    u.toggleChannel(channel);
-                }
+                p.sendMessage(Messages.PREFIX + "Bitte benutze /fts um Channel zu verlassen oder zu joinen.");
             } else p.sendMessage(Messages.HELP_CHANNEL);
         } else p.sendMessage(Messages.HELP_CHANNEL);
 

@@ -9,16 +9,16 @@ import de.ftscraft.ftsengine.utils.Ausweis;
 import de.ftscraft.ftsengine.utils.Gender;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.survivalminus.user.User;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.scoreboard.*;
 
-import javax.print.attribute.standard.MediaSize;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class FTSScoreboardManager {
@@ -193,6 +193,9 @@ public class FTSScoreboardManager {
                 if (afkPlayers.contains(p)) {
                     p.setPlayerListName(p.getPlayerListName().replaceAll("§.", "§7§m"));
                 }
+                if (p.hasPermission("group.comhelfer")) {
+                    appendCommunityHelferTag(p);
+                }
                 return a;
             }
         }
@@ -201,6 +204,11 @@ public class FTSScoreboardManager {
             p.setPlayerListName(a.getPrefix(gender) + " §7| §r" + p.getName());
         else
             p.setPlayerListName(a.getPrefix(gender) + " §7| §r" + p.getName() + " §7[RP]");
+
+        if (p.hasPermission("group.comhelfer")) {
+            appendCommunityHelferTag(p);
+        }
+
         return a;
     }
 
@@ -216,6 +224,12 @@ public class FTSScoreboardManager {
         else sneakingPlayers.remove(p);
 
         sendScoreboardToPlayer(p, false);
+    }
+
+    public void appendCommunityHelferTag(Player p) {
+        if (plugin.getPerms().playerInGroup(p, "comhelfer")) {
+            p.playerListName(p.playerListName().append(Component.text(" [C]", Style.style(TextColor.color(252, 152, 3)))));
+        }
     }
 
 }

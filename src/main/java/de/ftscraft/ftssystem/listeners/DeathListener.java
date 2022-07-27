@@ -7,6 +7,8 @@ package de.ftscraft.ftssystem.listeners;
 
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.main.User;
+import net.kyori.adventure.text.Component;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,27 +29,17 @@ public class DeathListener implements Listener {
     public void onDeath(PlayerDeathEvent event)
     {
 
-        if (event.getEntity().getKiller() == null)
-            return;
-
-        Player ap = event.getEntity().getKiller();
-
         Player bp = event.getEntity();
 
-        User a = plugin.getUser(ap);
-        User b = plugin.getUser(bp);
 
-        if (!a.getFights().containsKey(bp))
-        {
-            ap.sendMessage("§cDu bist nun nicht mehr im Kampf");
-        }
-        if (!b.getFights().containsKey(ap))
-        {
-            bp.sendMessage("§cDu bist nun nicht mehr im Kampf");
+        for (Entity nearbyEntity : bp.getLocation().getNearbyEntities(80, 100, 80)) {
+            if(nearbyEntity instanceof Player) {
+                Player t = (Player) nearbyEntity;
+                t.sendMessage(event.deathMessage());
+            }
         }
 
-        a.getFights().remove(bp);
-        b.getFights().remove(ap);
+        event.deathMessage(Component.text(""));
 
     }
 

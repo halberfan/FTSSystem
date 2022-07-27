@@ -14,6 +14,9 @@
 
 package de.ftscraft.ftssystem.utils;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
+import com.destroystokyo.paper.profile.ProfileProperty;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -24,10 +27,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ItemBuilder {
 
@@ -368,6 +368,17 @@ public class ItemBuilder {
         if (make().getType() == Material.PLAYER_HEAD && make().getDurability() == (byte) 3) {
             SkullMeta skullMeta = (SkullMeta) meta();
             skullMeta.setOwner(name);
+            make().setItemMeta(meta());
+        }
+        return this;
+    }
+
+    public ItemBuilder skullTexture(final String texture) {
+        if (make().getType() == Material.PLAYER_HEAD) {
+            SkullMeta skullMeta = (SkullMeta) meta();
+            PlayerProfile profile = Bukkit.createProfile(UUID.randomUUID());
+            profile.setProperty(new ProfileProperty("textures", texture));
+            skullMeta.setPlayerProfile(profile);
             make().setItemMeta(meta());
         }
         return this;

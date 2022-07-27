@@ -9,6 +9,7 @@ import de.ftscraft.ftssystem.channel.Channel;
 import de.ftscraft.ftssystem.configs.Messages;
 import de.ftscraft.ftssystem.menus.fts.FTSMenuInventory;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -20,8 +21,8 @@ import java.util.List;
 
 public class User {
 
-    private FtsSystem plugin;
-    private Player player;
+    private final FtsSystem plugin;
+    private final Player player;
 
     private boolean scoreboardEnabled = true;
 
@@ -29,10 +30,16 @@ public class User {
 
     private boolean noobProtection = true;
     private boolean msgSound = true;
-    private DoNotDisturbStatus disturbStatus = DoNotDisturbStatus.OFF;
+    private ChannelStatusSwitch disturbStatus = ChannelStatusSwitch.OFF;
+
+    private ChannelStatusSwitch globalChannelStatus = ChannelStatusSwitch.ON;
+    private ChannelStatusSwitch factionChannelStatus = ChannelStatusSwitch.ON;
+    private ChannelStatusSwitch oocChannelStatus = ChannelStatusSwitch.ON;
 
     private Channel activeChannel;
     private List<Channel> enabledChannels;
+
+    private Location votehome;
 
     private boolean turnedServerMessagesOn;
 
@@ -79,8 +86,20 @@ public class User {
         cfg.set("approved", approved);
         cfg.set("msgSound", msgSound);
         cfg.set("turnedServerMessagesOn", turnedServerMessagesOn);
-        cfg.set("disturbStatus", getDisturbStatus().toString());
+        //cfg.set("disturbStatus", getDisturbStatus().toString());
+        cfg.set("oocStatus", getOocChannelStatus().toString());
+        cfg.set("globalStatus", getGlobalChannelStatus().toString());
+        cfg.set("factionStatus", getFactionChannelStatus().toString());
+
         cfg.set("noobschutz", noobProtection);
+        if (votehome != null) {
+            cfg.set("votehome.x", votehome.getX());
+            cfg.set("votehome.y", votehome.getY());
+            cfg.set("votehome.z", votehome.getZ());
+            cfg.set("votehome.world", votehome.getWorld().getName());
+            cfg.set("votehome.pitch", votehome.getPitch());
+            cfg.set("votehome.yaw", votehome.getYaw());
+        }
 
         //Punishment
 
@@ -105,23 +124,13 @@ public class User {
 
 
         }
-        List channelList = cfg.getList("channels");
-        if (channelList != null) {
-            String[] channels = (String[]) channelList.toArray(new String[channelList.size()]);
-            for (String a : channels) {
-                Channel b = plugin.getChatManager().getChannel(a);
-                if (b != null && player.hasPermission(b.getPermission())) {
-                    enabledChannels.add(b);
-                }
+
+        for (Channel a : plugin.getChatManager().getChannels()) {
+            if (player.hasPermission(a.getPermission())) {
+                enabledChannels.add(a);
             }
         }
-        if (enabledChannels.isEmpty()) {
-            for (Channel a : plugin.getChatManager().getChannels()) {
-                if (player.hasPermission(a.getPermission())) {
-                    enabledChannels.add(a);
-                }
-            }
-        }
+
 
         this.activeChannel = plugin.getChatManager().getChannel(cfg.getString("activeChannel"));
         if (this.activeChannel == null)
@@ -134,9 +143,29 @@ public class User {
         if (cfg.contains("turnedServerMessagesOn")) {
             this.turnedServerMessagesOn = cfg.getBoolean("turnedServerMessagesOn");
         } else this.turnedServerMessagesOn = true;
-        if (cfg.contains("disturbStatus")) {
-            this.disturbStatus = DoNotDisturbStatus.valueOf(cfg.getString("disturbStatus"));
+
+        if (cfg.contains("oocStatus")) {
+            this.oocChannelStatus = ChannelStatusSwitch.valueOf(cfg.getString("oocStatus"));
         }
+        if (cfg.contains("factionStatus")) {
+            this.factionChannelStatus = ChannelStatusSwitch.valueOf(cfg.getString("factionStatus"));
+        }
+        if (cfg.contains("globalStatus")) {
+            this.globalChannelStatus = ChannelStatusSwitch.valueOf(cfg.getString("globalStatus"));
+        }
+
+        if (cfg.contains("votehome.x")) {
+            Location votehome = new Location(
+                    Bukkit.getWorld(cfg.getString("votehome.world")),
+                    cfg.getDouble("votehome.x"),
+                    cfg.getDouble("votehome.y"),
+                    cfg.getDouble("votehome.z"),
+                    Float.parseFloat(cfg.getString("votehome.yaw")),
+                    Float.parseFloat(cfg.getString("votehome.pitch"))
+            );
+            setVotehome(votehome);
+        }
+
     }
 
     public void joinChannel(Channel channel) {
@@ -231,21 +260,57 @@ public class User {
         player.openInventory(menu.getInventory());
     }
 
-    public enum DoNotDisturbStatus {
+    public enum ChannelStatusSwitch {
         ON, OFF, RP
     }
 
-    public DoNotDisturbStatus getDisturbStatus() {
+    public ChannelStatusSwitch getDisturbStatus() {
         return disturbStatus;
     }
 
-    public void setDisturbStatus(DoNotDisturbStatus disturbStatus) {
+    public void setDisturbStatus(ChannelStatusSwitch disturbStatus) {
         this.disturbStatus = disturbStatus;
     }
 
     public boolean isDisturbable() {
 
-        return disturbStatus == DoNotDisturbStatus.OFF || !(plugin.getScoreboardManager().isInRoleplayMode(player) && disturbStatus == DoNotDisturbStatus.RP);
+        return disturbStatus == ChannelStatusSwitch.OFF;
 
+    }
+
+    public Location getVotehome() {
+        return votehome;
+    }
+
+    public void setVotehome(Location votehome) {
+        this.votehome = votehome;
+    }
+
+    public boolean hasVotehome() {
+        return votehome != null;
+    }
+
+    public ChannelStatusSwitch getGlobalChannelStatus() {
+        return globalChannelStatus;
+    }
+
+    public ChannelStatusSwitch getFactionChannelStatus() {
+        return factionChannelStatus;
+    }
+
+    public ChannelStatusSwitch getOocChannelStatus() {
+        return oocChannelStatus;
+    }
+
+    public void setGlobalChannelStatus(ChannelStatusSwitch globalChannelStatus) {
+        this.globalChannelStatus = globalChannelStatus;
+    }
+
+    public void setFactionChannelStatus(ChannelStatusSwitch factionChannelStatus) {
+        this.factionChannelStatus = factionChannelStatus;
+    }
+
+    public void setOocChannelStatus(ChannelStatusSwitch oocChannelStatus) {
+        this.oocChannelStatus = oocChannelStatus;
     }
 }
