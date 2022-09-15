@@ -127,6 +127,7 @@ public class FtsSystem extends JavaPlugin {
         new CMDbroadcast(this);
         new CMDwartung(this);
         new CMDsetvotehome(this);
+        new CMDvoteban(this);
         new CMDvotehome(this);
 
         new DeathListener(this);
@@ -140,6 +141,7 @@ public class FtsSystem extends JavaPlugin {
         new SneakListener(this);
         new EntityDeathListener(this);
         new PlayerAttackListener(this);
+        new FactionListener(this);
         new Runner(this);
 
         Iterator<Recipe> recipes = Bukkit.recipeIterator();

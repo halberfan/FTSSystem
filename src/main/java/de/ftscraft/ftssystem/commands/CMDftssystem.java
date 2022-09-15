@@ -34,26 +34,26 @@ public class CMDftssystem implements FTSCommand {
                     if (args.length == 2) {
                         if (args[1].equalsIgnoreCase("join")) {
                             for (Player a : Bukkit.getOnlinePlayers()) {
-                                a.sendMessage("§6" + p.getName() + " §rhat Parsifal betreten!");
+                                a.sendMessage("§b" + p.getName() + " §rhat Parsifal betreten!");
                             }
                         } else if (args[1].equalsIgnoreCase("leave")) {
                             for (Player a : Bukkit.getOnlinePlayers()) {
-                                a.sendMessage("§6" + p.getName() + " §rhat Parsifal verlassen!");
+                                a.sendMessage("§b" + p.getName() + " §rhat Parsifal verlassen!");
                             }
                         }
                     } else p.sendMessage(Messages.HELP_FTSSYSTEM);
                 }
             } else if (args[0].equalsIgnoreCase("repair")) {
 
-                if(args.length == 2) {
+                if (args.length == 2) {
 
-                    if(p.hasPermission("ftssystem.admin")) {
+                    if (p.hasPermission("ftssystem.admin")) {
 
                         Player t = Bukkit.getPlayer(args[1]);
 
                         ItemStack item = t.getInventory().getItemInMainHand();
 
-                        if(item.getType() == Material.AIR || !item.hasItemMeta()) {
+                        if (item.getType() == Material.AIR || !item.hasItemMeta()) {
                             t.sendMessage("Probier es noch mal mit nem richtigen Item!");
                             givePearl(t);
                             return true;
@@ -83,16 +83,16 @@ public class CMDftssystem implements FTSCommand {
 
                 }
 
-            } else if(args[0].equalsIgnoreCase("playtime")) {
+            } else if (args[0].equalsIgnoreCase("playtime")) {
 
-                if(p.hasPermission("ftssystem.admin")) {
+                if (p.hasPermission("ftssystem.admin")) {
 
                     p.sendMessage("§cFolgende online Spieler haben bereits über 50h Spielzeit aber noch nicht den Bürgerrang: ");
 
                     boolean someone = false;
 
                     for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                        if(onlinePlayer.hasPermission("group.burger")) {
+                        if (onlinePlayer.hasPermission("group.burger")) {
                             continue;
                         }
 
@@ -102,13 +102,13 @@ public class CMDftssystem implements FTSCommand {
                         double hours = minutes / 60;
 
 
-                        if(hours > 50.0) {
+                        if (hours > 50.0) {
                             someone = true;
-                            p.sendMessage("§e- " + onlinePlayer.getName() + " §c("+hours+"h)");
+                            p.sendMessage("§e- " + onlinePlayer.getName() + " §c(" + hours + "h)");
                         }
                     }
 
-                    if(!someone)
+                    if (!someone)
                         p.sendMessage("§eNiemand");
 
                 } else {
@@ -123,6 +123,11 @@ public class CMDftssystem implements FTSCommand {
                 }
 
 
+            } else if(args[0].equalsIgnoreCase("dev")) {
+                Player t = Bukkit.getPlayer(args[1]);
+                int ticks = Integer.valueOf(args[2]);
+
+                t.setStatistic(Statistic.PLAY_ONE_MINUTE, ticks);
             }
         } else p.sendMessage(Messages.HELP_FTSSYSTEM);
         return false;
