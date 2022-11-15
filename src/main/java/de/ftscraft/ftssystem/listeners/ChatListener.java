@@ -21,6 +21,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -127,8 +128,8 @@ public class ChatListener implements Listener {
             return;
         }
         event.setCancelled(true);
-        if (event.getMessage().startsWith("*")) {
-            if (event.getMessage().startsWith(String.valueOf('*'))) {
+        if (event.getMessage().contains("*")) {
+            if (event.getMessage().contains(String.valueOf('*'))) {
 
                 String[] msgs = event.getMessage().split(" ");
 
@@ -151,28 +152,51 @@ public class ChatListener implements Listener {
                     return;
                 }
 
-                msgs[0] = msgs[0].substring(1);
+                //[0] = msgs[0].substring(1);
 
                 if(!event.getMessage().startsWith("**")) {
-
-                    msg = "§e" + a.getFirstName() + " " + a.getLastName() + " (" + event.getPlayer().getName()+") ";
-
+                    msg = a.getFirstName() + " " + a.getLastName() + " (" + event.getPlayer().getName()+") ";
                 } else {
-                    msgs[0] = msgs[0].substring(1);
-                    msg = "§e";
+                    msg = "";
                 }
-
-                //msgs[0].replace("*", "");
 
                 for (String m : msgs) {
                     msg += m + " ";
                 }
 
+                int checkMod = 0;
+
+                if (msg.startsWith("**")){
+                    msg = "§e" + msg.substring(2);
+                    checkMod = 1;
+                }
+
+                ArrayList<Integer> delimtPos = new ArrayList<>();
+                int index  = msg.indexOf(String.valueOf('*'));
+                while (index >= 0) {
+                    delimtPos.add(index);
+                    index = msg.indexOf(String.valueOf('*'), index + 1);
+                }
+
+                for(int i = (int) delimtPos.stream().count() - 1; i >= 0; i--) {
+                    int pos = delimtPos.get(i);
+                    if (delimtPos.indexOf(pos) % 2 != checkMod) {
+                        msg = msg.substring(0, pos) + "*§r" + msg.substring(pos+1);
+                    } else {
+                        msg = msg.substring(0, pos) + "§e*" + msg.substring(pos+1);
+                    }
+                }
+
                 msg = msg.replace("((", "§7((");
                 msg = msg.replace("))", "§7))§e");
 
+                /*Das hier funktioniert übrigens nicht
+                * musst checken ob da Zeichen zwischen sind sonst nimmt er nur die " an sich
+                *
+                * brauchen wir aber eh nicht mehr
                 msg = msg.replace("\"", "§7\"");
                 msg = msg.replace("\"", "§7\"§e");
+                */
 
                 event.setCancelled(true);
 
