@@ -23,27 +23,20 @@ public class User {
 
     private final FtsSystem plugin;
     private final Player player;
-
     private boolean scoreboardEnabled = true;
-
     private boolean approved = false;
-
     private boolean noobProtection = true;
     private boolean msgSound = true;
     private ChannelStatusSwitch disturbStatus = ChannelStatusSwitch.OFF;
-
     private ChannelStatusSwitch globalChannelStatus = ChannelStatusSwitch.ON;
     private ChannelStatusSwitch factionChannelStatus = ChannelStatusSwitch.ON;
     private ChannelStatusSwitch oocChannelStatus = ChannelStatusSwitch.ON;
-
     private Channel activeChannel;
     private List<Channel> enabledChannels;
-
     private Location votehome;
-
     private boolean turnedServerMessagesOn;
-
     private FTSMenuInventory menu;
+    private int forumId = -1;
 
     private HashMap<Player, Integer> fights;
 
@@ -90,6 +83,7 @@ public class User {
         cfg.set("oocStatus", getOocChannelStatus().toString());
         cfg.set("globalStatus", getGlobalChannelStatus().toString());
         cfg.set("factionStatus", getFactionChannelStatus().toString());
+        cfg.set("forumId", forumId);
 
         cfg.set("noobschutz", noobProtection);
         if (votehome != null) {
@@ -152,6 +146,9 @@ public class User {
         }
         if (cfg.contains("globalStatus")) {
             this.globalChannelStatus = ChannelStatusSwitch.valueOf(cfg.getString("globalStatus"));
+        }
+        if(cfg.contains("forumId")) {
+            this.forumId = cfg.getInt("forumId");
         }
 
         if (cfg.contains("votehome.x")) {
@@ -312,5 +309,13 @@ public class User {
 
     public void setOocChannelStatus(ChannelStatusSwitch oocChannelStatus) {
         this.oocChannelStatus = oocChannelStatus;
+    }
+
+    public int getForumId() {
+        return forumId;
+    }
+
+    public void setForumId(int forumId) {
+        this.forumId = forumId;
     }
 }

@@ -11,6 +11,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 public class FileManager {
 
@@ -19,14 +20,57 @@ public class FileManager {
     private File book_file;
     private FileConfiguration book_cfg;
 
+    private File premiumFile;
+    private FileConfiguration premiumCfg;
+
+    private File secretsFile;
+    private FileConfiguration secretsConfig;
+
     String bookCMD;
     String bookBlockreichCMD;
 
     public FileManager(FtsSystem plugin) {
         this.plugin = plugin;
+
         this.book_file = new File(plugin.getDataFolder() + "//tutorialbook.yml");
         this.book_cfg = YamlConfiguration.loadConfiguration(book_file);
+
+        this.premiumFile = new File(plugin.getDataFolder() + "//premium.yml");
+        this.premiumCfg = YamlConfiguration.loadConfiguration(premiumFile);
+
+        this.secretsFile = new File(plugin.getDataFolder() + "//secrets.yml");
+        this.secretsConfig = YamlConfiguration.loadConfiguration(secretsFile);
+
         loadBookComamnd();
+    }
+
+    public void loadPremium() {
+        for (String user : premiumCfg.getKeys(false)) {
+            long seconds = premiumCfg.getLong(user+".time");
+            plugin.getPremiumManager().addPremiumPlayer(UUID.fromString(user), seconds);
+        }
+    }
+
+    public void savePremium() {
+        PremiumManager premiumManager = plugin.getPremiumManager();
+        for (String key : premiumCfg.getKeys(false)) {
+            premiumCfg.set(key, null);
+        }
+        premiumManager.getPremiumPlayers().forEach((uuid, aLong) -> {
+            premiumCfg.set(uuid.toString()+".time", aLong);
+        });
+
+        try {
+            premiumCfg.save(premiumFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void loadSecrets() {
+        plugin.getForumHook().setApiKey(secretsConfig.getString("apiKey"));
+        plugin.getForumHook().setApiUser(secretsConfig.getString("apiUser"));
+        plugin.getForumHook().setPremiumGroupId(secretsConfig.getInt("premiumGroupId"));
     }
 
     public void loadBookComamnd() {

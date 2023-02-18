@@ -14,6 +14,8 @@ import de.ftscraft.ftssystem.poll.Umfrage;
 import de.ftscraft.ftssystem.punishment.PunishmentManager;
 import de.ftscraft.ftssystem.scoreboard.FTSScoreboardManager;
 import de.ftscraft.ftssystem.utils.FileManager;
+import de.ftscraft.ftssystem.utils.ForumHook.ForumHook;
+import de.ftscraft.ftssystem.utils.PremiumManager;
 import de.ftscraft.ftssystem.utils.Runner;
 import de.ftscraft.survivalminus.main.Survival;
 import net.milkbowl.vault.chat.Chat;
@@ -61,6 +63,9 @@ public class FtsSystem extends JavaPlugin {
 
     private boolean blockreich = false;
 
+    private PremiumManager premiumManager;
+    private ForumHook forumHook;
+
     @Override
     public void onEnable() {
         super.onEnable();
@@ -96,8 +101,10 @@ public class FtsSystem extends JavaPlugin {
     private void save() {
         configManager.setConfig(ConfigVal.LATEST_PUNISH_ID, getPunishmentManager().getLatestID());
         configManager.setConfig(ConfigVal.WARTUNG, isInWartung());
+        configManager.setConfig(ConfigVal.MESSAGES, configManager.getAutoMessages());
 
         configManager.save();
+        fileManager.savePremium();
     }
 
     private void init() {
@@ -113,22 +120,25 @@ public class FtsSystem extends JavaPlugin {
         punishmentManager = new PunishmentManager(this);
         scoreboardManager = new FTSScoreboardManager(this);
         menuItems = new MenuItems();
-        new CMDftssystem(this);
-        new CMDchannel(this);
-        new CMDumfrage(this);
-        new CMDtogglesidebar(this);
-        new CMDpu(this);
-        new CMDtutorialbuch(this);
+        premiumManager = new PremiumManager(this);
+        forumHook = new ForumHook(this);
         new CMDakte(this);
-        new CMDroleplay(this);
-        new CMDpremium(this);
-        new CMDfts(this);
-        new CMDpasswort(this);
         new CMDbroadcast(this);
-        new CMDwartung(this);
+        new CMDchannel(this);
+        new CMDdurchsage(this);
+        new CMDfts(this);
+        new CMDftssystem(this);
+        new CMDpasswort(this);
+        new CMDpremium(this);
+        new CMDpu(this);
+        new CMDroleplay(this);
         new CMDsetvotehome(this);
+        new CMDtogglesidebar(this);
+        new CMDtutorialbuch(this);
+        new CMDumfrage(this);
         new CMDvoteban(this);
         new CMDvotehome(this);
+        new CMDwartung(this);
 
         new DeathListener(this);
         new CommandListener(this);
@@ -152,21 +162,31 @@ public class FtsSystem extends JavaPlugin {
             if(recipe instanceof FurnaceRecipe) {
 
                 FurnaceRecipe furnaceRecipe = (FurnaceRecipe) recipe;
-                if(furnaceRecipe.getInput().getType() == Material.RAW_GOLD)
+                if(furnaceRecipe.getInput().getType() == Material.RAW_GOLD) {
                     recipes.remove();
+                }
 
             } else if(recipe instanceof BlastingRecipe) {
 
                 BlastingRecipe blastingRecipe = (BlastingRecipe) recipe;
-                if(blastingRecipe.getInput().getType() == Material.RAW_GOLD)
+                if(blastingRecipe.getInput().getType() == Material.RAW_GOLD) {
                     recipes.remove();
+                }
 
             }
 
         }
 
+        postInit();
+
+    }
+
+    private void postInit() {
         wartung = configManager.isWartung();
 
+        fileManager.loadSecrets();
+        fileManager.loadPremium();
+        premiumManager.checkPremiumPlayers();
     }
 
     public User getUser(Player player) {
@@ -215,6 +235,10 @@ public class FtsSystem extends JavaPlugin {
 
     public PunishmentManager getPunishmentManager() {
         return punishmentManager;
+    }
+
+    public PremiumManager getPremiumManager() {
+        return premiumManager;
     }
 
     public FTSPest getPest() {
@@ -267,5 +291,9 @@ public class FtsSystem extends JavaPlugin {
 
     public boolean isBlockreich() {
         return blockreich;
+    }
+
+    public ForumHook getForumHook() {
+        return forumHook;
     }
 }

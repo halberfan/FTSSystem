@@ -1,5 +1,5 @@
 name: FTSSystem
-version: 1.8
+version: 1.9.1
 main: de.ftscraft.ftssystem.main.FtsSystem
 author: halberfan
 api-version: 1.17
@@ -42,3 +42,4 @@ commands:
     sc:
     setvotehome:
     votehome:
+    durchsage:

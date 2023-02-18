@@ -8,7 +8,8 @@ package de.ftscraft.ftssystem.configs;
 public enum ConfigVal {
 
     LATEST_PUNISH_ID("latestPunishID"),
-    WARTUNG("wartung");
+    WARTUNG("wartung"),
+    MESSAGES("messages");
 
     private String path;
 

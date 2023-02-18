@@ -9,6 +9,11 @@ import de.ftscraft.ftssystem.configs.Messages;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.main.User;
 import de.ftscraft.ftssystem.poll.Umfrage;
+import de.ftscraft.ftssystem.utils.PremiumManager;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.node.Node;
+import net.luckperms.api.node.types.InheritanceNode;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -101,6 +106,24 @@ public class JoinListener implements Listener {
                     p.sendMessage(Messages.PREFIX + "Da du jetzt Bürger bist und du immer noch die Noobprotection an hattest, wurde sie jetzt entfernt");
                 }, 20 * 4);
             }
+        }
+
+        PremiumManager premiumManager = plugin.getPremiumManager();
+        if(p.hasPermission("group.premium")) {
+            System.out.println("User hat Premium");
+            LuckPerms luckPerms = LuckPermsProvider.get();
+            for (Node node : luckPerms.getUserManager().getUser(p.getUniqueId()).getNodes()) {
+                if(node instanceof InheritanceNode) {
+                    InheritanceNode inheritanceNode = (InheritanceNode) node;
+                    System.out.println(inheritanceNode.getGroupName());
+                    if(inheritanceNode.getGroupName().equalsIgnoreCase("Premium")) {
+                        premiumManager.addPremiumPlayer(p.getUniqueId(), inheritanceNode.getExpiry().getEpochSecond());
+                        System.out.println("Bis " + inheritanceNode.getExpiry().getEpochSecond());
+                    }
+                }
+            }
+        } else {
+            premiumManager.removePremiumPlayer(p.getUniqueId());
         }
 
     }
