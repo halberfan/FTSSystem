@@ -1,5 +1,5 @@
 name: FTSSystem
-version: 1.9.1
+version: 1.9.2
 main: de.ftscraft.ftssystem.main.FtsSystem
 author: halberfan
 api-version: 1.17
@@ -27,6 +27,7 @@ commands:
     roleplay:
         aliases: [rp]
     passwort:
+    checkcv:
     premium:
     voteban:
     fts:

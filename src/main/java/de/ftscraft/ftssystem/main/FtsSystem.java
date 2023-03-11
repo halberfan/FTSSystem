@@ -125,6 +125,7 @@ public class FtsSystem extends JavaPlugin {
         new CMDakte(this);
         new CMDbroadcast(this);
         new CMDchannel(this);
+        new CMDcheckcv(this);
         new CMDdurchsage(this);
         new CMDfts(this);
         new CMDftssystem(this);

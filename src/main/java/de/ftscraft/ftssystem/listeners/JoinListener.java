@@ -110,15 +110,12 @@ public class JoinListener implements Listener {
 
         PremiumManager premiumManager = plugin.getPremiumManager();
         if(p.hasPermission("group.premium")) {
-            System.out.println("User hat Premium");
             LuckPerms luckPerms = LuckPermsProvider.get();
             for (Node node : luckPerms.getUserManager().getUser(p.getUniqueId()).getNodes()) {
                 if(node instanceof InheritanceNode) {
                     InheritanceNode inheritanceNode = (InheritanceNode) node;
-                    System.out.println(inheritanceNode.getGroupName());
                     if(inheritanceNode.getGroupName().equalsIgnoreCase("Premium")) {
                         premiumManager.addPremiumPlayer(p.getUniqueId(), inheritanceNode.getExpiry().getEpochSecond());
-                        System.out.println("Bis " + inheritanceNode.getExpiry().getEpochSecond());
                     }
                 }
             }

@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -36,11 +37,15 @@ public class PremiumManager {
     }
 
     public void checkPremiumPlayers() {
+        ArrayList<UUID> uuidsToRemove = new ArrayList<>();
         premiumPlayers.forEach((uuid, aLong) -> {
             if(aLong < System.currentTimeMillis() / 1000) {
-                premiumPlayers.remove(uuid);
+                uuidsToRemove.add(uuid);
             }
         });
+        for (UUID uuid : uuidsToRemove) {
+            premiumPlayers.remove(uuid);
+        }
         try {
             plugin.getForumHook().updatePremiumGroup();
         } catch (UnirestException e) {

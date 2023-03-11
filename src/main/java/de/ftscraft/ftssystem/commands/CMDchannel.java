@@ -40,9 +40,6 @@ public class CMDchannel implements FTSCommand {
                         p.sendMessage("- " + ChatColor.AQUA + ChatColor.BOLD + a.getName());
                 }
 
-                for (Channel channel : plugin.getChatManager().channels) {
-                    System.out.println("c" + " " + channel.getName());
-                }
 
             } else if (args[0].equalsIgnoreCase("join")) {
                 p.sendMessage(Messages.PREFIX + "Bitte benutze /fts um Channel zu verlassen oder zu joinen.");

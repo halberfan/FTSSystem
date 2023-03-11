@@ -15,6 +15,7 @@ import de.ftscraft.ftssystem.punishment.PunishmentType;
 import de.ftscraft.ftssystem.punishment.Temporary;
 import de.ftscraft.ftssystem.utils.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -29,15 +30,13 @@ public class ChatListener implements Listener {
 
     private FtsSystem plugin;
 
-    public ChatListener(FtsSystem plugin)
-    {
+    public ChatListener(FtsSystem plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onChat(AsyncPlayerChatEvent event)
-    {
+    public void onChat(AsyncPlayerChatEvent event) {
 
         if (plugin.getPunishmentManager().getBuilders().get(event.getPlayer()) != null) {
             event.setCancelled(true);
@@ -55,8 +54,7 @@ public class ChatListener implements Listener {
                             prog.setMoreInfo("");
                         prog.setMoreInfo(prog.getMoreInfo() + " " + event.getMessage().substring(0, event.getMessage().length() - 1));
                         return;
-                    }
-                    else {
+                    } else {
                         if (prog.getMoreInfo() == null)
                             //Wenn es noch keine Nachricht davor gab, setzt er es zu der Nachricht die gerade kam
                             prog.setMoreInfo(event.getMessage());
@@ -104,8 +102,7 @@ public class ChatListener implements Listener {
                         prog.build();
                         event.getPlayer().sendMessage(Messages.PREFIX + "§cFertig. §eDer Spieler hat seine Strafe erhalten.");
 
-                    }
-                    else if (event.getMessage().equalsIgnoreCase("Nein")) {
+                    } else if (event.getMessage().equalsIgnoreCase("Nein")) {
                         prog.abort();
                         event.getPlayer().sendMessage(Messages.PREFIX + "Okay. Das Setup wurde abgebrochen. Wenn du es erneut versuchen willst, gebe wieder /pu SPIELER ein");
                     }
@@ -154,8 +151,8 @@ public class ChatListener implements Listener {
 
                 //[0] = msgs[0].substring(1);
 
-                if(!event.getMessage().startsWith("**")) {
-                    msg = a.getFirstName() + " " + a.getLastName() + " (" + event.getPlayer().getName()+") ";
+                if (!event.getMessage().startsWith("**")) {
+                    msg = (plugin.getScoreboardManager().isInRoleplayMode(event.getPlayer()) ? ChatColor.GREEN : "") + a.getFirstName() + " " + a.getLastName() + " (" + event.getPlayer().getName() + ") ";
                 } else {
                     msg = "";
                 }
@@ -166,24 +163,24 @@ public class ChatListener implements Listener {
 
                 int checkMod = 0;
 
-                if (msg.startsWith("**")){
+                if (msg.startsWith("**")) {
                     msg = "§e" + msg.substring(2);
                     checkMod = 1;
                 }
 
                 ArrayList<Integer> delimtPos = new ArrayList<>();
-                int index  = msg.indexOf(String.valueOf('*'));
+                int index = msg.indexOf(String.valueOf('*'));
                 while (index >= 0) {
                     delimtPos.add(index);
                     index = msg.indexOf(String.valueOf('*'), index + 1);
                 }
 
-                for(int i = (int) delimtPos.stream().count() - 1; i >= 0; i--) {
+                for (int i = (int) delimtPos.stream().count() - 1; i >= 0; i--) {
                     int pos = delimtPos.get(i);
                     if (delimtPos.indexOf(pos) % 2 != checkMod) {
-                        msg = msg.substring(0, pos) + "*§r" + msg.substring(pos+1);
+                        msg = msg.substring(0, pos) + "*§r" + msg.substring(pos + 1);
                     } else {
-                        msg = msg.substring(0, pos) + "§e*" + msg.substring(pos+1);
+                        msg = msg.substring(0, pos) + "§e*" + msg.substring(pos + 1);
                     }
                 }
 

@@ -5,6 +5,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import de.ftscraft.ftssystem.commands.CMDcheckcv;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.utils.PremiumManager;
 import org.bukkit.Bukkit;
@@ -69,9 +70,6 @@ public class ForumHook {
                 .field("usernames", usernames)
                 .asJson();
 
-        System.out.println(jsonDeleteResponse.getBody());
-        System.out.println(jsonDeleteResponse.getStatus());
-
     }
 
     public String[] getForumPremiumGroupMembers() throws UnirestException {
@@ -87,9 +85,6 @@ public class ForumHook {
             result[i] = arr.getJSONObject(i).getString("username");
         }
 
-        System.out.println(jsonResponse.getBody());
-        System.out.println(jsonResponse.getStatus());
-
         return result;
 
     }
@@ -98,7 +93,6 @@ public class ForumHook {
 
         String jsonRequest = "{\"usernames\": \""+ username + "\"}";
 
-        System.out.println("Sending Forum API Request..");
         HttpResponse<JsonNode> jsonPutResponse = Unirest.put("https://forum.ftscraft.de/groups/{X}/members.json".replace("{X}", String.valueOf(premiumGroupId)))
                 .header("accept", "application/json")
                 .header("Api-Username", apiUser)
@@ -106,12 +100,38 @@ public class ForumHook {
                 .field("usernames", username)
                 .asJson();
 
-        System.out.println("Done!");
+    }
 
-        System.out.println(jsonRequest);
-        System.out.println(jsonPutResponse.getBody());
-        System.out.println(jsonPutResponse.getStatus());
+    public CMDcheckcv.Response isAcceptedCV(String name, String url) throws UnirestException {
 
+        HttpResponse<JsonNode> jsonGetResponse = Unirest.get(url + ".json")
+                .header("accept", "application/json")
+                .header("Api-Username", apiUser)
+                .header("Api-Key", apiKey)
+                .asJson();
+        if(jsonGetResponse.getStatus() >= 400) {
+            return CMDcheckcv.Response.WRONG_URL;
+        }
+
+        JSONObject object = jsonGetResponse.getBody().getObject();
+        JSONArray tags = object.getJSONArray("tags");
+
+        JSONObject createdBy = object.getJSONObject("details").getJSONObject("created_by");
+        String postedBy = createdBy.getString("username");
+
+        if(tags == null || tags.length() == 0) {
+            return CMDcheckcv.Response.NOT_ACCEPTED;
+        }
+
+        if(!tags.getString(0).equalsIgnoreCase("angenommen")) {
+            return CMDcheckcv.Response.NOT_ACCEPTED;
+        }
+
+        if(!name.equalsIgnoreCase(postedBy)) {
+            return CMDcheckcv.Response.NOT_FROM_PLAYER;
+        }
+
+        return CMDcheckcv.Response.IS_ACCEPTED;
     }
 
     public void setApiKey(String apiKey) {
