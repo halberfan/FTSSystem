@@ -38,11 +38,11 @@ public class PremiumManager {
 
     public void checkPremiumPlayers() {
         ArrayList<UUID> uuidsToRemove = new ArrayList<>();
-        premiumPlayers.forEach((uuid, aLong) -> {
-            if(aLong < System.currentTimeMillis() / 1000) {
+        for (UUID uuid : premiumPlayers.keySet()) {
+            if(premiumPlayers.get(uuid) < System.currentTimeMillis() / 1000) {
                 uuidsToRemove.add(uuid);
             }
-        });
+        }
         for (UUID uuid : uuidsToRemove) {
             premiumPlayers.remove(uuid);
         }

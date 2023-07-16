@@ -144,27 +144,13 @@ public class PunishmentBuilder {
         }
         UUID target = UUIDFetcher.getUUID(player);
         switch (type) {
-            case NOTE:
-                plugin.getPunishmentManager().addNote(reason, author, player, moreInfo);
-                break;
-            case TEMPWARN:
-                plugin.getPunishmentManager().addTempwarn(reason, author, player, moreInfo, until);
-                break;
-            case WARN:
-                plugin.getPunishmentManager().addWarn(reason, author, player, moreInfo);
-                break;
-            case TEMPMUTE:
-                plugin.getPunishmentManager().addTempMute(reason, author, player, moreInfo, until);
-                break;
-            case TEMPBAN:
-                plugin.getPunishmentManager().addTempBan(reason, author, player, moreInfo, until);
-                break;
-            case BAN:
-                plugin.getPunishmentManager().addBan(reason, author, player, moreInfo);
-                break;
-            default:
-                creator.sendMessage("§cIrgendwas ist schief gelaufen. Überprüfe nochmal deine Daten");
-                break;
+            case NOTE -> plugin.getPunishmentManager().addNote(reason, author, player, moreInfo);
+            case TEMPWARN -> plugin.getPunishmentManager().addTempwarn(reason, author, player, moreInfo, until);
+            case WARN -> plugin.getPunishmentManager().addWarn(reason, author, player, moreInfo);
+            case TEMPMUTE -> plugin.getPunishmentManager().addTempMute(reason, author, player, moreInfo, until);
+            case TEMPBAN -> plugin.getPunishmentManager().addTempBan(reason, author, player, moreInfo, until);
+            case BAN -> plugin.getPunishmentManager().addBan(reason, author, player, moreInfo);
+            default -> creator.sendMessage("§cIrgendwas ist schief gelaufen. Überprüfe nochmal deine Daten");
         }
     }
 

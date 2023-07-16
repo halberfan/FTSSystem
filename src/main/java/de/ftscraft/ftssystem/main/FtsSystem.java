@@ -153,6 +153,7 @@ public class FtsSystem extends JavaPlugin {
         new EntityDeathListener(this);
         new PlayerAttackListener(this);
         new FactionListener(this);
+        new PlayerOpenSignListener(this);
         new Runner(this);
 
         Iterator<Recipe> recipes = Bukkit.recipeIterator();

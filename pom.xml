@@ -6,7 +6,7 @@
 
     <groupId>de.ftscraft.ftssystem</groupId>
     <artifactId>FTSSystem</artifactId>
-    <version>1.9.2</version>
+    <version>1.10.0.2</version>
     <build>
         <plugins>
             <plugin>
@@ -73,7 +73,7 @@
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.17.1-R0.1-SNAPSHOT</version>
+            <version>1.20.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

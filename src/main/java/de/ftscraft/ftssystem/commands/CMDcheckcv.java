@@ -18,8 +18,8 @@ import java.util.ArrayList;
 
 public class CMDcheckcv implements CommandExecutor {
 
-    private FtsSystem plugin;
-    private ArrayList<OfflinePlayer> playersThatUsedCommand = new ArrayList<>();
+    private final FtsSystem plugin;
+    private final ArrayList<OfflinePlayer> playersThatUsedCommand = new ArrayList<>();
 
     public CMDcheckcv(FtsSystem plugin) {
         this.plugin = plugin;
@@ -29,20 +29,18 @@ public class CMDcheckcv implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
 
-        if (!(cs instanceof Player)) {
+        if (!(cs instanceof Player p)) {
             return true;
         }
 
-        Player p = (Player) cs;
-
-        if(playersThatUsedCommand.contains(p)) {
+        if (playersThatUsedCommand.contains(p)) {
             p.sendMessage(Messages.PREFIX + "Du hast diesen Command erst neulich benutzt und es hat nicht geklappt. Bitte behebe den Fehler den wir dir vorhin angezeigt haben" +
                     " und führe den Command nach dem nächsten Restart nochmal aus.");
             return true;
         }
 
         if (!TeamPrefixs.getPrefix(p, Gender.MALE).equalsIgnoreCase("§6Reisender")) {
-            p.sendMessage(Messages.PREFIX+"Sieht so aus als wärst du schon kein Reisender mehr.");
+            p.sendMessage(Messages.PREFIX + "Sieht so aus als wärst du schon kein Reisender mehr.");
             return true;
         }
 
@@ -52,8 +50,7 @@ public class CMDcheckcv implements CommandExecutor {
             return true;
         }
 
-        if (ausweis.getFirstName() == null || ausweis.getLastName() == null || ausweis.getDesc() == null || ausweis.getNation() == null
-                || ausweis.getRace() == null) {
+        if (ausweis.getFirstName() == null || ausweis.getLastName() == null || ausweis.getDesc() == null || ausweis.getRace() == null) {
             p.sendMessage(Messages.PREFIX + "Dein Ausweis ist nicht komplett! Bitte fülle deinen Ausweis richtig auf.");
             return true;
         }
@@ -67,21 +64,21 @@ public class CMDcheckcv implements CommandExecutor {
 
             Response response = plugin.getForumHook().isAcceptedCV(p.getName(), ausweis.getForumLink());
 
-            if(response == Response.WRONG_URL) {
+            if (response == Response.WRONG_URL) {
                 p.sendMessage(Messages.PREFIX + "Da lief irgendwas falsch. Überprüfe am Besten mal den Link oder melde dich bei einem Teamler");
                 return true;
             }
-            if(response == Response.NOT_FROM_PLAYER) {
+            if (response == Response.NOT_FROM_PLAYER) {
                 p.sendMessage(Messages.PREFIX + "Es sieht so aus als wäre das nicht deine CV. Falls du denkst dass das Falsch ist melde dich gerne bei einem Teamler");
                 playersThatUsedCommand.add(p);
                 return true;
             }
-            if(response == Response.NOT_ACCEPTED) {
+            if (response == Response.NOT_ACCEPTED) {
                 p.sendMessage(Messages.PREFIX + "Es sieht so aus als wäre die CV noch nicht final akzeptiert. Falls doch, lass dir am besten von einem Teamler den Rang geben");
                 playersThatUsedCommand.add(p);
                 return true;
             }
-            if(response == Response.IS_ACCEPTED) {
+            if (response == Response.IS_ACCEPTED) {
                 p.sendMessage(Messages.PREFIX + "Sieht gut aus! Du solltest jetzt den Rang haben.");
                 Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "lp user %s promote burger".replace("%s", p.getName()));
                 return true;

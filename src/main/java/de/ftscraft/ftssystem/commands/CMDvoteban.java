@@ -18,10 +18,10 @@ import java.util.HashMap;
 public class CMDvoteban implements CommandExecutor {
 
     final private int maxPlaytime = 20 * 60 * 60 * 4; //4 Stunden
-    private HashMap<OfflinePlayer, VoteBan> voteBans;
-    private HashMap<OfflinePlayer, VoteBan> pendingConfirmations;
+    private final HashMap<OfflinePlayer, VoteBan> voteBans;
+    private final HashMap<OfflinePlayer, VoteBan> pendingConfirmations;
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     //Todo: Mehrfache Abstimmung + 2x hintereinander /voteban eingeben
 
@@ -35,16 +35,15 @@ public class CMDvoteban implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
-        if (!(cs instanceof Player)) {
+        if (!(cs instanceof Player player)) {
             cs.sendMessage("cmd ist nur für player");
+            return true;
         }
 
         if (!cs.hasPermission("group.burger")) {
             cs.sendMessage(Messages.PREFIX + "Du musst mindestens Bürger sein um einen Voteban zu starten.");
             return true;
         }
-
-        Player player = (Player) cs;
 
         if (args.length == 1) {
 
@@ -81,7 +80,7 @@ public class CMDvoteban implements CommandExecutor {
                     player.sendMessage(Messages.PREFIX + "§eWeil jemand anderes schon einen Voteban eingerichtet hat, wurde dieser jetzt gestartet. ");
                 }
 
-                if(voteBan.voted.contains(player)) {
+                if (voteBan.voted.contains(player)) {
                     player.sendMessage(Messages.PREFIX + "Du hast bereits abgestimmt. ");
                     return true;
                 }
