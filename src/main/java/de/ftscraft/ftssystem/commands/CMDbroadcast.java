@@ -25,8 +25,8 @@ public class CMDbroadcast implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
 
-        if(!cs.hasPermission("ftssystem.broadcast")) {
-            cs.sendMessage(Messages.PREFIX+"Dafür hast du keine Rechte. Du kannst sie aber in Lohengrin für kurze Zeit auch kaufen");
+        if (!cs.hasPermission("ftssystem.broadcast")) {
+            cs.sendMessage(Messages.PREFIX + "Dafür hast du keine Rechte. Du kannst sie aber in Lohengrin für kurze Zeit auch kaufen");
             return true;
         }
 
@@ -38,7 +38,7 @@ public class CMDbroadcast implements CommandExecutor {
                 if (i == args.length - 1) {
                     builder.append(args[i]);
                 } else
-                    builder.append(args[i] + " ");
+                    builder.append(args[i]).append(" ");
             }
 
             for (Player onlinePlayer : plugin.getServer().getOnlinePlayers()) {

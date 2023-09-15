@@ -8,7 +8,9 @@ package de.ftscraft.ftssystem.punishment;
 public interface Temporary extends Punishment {
 
     long untilInMillis();
+
     String untilAsString();
+
     String untilAsCalString();
 
 }

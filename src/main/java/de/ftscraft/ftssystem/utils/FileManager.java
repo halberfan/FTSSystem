@@ -46,7 +46,7 @@ public class FileManager {
 
     public void loadPremium() {
         for (String user : premiumCfg.getKeys(false)) {
-            long seconds = premiumCfg.getLong(user+".time");
+            long seconds = premiumCfg.getLong(user + ".time");
             plugin.getPremiumManager().addPremiumPlayer(UUID.fromString(user), seconds);
         }
     }
@@ -57,7 +57,7 @@ public class FileManager {
             premiumCfg.set(key, null);
         }
         premiumManager.getPremiumPlayers().forEach((uuid, aLong) -> {
-            premiumCfg.set(uuid.toString()+".time", aLong);
+            premiumCfg.set(uuid.toString() + ".time", aLong);
         });
 
         try {

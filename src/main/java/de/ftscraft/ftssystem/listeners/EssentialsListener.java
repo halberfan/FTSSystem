@@ -34,7 +34,7 @@ public class EssentialsListener implements Listener {
 
             User u = plugin.getUser(t);
 
-            if(!u.isMsgSoundEnabled())
+            if (!u.isMsgSoundEnabled())
                 return;
 
             t.playSound(t.getLocation(), Sound.ENTITY_CHICKEN_EGG, SoundCategory.VOICE, 1, 1);
@@ -48,7 +48,7 @@ public class EssentialsListener implements Listener {
 
         Player t = Bukkit.getPlayer(event.getAffected().getName());
 
-        if(t!=null) {
+        if (t != null) {
             plugin.getScoreboardManager().changeAfkStatus(t, event.getValue());
         }
 

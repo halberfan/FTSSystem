@@ -92,7 +92,7 @@ public class TempWarn implements Punishment, Temporary {
         int hour = cal.get(Calendar.HOUR_OF_DAY);
         int min = cal.get(Calendar.MINUTE);
 
-        return day + "." + (month+1) + " " + year + " - " + hour + ":" + min;
+        return day + "." + (month + 1) + " " + year + " - " + hour + ":" + min;
     }
 
     @Override
@@ -105,7 +105,7 @@ public class TempWarn implements Punishment, Temporary {
         int hour = cal.get(Calendar.HOUR_OF_DAY);
         int min = cal.get(Calendar.MINUTE);
 
-        return day + "." + (month+1) + " " + year + " - " + hour + ":" + min;
+        return day + "." + (month + 1) + " " + year + " - " + hour + ":" + min;
 
     }
 

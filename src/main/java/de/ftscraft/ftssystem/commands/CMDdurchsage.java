@@ -28,16 +28,16 @@ public class CMDdurchsage implements CommandExecutor {
         ConfigManager cm = plugin.getConfigManager();
 
         if (args.length == 0) {
-            cs.sendMessage(Messages.PREFIX+"/durchsage new [Info/Werbung] [Nachricht]");
-            cs.sendMessage(Messages.PREFIX+"/durchsage remove");
-            cs.sendMessage(Messages.PREFIX+"/durchsage remove [Index]");
+            cs.sendMessage(Messages.PREFIX + "/durchsage new [Info/Werbung] [Nachricht]");
+            cs.sendMessage(Messages.PREFIX + "/durchsage remove");
+            cs.sendMessage(Messages.PREFIX + "/durchsage remove [Index]");
             return true;
         }
 
         if (args[0].equalsIgnoreCase("new")) {
 
             if (args.length < 5) {
-                cs.sendMessage(Messages.PREFIX+"Bitte schreibe eine Nachricht die mindestens 3 Wörter lang ist");
+                cs.sendMessage(Messages.PREFIX + "Bitte schreibe eine Nachricht die mindestens 3 Wörter lang ist");
                 return true;
             }
             String prefix = null;
@@ -48,7 +48,7 @@ public class CMDdurchsage implements CommandExecutor {
             }
 
             if (prefix == null) {
-                cs.sendMessage(Messages.PREFIX+"Bitte definiere welche Art von Durchsage es sein soll. §c/durchsage new [Werbung/Info] [Nachricht]");
+                cs.sendMessage(Messages.PREFIX + "Bitte definiere welche Art von Durchsage es sein soll. §c/durchsage new [Werbung/Info] [Nachricht]");
                 return true;
             }
 
@@ -83,7 +83,7 @@ public class CMDdurchsage implements CommandExecutor {
                 if (index >= 0 && index < cm.getAutoMessages().size()) {
 
                     cm.getAutoMessages().remove(index);
-                    cs.sendMessage(Messages.PREFIX+"Der Eintrag wurde entfernt");
+                    cs.sendMessage(Messages.PREFIX + "Der Eintrag wurde entfernt");
 
                 } else
                     cs.sendMessage(Messages.PREFIX + "Bitte gebe einen validen Index an.");

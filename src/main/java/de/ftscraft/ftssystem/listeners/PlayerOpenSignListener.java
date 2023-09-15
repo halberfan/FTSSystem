@@ -26,7 +26,7 @@ public class PlayerOpenSignListener implements Listener {
         SignSide signSide = sign.getSide(side);
         boolean empty = true;
         for (Component line : signSide.lines()) {
-            if(!((TextComponent)line).content().equals(""))
+            if (!((TextComponent) line).content().equals(""))
                 empty = false;
         }
         event.setCancelled(!empty);

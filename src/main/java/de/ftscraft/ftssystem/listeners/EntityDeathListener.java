@@ -15,8 +15,7 @@ public class EntityDeathListener implements Listener {
 
     private final FtsSystem plugin;
 
-    public EntityDeathListener(FtsSystem plugin)
-    {
+    public EntityDeathListener(FtsSystem plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
@@ -24,10 +23,10 @@ public class EntityDeathListener implements Listener {
     @EventHandler
     public void onDeath(EntityDeathEvent event) {
 
-        if(event.getEntity().getType() == EntityType.PLAYER)
+        if (event.getEntity().getType() == EntityType.PLAYER)
             return;
 
-        if(event.getEntity().getType() == EntityType.ZOMBIFIED_PIGLIN) {
+        if (event.getEntity().getType() == EntityType.ZOMBIFIED_PIGLIN) {
             event.getDrops().clear();
         }
 

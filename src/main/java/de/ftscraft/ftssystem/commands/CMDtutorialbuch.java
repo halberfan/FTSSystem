@@ -27,13 +27,13 @@ public class CMDtutorialbuch implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
 
-        if(!(cs instanceof Player p)) {
+        if (!(cs instanceof Player p)) {
 
             cs.sendMessage("§cDieser Befehl ist nur für SPieler");
             return true;
         }
 
-        if(!(cs.hasPermission("ftssystem.book"))) {
+        if (!(cs.hasPermission("ftssystem.book"))) {
 
             cs.sendMessage("§cDafür hast du keine Rechte");
             return true;
@@ -45,7 +45,7 @@ public class CMDtutorialbuch implements CommandExecutor {
 
         String bookCMD;
 
-        if(plugin.isBlockreich()) {
+        if (plugin.isBlockreich()) {
             bookCMD = plugin.getFileManager().getBookBlockreichCMD().replace("<player>", name);
         } else {
             bookCMD = plugin.getFileManager().getBookCMD().replace("<player>", name);

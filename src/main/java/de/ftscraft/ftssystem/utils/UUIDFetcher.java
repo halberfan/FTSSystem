@@ -22,7 +22,7 @@ public class UUIDFetcher {
 
     public static String getName(UUID uuid) {
 
-        if(nameCache.containsKey(uuid))
+        if (nameCache.containsKey(uuid))
             return nameCache.get(uuid);
 
         OfflinePlayer op = Bukkit.getOfflinePlayer(uuid);
@@ -37,7 +37,7 @@ public class UUIDFetcher {
 
     public static UUID getUUID(String name) {
 
-        if(uuidCache.containsKey(name))
+        if (uuidCache.containsKey(name))
             return uuidCache.get(name);
 
         OfflinePlayer op = Bukkit.getOfflinePlayer(name);
@@ -49,8 +49,6 @@ public class UUIDFetcher {
         return uuid;
 
     }
-
-
 
 
 }

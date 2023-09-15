@@ -7,6 +7,5 @@ package de.ftscraft.ftssystem.listeners;
 
 public class PlayerDeathEvent {
 
-    
 
 }

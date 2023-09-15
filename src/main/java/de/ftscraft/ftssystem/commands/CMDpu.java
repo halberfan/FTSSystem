@@ -31,12 +31,12 @@ public class CMDpu implements FTSCommand {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
 
-        if(!(cs instanceof Player p)) {
+        if (!(cs instanceof Player p)) {
             cs.sendMessage(Messages.ONLY_PLAYER);
             return true;
         }
 
-        if(!p.hasPermission("ftssystem.punish")) {
+        if (!p.hasPermission("ftssystem.punish")) {
             p.sendMessage(Messages.NO_PERM);
             return true;
         }

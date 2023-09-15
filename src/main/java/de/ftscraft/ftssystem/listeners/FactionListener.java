@@ -28,7 +28,7 @@ public class FactionListener implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
 
-        if(event.getBlock().getType() != Material.ARMOR_STAND) {
+        if (event.getBlock().getType() != Material.ARMOR_STAND) {
             return;
         }
 
@@ -38,7 +38,7 @@ public class FactionListener implements Listener {
 
         Faction faction = Board.getInstance().getFactionAt(fLocation);
 
-        if(!faction.getOnlinePlayers().contains(event.getPlayer()) && !faction.isWilderness()) {
+        if (!faction.getOnlinePlayers().contains(event.getPlayer()) && !faction.isWilderness()) {
             event.getPlayer().sendMessage("§cDu darfst nicht Armorstands in anderen Factions griefen!");
             event.setCancelled(true);
         }
@@ -54,7 +54,7 @@ public class FactionListener implements Listener {
 
         Faction faction = Board.getInstance().getFactionAt(fLocation);
 
-        if(!faction.getOnlinePlayers().contains(event.getPlayer()) && !faction.isWilderness()) {
+        if (!faction.getOnlinePlayers().contains(event.getPlayer()) && !faction.isWilderness()) {
             event.getPlayer().sendMessage("§cDu darfst nicht Armorstands in anderen Factions griefen!");
             event.setCancelled(true);
         }

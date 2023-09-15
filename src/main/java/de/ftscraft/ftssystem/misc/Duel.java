@@ -26,13 +26,11 @@ public class Duel {
     }
 
 
-
     public enum DuelStatus {
 
         REQUEST, PREPARATION, FIGHT, END
 
     }
-
 
 
 }

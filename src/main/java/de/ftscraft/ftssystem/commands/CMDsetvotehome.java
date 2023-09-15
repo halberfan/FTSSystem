@@ -21,11 +21,11 @@ public class CMDsetvotehome implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
-        if(!(cs instanceof Player player)) {
+        if (!(cs instanceof Player player)) {
             return true;
         }
 
-        if(args.length != 0) {
+        if (args.length != 0) {
             return true;
         }
 
@@ -33,7 +33,7 @@ public class CMDsetvotehome implements CommandExecutor {
 
         user.setVotehome(player.getLocation());
 
-        player.sendMessage(Messages.PREFIX+"Du hast erfolgreich dein Votehome gesetzt! Wenn du zugriff auf dein Votehome hast, kannst du mit /votehome wieder hierhin reisen!");
+        player.sendMessage(Messages.PREFIX + "Du hast erfolgreich dein Votehome gesetzt! Wenn du zugriff auf dein Votehome hast, kannst du mit /votehome wieder hierhin reisen!");
 
         return false;
     }

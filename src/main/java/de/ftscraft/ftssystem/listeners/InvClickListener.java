@@ -119,19 +119,19 @@ public class InvClickListener implements Listener {
             ItemMeta meta = item.getItemMeta();
             if (!meta.getDisplayName().equalsIgnoreCase(" ")) {
 
-                if(printed.contains(event.getWhoClicked())) {
-                    if(!event.getWhoClicked().hasPermission("ftssystem.admin")) {
+                if (printed.contains(event.getWhoClicked())) {
+                    if (!event.getWhoClicked().hasPermission("ftssystem.admin")) {
                         event.getWhoClicked().sendMessage("§cDu kannst das nächste mal diese Funktion benutzen nach einem Server-Neustart!");
                         return;
                     }
                 }
 
-                if(meta.getDisplayName().equalsIgnoreCase("§6Druck mir das aus!")) {
+                if (meta.getDisplayName().equalsIgnoreCase("§6Druck mir das aus!")) {
 
                     ItemStack firstPunishment = event.getInventory().getItem(0);
                     UUID p;
 
-                    if(!firstPunishment.getItemMeta().getDisplayName().equalsIgnoreCase(" ")) {
+                    if (!firstPunishment.getItemMeta().getDisplayName().equalsIgnoreCase(" ")) {
 
                         int id = Integer.parseInt(firstPunishment.getItemMeta().getLore().get(3));
                         Punishment pun = plugin.getPunishmentManager().getPunishmentById(id);
@@ -153,7 +153,7 @@ public class InvClickListener implements Listener {
                         stringBuilder.append("Strafe ").append(i + 1).append(": ").append(pun.getReason()).append("%5Cn");
                         stringBuilder.append("  - Weitere Infos: ").append(pun.getMoreInformation()).append("%5Cn");
                         stringBuilder.append("  - Typ: ").append(pun.getType()).append("%5Cn");
-                        if(pun instanceof Temporary) {
+                        if (pun instanceof Temporary) {
                             stringBuilder.append("  - Bis: ").append(((Temporary) pun).untilAsCalString()).append("%5Cn");
                         }
                         stringBuilder.append("  - Autor: ").append(pun.getAuthor()).append("%5Cn");
@@ -164,7 +164,7 @@ public class InvClickListener implements Listener {
 
                     URL url = null;
                     try {
-                        url = new URL("https://api.telegra.ph/createPage?access_token=6cf9217c73e4da3913dc2d9f878423ebd713ff7fd4d9ab6d087b16f48f9b&title=Strafen:+"+UUIDFetcher.getName(p)+"&content="+content+"&author_name=FTS-System");
+                        url = new URL("https://api.telegra.ph/createPage?access_token=6cf9217c73e4da3913dc2d9f878423ebd713ff7fd4d9ab6d087b16f48f9b&title=Strafen:+" + UUIDFetcher.getName(p) + "&content=" + content + "&author_name=FTS-System");
                     } catch (MalformedURLException e) {
                         e.printStackTrace();
                     }
@@ -187,9 +187,9 @@ public class InvClickListener implements Listener {
                     try {
                         Object obj = parser.parse(result);
                         JSONObject jobj = ((JSONObject) obj);
-                        JSONObject obj2 = (JSONObject)jobj.get("result");
+                        JSONObject obj2 = (JSONObject) jobj.get("result");
 
-                        event.getWhoClicked().sendMessage(Messages.PREFIX + "Hier ist dein Link: §c"+obj2.get("url"));
+                        event.getWhoClicked().sendMessage(Messages.PREFIX + "Hier ist dein Link: §c" + obj2.get("url"));
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -263,19 +263,19 @@ public class InvClickListener implements Listener {
                 }
             } else if (id.equalsIgnoreCase("3")) {
                 u.setScoreboardEnabled(!u.isScoreboardEnabled());
-            } else if(id.equalsIgnoreCase("5")) {
+            } else if (id.equalsIgnoreCase("5")) {
                 switch (u.getOocChannelStatus()) {
                     case OFF -> u.setOocChannelStatus(User.ChannelStatusSwitch.RP);
                     case RP -> u.setOocChannelStatus(User.ChannelStatusSwitch.ON);
                     case ON -> u.setOocChannelStatus(User.ChannelStatusSwitch.OFF);
                 }
-            } else if(id.equalsIgnoreCase("6")) {
+            } else if (id.equalsIgnoreCase("6")) {
                 switch (u.getFactionChannelStatus()) {
                     case OFF -> u.setFactionChannelStatus(User.ChannelStatusSwitch.RP);
                     case RP -> u.setFactionChannelStatus(User.ChannelStatusSwitch.ON);
                     case ON -> u.setFactionChannelStatus(User.ChannelStatusSwitch.OFF);
                 }
-            } else if(id.equalsIgnoreCase("7")) {
+            } else if (id.equalsIgnoreCase("7")) {
                 switch (u.getGlobalChannelStatus()) {
                     case OFF -> u.setGlobalChannelStatus(User.ChannelStatusSwitch.RP);
                     case RP -> u.setGlobalChannelStatus(User.ChannelStatusSwitch.ON);

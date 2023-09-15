@@ -17,21 +17,19 @@ public class DeathListener implements Listener {
 
     private final FtsSystem plugin;
 
-    public DeathListener(FtsSystem plugin)
-    {
+    public DeathListener(FtsSystem plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler
-    public void onDeath(PlayerDeathEvent event)
-    {
+    public void onDeath(PlayerDeathEvent event) {
 
         Player bp = event.getEntity();
 
 
         for (Entity nearbyEntity : bp.getLocation().getNearbyEntities(80, 100, 80)) {
-            if(nearbyEntity instanceof Player t) {
+            if (nearbyEntity instanceof Player t) {
                 t.sendMessage(event.deathMessage());
             }
         }

@@ -98,9 +98,9 @@ public class FtsSystem extends JavaPlugin {
         user = new HashMap<>();
         configManager = new ConfigManager(this);
         fileManager = new FileManager(this);
-        if(getServer().getPluginManager().isPluginEnabled("Factions")) {
+        if (getServer().getPluginManager().isPluginEnabled("Factions")) {
             chatManager = new FTSChatManager(this);
-        } else if(getServer().getPluginManager().isPluginEnabled("Towny")) {
+        } else if (getServer().getPluginManager().isPluginEnabled("Towny")) {
             chatManager = new ReichChatManager(this);
             blockreich = true;
         }
@@ -147,15 +147,15 @@ public class FtsSystem extends JavaPlugin {
         while (recipes.hasNext()) {
             Recipe recipe = recipes.next();
 
-            if(recipe instanceof FurnaceRecipe furnaceRecipe) {
+            if (recipe instanceof FurnaceRecipe furnaceRecipe) {
 
-                if(furnaceRecipe.getInput().getType() == Material.RAW_GOLD) {
+                if (furnaceRecipe.getInput().getType() == Material.RAW_GOLD) {
                     recipes.remove();
                 }
 
-            } else if(recipe instanceof BlastingRecipe blastingRecipe) {
+            } else if (recipe instanceof BlastingRecipe blastingRecipe) {
 
-                if(blastingRecipe.getInput().getType() == Material.RAW_GOLD) {
+                if (blastingRecipe.getInput().getType() == Material.RAW_GOLD) {
                     recipes.remove();
                 }
 

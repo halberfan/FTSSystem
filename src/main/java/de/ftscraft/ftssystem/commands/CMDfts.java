@@ -24,7 +24,7 @@ public class CMDfts implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
 
-        if(!(cs instanceof Player p)) {
+        if (!(cs instanceof Player p)) {
             cs.sendMessage("§cDer Command ist nur für Spieler");
             return true;
         }

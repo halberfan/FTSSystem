@@ -28,10 +28,10 @@ public class QuitListener implements Listener {
 
         User u = plugin.getUser(event.getPlayer());
 
-        if(u == null)
+        if (u == null)
             return;
 
-        if(!u.getFights().isEmpty()) {
+        if (!u.getFights().isEmpty()) {
             event.getPlayer().setHealth(0);
             Bukkit.broadcastMessage("§cDer Spieler " + event.getPlayer().getName() + " hat sich im Kampf ausgeloggt und ist deshalb gestorben ;(");
         }
@@ -45,15 +45,15 @@ public class QuitListener implements Listener {
 
         Player p = event.getPlayer();
 
-        if(p.hasPermission("ftssystem.join.lightblue")) {
+        if (p.hasPermission("ftssystem.join.lightblue")) {
             isChanged = true;
             leaveMessage = leaveMessage.replace("%s", ChatColor.AQUA + p.getName());
         }
-        if(p.hasPermission("ftssystem.join.darkred")) {
+        if (p.hasPermission("ftssystem.join.darkred")) {
             isChanged = true;
             leaveMessage = leaveMessage.replace("%s", ChatColor.DARK_RED + p.getName());
         }
-        if(p.hasPermission("ftssystem.join.darkgreen")) {
+        if (p.hasPermission("ftssystem.join.darkgreen")) {
             isChanged = true;
             leaveMessage = leaveMessage.replace("%s", ChatColor.DARK_GREEN + p.getName());
         }
@@ -71,7 +71,7 @@ public class QuitListener implements Listener {
             leaveMessage = leaveMessage.replace("%s", ChatColor.DARK_RED + p.getName());
         }
 
-        if(!isChanged) {
+        if (!isChanged) {
 
             leaveMessage = leaveMessage.replace("%s", ChatColor.GOLD + p.getName());
 

@@ -23,7 +23,7 @@ public class CMDtogglesidebar implements FTSCommand {
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if(!(cs instanceof Player p)) {
+        if (!(cs instanceof Player p)) {
             cs.sendMessage(Messages.ONLY_PLAYER);
             return true;
         }

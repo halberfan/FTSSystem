@@ -22,7 +22,7 @@ public class PremiumManager {
     }
 
     public void addPremiumPlayer(UUID uuid, long duration) {
-        if(premiumPlayers.containsKey(uuid)) {
+        if (premiumPlayers.containsKey(uuid)) {
             premiumPlayers.put(uuid, duration);
             return;
         }
@@ -37,7 +37,7 @@ public class PremiumManager {
     public void checkPremiumPlayers() {
         ArrayList<UUID> uuidsToRemove = new ArrayList<>();
         for (UUID uuid : premiumPlayers.keySet()) {
-            if(premiumPlayers.get(uuid) < System.currentTimeMillis() / 1000) {
+            if (premiumPlayers.get(uuid) < System.currentTimeMillis() / 1000) {
                 uuidsToRemove.add(uuid);
             }
         }

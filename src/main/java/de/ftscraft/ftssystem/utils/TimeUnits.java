@@ -30,8 +30,8 @@ public enum TimeUnits {
     }
 
     public static TimeUnits getTimeUnitByUnit(String unit) {
-        for(TimeUnits a : TimeUnits.values()) {
-            if(a.getUnit().equalsIgnoreCase(unit))
+        for (TimeUnits a : TimeUnits.values()) {
+            if (a.getUnit().equalsIgnoreCase(unit))
                 return a;
         }
         return null;

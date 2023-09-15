@@ -111,8 +111,8 @@ public class CMDvoteban implements CommandExecutor {
                 if (count == 1) {
 
                     cs.sendMessage(Messages.PREFIX + "§cDu bist der einzige der derzeit Abstimmberechtigt ist. Du musst also alleine entscheiden ob die Person gebannt werden soll. " +
-                            "Wenn du das ausnutzen solltest, wirst du sehr wahrscheinlich eine starke Strafe erhalten. Um den Bann durchzuführen gebe " +
-                            "/voteban confirm ein. Sonst, um abzubrechen, /voteban abort");
+                                   "Wenn du das ausnutzen solltest, wirst du sehr wahrscheinlich eine starke Strafe erhalten. Um den Bann durchzuführen gebe " +
+                                   "/voteban confirm ein. Sonst, um abzubrechen, /voteban abort");
 
                 } else {
 
@@ -122,7 +122,7 @@ public class CMDvoteban implements CommandExecutor {
                     }
 
                     cs.sendMessage(Messages.PREFIX + "Um den Voteban durchzuführen, gebe /voteban confirm ein. Um abzubrechen /voteban abort. Bitte nehme zur Kenntnis dass" +
-                            " wenn du diese Funktion ausnutzen solltest, mit einer schweren Strafe rechnen kannst.");
+                                   " wenn du diese Funktion ausnutzen solltest, mit einer schweren Strafe rechnen kannst.");
 
                 }
 
@@ -186,9 +186,9 @@ public class CMDvoteban implements CommandExecutor {
                 if (onlinePlayer.hasPermission("group.burger")) {
                     if (onlinePlayer != starter)
                         onlinePlayer.sendMessage(Messages.PREFIX + "Es wurde ein Votebann gegen den Spieler §c" + target.getName() + " §7gestartet. \n" +
-                                "Wenn du der Meinung bist, dass diese Person (vorerst) gebannt werden sollte, stimme für den Bann mit §c/voteban " + target.getName() + " §7" +
-                                "ab. Bitte sei dir im Klaren dass das dokumentiert wird und bei Missbrauch eine Strafe zu erwarten ist. " +
-                                "Es werden insgesamt §c" + (neededVotes - 1) + "§7 stimmen benötigt.");
+                                                 "Wenn du der Meinung bist, dass diese Person (vorerst) gebannt werden sollte, stimme für den Bann mit §c/voteban " + target.getName() + " §7" +
+                                                 "ab. Bitte sei dir im Klaren dass das dokumentiert wird und bei Missbrauch eine Strafe zu erwarten ist. " +
+                                                 "Es werden insgesamt §c" + (neededVotes - 1) + "§7 stimmen benötigt.");
                 }
             }
 

@@ -30,19 +30,19 @@ public class CMDpasswort implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 
-        if(!(commandSender instanceof Player p)) {
+        if (!(commandSender instanceof Player p)) {
             return true;
         }
 
-        if(args.length == 1) {
+        if (args.length == 1) {
 
-            if(args[0].equalsIgnoreCase(password) || args[0].equalsIgnoreCase(password_blockreich)) {
+            if (args[0].equalsIgnoreCase(password) || args[0].equalsIgnoreCase(password_blockreich)) {
 
                 User user = plugin.getUser(p);
 
                 boolean neuling = !user.isApproved();
 
-                if(neuling) {
+                if (neuling) {
 
                     for (String s : commands) {
 

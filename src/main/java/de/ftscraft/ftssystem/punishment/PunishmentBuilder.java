@@ -23,7 +23,7 @@ public class PunishmentBuilder {
     private String moreInfo;
     private String reason;
 
-    private String  until;
+    private String until;
 
     private boolean proofed = false;
 
@@ -138,8 +138,8 @@ public class PunishmentBuilder {
     }
 
     public void build() {
-        if(!proofed) {
-            creator.sendMessage(Messages.PREFIX+"Irgendwas ist schief gelaufen. (Wahrscheinlich bei der: Bestätigung)");
+        if (!proofed) {
+            creator.sendMessage(Messages.PREFIX + "Irgendwas ist schief gelaufen. (Wahrscheinlich bei der: Bestätigung)");
             return;
         }
         UUID target = UUIDFetcher.getUUID(player);

@@ -4,43 +4,43 @@ main: de.ftscraft.ftssystem.main.FtsSystem
 author: halberfan
 api-version: '1.20'
 depend:
-    - FTSEngine
+  - FTSEngine
 softdepend:
-    - LuckPerms
-    - Factions
-    - ChestShop
-    - dynmap
-    - FTSPest
-    - Towny
-    - PlaceholderAPI
+  - LuckPerms
+  - Factions
+  - ChestShop
+  - dynmap
+  - FTSPest
+  - Towny
+  - PlaceholderAPI
 
 commands:
-    ftssystem:
-    channel:
-    umfrage:
-    togglesidebar:
-    pu:
-    tutorialbook:
-    akte:
-    broadcast:
-        aliases: [bc]
-    roleplay:
-        aliases: [rp]
-    passwort:
-    checkcv:
-    premium:
-    voteban:
-    fts:
-    wartung:
+  ftssystem:
+  channel:
+  umfrage:
+  togglesidebar:
+  pu:
+  tutorialbook:
+  akte:
+  broadcast:
+    aliases: [ bc ]
+  roleplay:
+    aliases: [ rp ]
+  passwort:
+  checkcv:
+  premium:
+  voteban:
+  fts:
+  wartung:
 
-    tc:
-        permission: ftssystem.chat.team
-        description: Der Team-Chat
-    g:
-    l:
-    ooc:
-    fl:
-    sc:
-    setvotehome:
-    votehome:
-    durchsage:
+  tc:
+    permission: ftssystem.chat.team
+    description: Der Team-Chat
+  g:
+  l:
+  ooc:
+  fl:
+  sc:
+  setvotehome:
+  votehome:
+  durchsage:

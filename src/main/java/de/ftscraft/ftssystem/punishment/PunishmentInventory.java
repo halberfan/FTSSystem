@@ -27,16 +27,14 @@ public class PunishmentInventory {
     private final Inventory main;
     private Inventory akte;
 
-    public PunishmentInventory(FtsSystem plugin, String player)
-    {
+    public PunishmentInventory(FtsSystem plugin, String player) {
         this.plugin = plugin;
         this.player = player;
         main = Bukkit.createInventory(null, 9 * 3, "§cPunishment-Menü: " + player);
         akte = Bukkit.createInventory(null, 9 * 6, "§2Akte: " + player);
     }
 
-    private void loadMain()
-    {
+    private void loadMain() {
 
         //Platzhalter
         ItemStack blackglass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1);
@@ -109,8 +107,7 @@ public class PunishmentInventory {
 
     }
 
-    private void loadAkte()
-    {
+    private void loadAkte() {
         akte = Bukkit.createInventory(null, 9 * 6, "§2Akte: " + player);
         PunishmentManager puMa = plugin.getPunishmentManager();
         //Skull
@@ -217,7 +214,7 @@ public class PunishmentInventory {
 
 
         ItemStack printToTelegraph = new ItemBuilder(Material.DROPPER).name("§6Druck mir das aus!").make();
-        akte.setItem(akte.getSize()-1, printToTelegraph);
+        akte.setItem(akte.getSize() - 1, printToTelegraph);
 
         for (int i = 0; i < akte.getSize(); i++) {
             if (akte.getItem(i) == null) {
@@ -227,13 +224,11 @@ public class PunishmentInventory {
 
     }
 
-    public Inventory getInv(PunishmentInvType inv)
-    {
+    public Inventory getInv(PunishmentInvType inv) {
         if (inv == PunishmentInvType.MAIN) {
             loadMain();
             return main;
-        }
-        else if (inv == PunishmentInvType.AKTE) {
+        } else if (inv == PunishmentInvType.AKTE) {
             loadAkte();
             return akte;
         }

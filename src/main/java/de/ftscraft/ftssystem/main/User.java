@@ -147,7 +147,7 @@ public class User {
         if (cfg.contains("globalStatus")) {
             this.globalChannelStatus = ChannelStatusSwitch.valueOf(cfg.getString("globalStatus"));
         }
-        if(cfg.contains("forumId")) {
+        if (cfg.contains("forumId")) {
             this.forumId = cfg.getInt("forumId");
         }
 

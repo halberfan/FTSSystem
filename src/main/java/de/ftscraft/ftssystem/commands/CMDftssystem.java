@@ -120,7 +120,7 @@ public class CMDftssystem implements FTSCommand {
                 }
 
 
-            } else if(args[0].equalsIgnoreCase("dev")) {
+            } else if (args[0].equalsIgnoreCase("dev")) {
                 Player t = Bukkit.getPlayer(args[1]);
                 int ticks = Integer.valueOf(args[2]);
 

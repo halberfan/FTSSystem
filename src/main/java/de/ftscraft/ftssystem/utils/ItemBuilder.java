@@ -37,9 +37,7 @@ public class ItemBuilder {
     /**
      * Init item chainable via given Material parameter.
      *
-     * @param itemType
-     *              the {@link Material} to initiate the instance with.
-     *
+     * @param itemType the {@link Material} to initiate the instance with.
      * @since 1.0
      */
     public ItemBuilder(final Material itemType) {
@@ -50,9 +48,7 @@ public class ItemBuilder {
     /**
      * Init item chainable via given ItemStack parameter.
      *
-     * @param itemStack
-     *              the {@link ItemStack} to initialize the instance with.
-     *
+     * @param itemStack the {@link ItemStack} to initialize the instance with.
      * @since 1.0
      */
     public ItemBuilder(final ItemStack itemStack) {
@@ -73,9 +69,7 @@ public class ItemBuilder {
     /**
      * Changes the Material type of the {@link ItemStack}
      *
-     * @param material
-     *              the new {@link Material} to set for the ItemStack.
-     *
+     * @param material the new {@link Material} to set for the ItemStack.
      * @return the current instance for chainable application.
      * @since 1.0
      */
@@ -87,9 +81,7 @@ public class ItemBuilder {
     /**
      * Changes the {@link ItemStack}s size.
      *
-     * @param itemAmt
-     *              the new Integer count of the ItemStack.
-     *
+     * @param itemAmt the new Integer count of the ItemStack.
      * @return the current instance for chainable application.
      * @since 1.0
      */
@@ -107,9 +99,7 @@ public class ItemBuilder {
     /**
      * Changes the {@link ItemStack}s display name.
      *
-     * @param name
-     *          the new String for the ItemStack's display name to be set to.
-     *
+     * @param name the new String for the ItemStack's display name to be set to.
      * @return the current instance for chainable application.
      * @since 1.0
      */
@@ -122,9 +112,7 @@ public class ItemBuilder {
     /**
      * Adds a line of lore to the {@link ItemStack}
      *
-     * @param lore
-     *          String you want to add to the ItemStack's lore.
-     *
+     * @param lore String you want to add to the ItemStack's lore.
      * @return the current instance for chainable application.
      * @since 1.0
      */
@@ -142,9 +130,7 @@ public class ItemBuilder {
     /**
      * Clears the {@link ItemStack}s lore and replaces it with the defined String array.
      *
-     * @param lores
-     *            String array you want to set the ItemStack's lore to.
-     *
+     * @param lores String array you want to set the ItemStack's lore to.
      * @return the current instance for chainable application.
      * @since 1.0
      */
@@ -163,9 +149,7 @@ public class ItemBuilder {
     /**
      * Changes the durability of the current {@link ItemStack}
      *
-     * @param durability
-     *              the new int amount to set the ItemStack's durability to.
-     *
+     * @param durability the new int amount to set the ItemStack's durability to.
      * @return the current instance for chainable application.
      * @since 1.0
      */
@@ -177,9 +161,7 @@ public class ItemBuilder {
     /**
      * Changes the data value of the {@link ItemStack}
      *
-     * @param data
-     *          the new int data value (parsed as byte) to set the ItemStack's durability to.
-     *
+     * @param data the new int data value (parsed as byte) to set the ItemStack's durability to.
      * @return the current instance for chainable application.
      * @since 1.0
      */
@@ -192,12 +174,8 @@ public class ItemBuilder {
     /**
      * Adds and UnsafeEnchantment to the {@link ItemStack} with a defined level int value.
      *
-     * @param enchantment
-     *              the {@link Enchantment} to add to the ItemStack.
-     *
-     * @param level
-     *          the int amount that the Enchantment's level will be set to.
-     *
+     * @param enchantment the {@link Enchantment} to add to the ItemStack.
+     * @param level       the int amount that the Enchantment's level will be set to.
      * @return the current instance for chainable application.
      * @since 1.0
      */
@@ -209,9 +187,7 @@ public class ItemBuilder {
     /**
      * Adds and UnsafeEnchantment to the {@Link} with a level int value of 1.
      *
-     * @param enchantment
-     *              the {@link Enchantment} to add to the ItemStack.
-     *
+     * @param enchantment the {@link Enchantment} to add to the ItemStack.
      * @return the current instance for chainable application.
      * @since 1.0
      */
@@ -223,12 +199,8 @@ public class ItemBuilder {
     /**
      * Clears all {@link Enchantment}s from the current {@link ItemStack} then adds the defined array of Enchantments to the ItemStack.
      *
-     * @param enchantments
-     *              the Enchantment array to replace any current enchantments applied on the ItemStack.
-     *
-     * @param level
-     *              the int level value for all Enchantments to be set to.
-     *
+     * @param enchantments the Enchantment array to replace any current enchantments applied on the ItemStack.
+     * @param level        the int level value for all Enchantments to be set to.
      * @return the current instance for chainable application.
      * @since 1.0
      */
@@ -243,9 +215,7 @@ public class ItemBuilder {
     /**
      * Clears all {@link Enchantment}s from the current {@link ItemStack} then adds the defined array of Enchantments to the ItemStack with a level int value of 1.
      *
-     * @param enchantments
-     *              the Enchantment array to replace any current enchantments applied on the ItemStack.
-     *
+     * @param enchantments the Enchantment array to replace any current enchantments applied on the ItemStack.
      * @return the current instance for chainable application.
      * @since 1.0
      */
@@ -260,9 +230,7 @@ public class ItemBuilder {
     /**
      * Clears the defined {@link Enchantment} from the {@link ItemStack}
      *
-     * @param enchantment
-     *              the Enchantment to remove from the ItemStack.
-     *
+     * @param enchantment the Enchantment to remove from the ItemStack.
      * @return the current instance for chainable application.
      * @since 1.0
      */
@@ -290,9 +258,7 @@ public class ItemBuilder {
     /**
      * Clears the defined {@link String} of lore from the {@link ItemStack}
      *
-     * @param lore
-     *          the String to be removed from the ItemStack.
-     *
+     * @param lore the String to be removed from the ItemStack.
      * @return the current instance for chainable application.
      * @since 1.0
      */
@@ -317,17 +283,15 @@ public class ItemBuilder {
     /**
      * Sets the {@link Color} of any LEATHER_ARMOR {@link Material} types of the {@link ItemStack}
      *
-     * @param color
-     *          the Color to set the LEATHER_ARMOR ItemStack to.
-     *
+     * @param color the Color to set the LEATHER_ARMOR ItemStack to.
      * @return the current instance for chainable application.
      * @since 1.0
      */
     public ItemBuilder color(final Color color) {
         if (make().getType() == Material.LEATHER_HELMET
-                || make().getType() == Material.LEATHER_CHESTPLATE
-                || make().getType() == Material.LEATHER_LEGGINGS
-                || make().getType() == Material.LEATHER_BOOTS) {
+            || make().getType() == Material.LEATHER_CHESTPLATE
+            || make().getType() == Material.LEATHER_LEGGINGS
+            || make().getType() == Material.LEATHER_BOOTS) {
             LeatherArmorMeta meta = (LeatherArmorMeta) meta();
             meta.setColor(color);
             make().setItemMeta(meta);
@@ -343,9 +307,9 @@ public class ItemBuilder {
      */
     public ItemBuilder clearColor() {
         if (make().getType() == Material.LEATHER_HELMET
-                || make().getType() == Material.LEATHER_CHESTPLATE
-                || make().getType() == Material.LEATHER_LEGGINGS
-                || make().getType() == Material.LEATHER_BOOTS) {
+            || make().getType() == Material.LEATHER_CHESTPLATE
+            || make().getType() == Material.LEATHER_LEGGINGS
+            || make().getType() == Material.LEATHER_BOOTS) {
             LeatherArmorMeta meta = (LeatherArmorMeta) meta();
             meta.setColor(null);
             make().setItemMeta(meta);
@@ -356,9 +320,7 @@ public class ItemBuilder {
     /**
      * Sets the skullOwner {@link SkullMeta} of the current SKULL_ITEM {@link Material} type {@link ItemStack}
      *
-     * @param name
-     *          the {@link String} value to set the SkullOwner meta to for the SKULL_ITEM Material type ItemStack.
-     *
+     * @param name the {@link String} value to set the SkullOwner meta to for the SKULL_ITEM Material type ItemStack.
      * @return the current instance for chainable application
      * @since 1.0
      */

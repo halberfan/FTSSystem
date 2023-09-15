@@ -24,11 +24,11 @@ public class CMDroleplay implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
 
-        if(!(commandSender instanceof Player p)) {
+        if (!(commandSender instanceof Player p)) {
             return true;
         }
 
-        if(p.hasPermission("ftssystem.roleplaymode")) {
+        if (p.hasPermission("ftssystem.roleplaymode")) {
 
             plugin.getScoreboardManager().switchToRoleplayMode(p);
 
