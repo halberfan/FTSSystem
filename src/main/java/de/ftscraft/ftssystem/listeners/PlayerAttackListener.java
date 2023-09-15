@@ -49,20 +49,6 @@ public class PlayerAttackListener implements Listener {
                 }
 
                 // Disable Fighting System
-                /*
-                if (!a.getFights().containsKey(bp)) {
-                    ap.sendMessage("§cDu bist nun im Kampf");
-                }
-                if (b != null) {
-                    if (b.getFights() != null)
-                        if (!b.getFights().containsKey(ap)) {
-                            bp.sendMessage("§cDu bist nun im Kampf");
-                        }
-                }
-
-                a.getFights().put(bp, 20);
-                Objects.requireNonNull(b).getFights().put(ap, 20);
-                */
             }
         }
     }

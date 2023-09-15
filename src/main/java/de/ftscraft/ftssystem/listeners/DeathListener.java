@@ -15,10 +15,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class DeathListener implements Listener {
 
-    private final FtsSystem plugin;
-
     public DeathListener(FtsSystem plugin) {
-        this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 

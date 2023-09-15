@@ -8,11 +8,12 @@ package de.ftscraft.ftssystem.commands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 public class CMDdiscord implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String label, String[] args) {
         return false;
     }
 

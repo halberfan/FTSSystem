@@ -41,10 +41,10 @@ public enum TeamPrefixs {
     REISENDER("§6Reisender", "§6Reisende", "ftsengine.reisender", "036Reisender"),
     NEULING("§6Neuling", "§6Neuling", "ftsengine.neuling", "037Neuling");
 
-    String mprefix;
-    String fprefix;
-    String permission;
-    String teamName;
+    final String mprefix;
+    final String fprefix;
+    final String permission;
+    final String teamName;
 
     TeamPrefixs(String mprefix, String fprefix, String permission, String teamName) {
         this.teamName = teamName;

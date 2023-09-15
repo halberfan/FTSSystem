@@ -199,9 +199,7 @@ public class CMDvoteban implements CommandExecutor {
         public void finish() {
 
             StringBuilder sb = new StringBuilder("Für den Bann haben abgestimmt: ");
-            getVoted().forEach(offlinePlayer -> {
-                sb.append(offlinePlayer.getName()).append(" ");
-            });
+            getVoted().forEach(offlinePlayer -> sb.append(offlinePlayer.getName()).append(" "));
             sb.append("Initiator war: ").append(initiator.getName());
 
             String moreInfo = sb.toString();

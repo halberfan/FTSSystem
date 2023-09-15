@@ -56,9 +56,7 @@ public class FileManager {
         for (String key : premiumCfg.getKeys(false)) {
             premiumCfg.set(key, null);
         }
-        premiumManager.getPremiumPlayers().forEach((uuid, aLong) -> {
-            premiumCfg.set(uuid.toString() + ".time", aLong);
-        });
+        premiumManager.getPremiumPlayers().forEach((uuid, aLong) -> premiumCfg.set(uuid.toString() + ".time", aLong));
 
         try {
             premiumCfg.save(premiumFile);

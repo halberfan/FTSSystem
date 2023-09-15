@@ -107,8 +107,8 @@ public class FTSChatManager extends ChatManager {
         if (!u.getEnabledChannels().contains(channel)) {
             try {
                 u.joinChannel(channel);
-            } catch (Exception ignored) {
-                ignored.printStackTrace();
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         }
 
@@ -124,20 +124,20 @@ public class FTSChatManager extends ChatManager {
             for (User b : plugin.getUser().values()) {
                 if (b.getEnabledChannels().contains(channel)) {
                     switch (channel.getPrefix().toLowerCase()) {
-                        case "g":
+                        case "g" -> {
                             if (b.getGlobalChannelStatus() == User.ChannelStatusSwitch.OFF) {
                                 continue;
                             } else if (b.getGlobalChannelStatus() == User.ChannelStatusSwitch.RP && plugin.getScoreboardManager().isInRoleplayMode(b.getPlayer())) {
                                 continue;
                             }
-                            break;
-                        case "ooc":
+                        }
+                        case "ooc" -> {
                             if (b.getOocChannelStatus() == User.ChannelStatusSwitch.OFF) {
                                 continue;
                             } else if (b.getOocChannelStatus() == User.ChannelStatusSwitch.RP && plugin.getScoreboardManager().isInRoleplayMode(b.getPlayer())) {
                                 continue;
                             }
-                            break;
+                        }
                     }
                     if (channel.getRange() != -1) {
                         if (b.getPlayer().getWorld().getName().equalsIgnoreCase(u.getPlayer().getWorld().getName())) {

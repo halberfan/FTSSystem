@@ -91,26 +91,15 @@ public class PunishmentManager {
     public void loadPunishmentFromData(UUID player, PunishmentType type, String reason, String author, String moreInfo, long time, long until, int id, boolean active) {
         Punishment pu;
         switch (type) {
-            case WARN:
-                pu = new Warn(reason, author, time, player, moreInfo, id, active);
-                break;
-            case TEMPWARN:
-                pu = new TempWarn(reason, author, time, until, player, moreInfo, id, active);
-                break;
-            case NOTE:
-                pu = new Note(reason, author, time, player, moreInfo, id, active);
-                break;
-            case TEMPBAN:
-                pu = new TempBan(player, reason, author, time, until, moreInfo, id, active);
-                break;
-            case TEMPMUTE:
-                pu = new TempMute(reason, author, time, until, player, moreInfo, id, active);
-                break;
-            case BAN:
-                pu = new Ban(reason, author, time, player, moreInfo, id, active);
-                break;
-            default:
+            case WARN -> pu = new Warn(reason, author, time, player, moreInfo, id, active);
+            case TEMPWARN -> pu = new TempWarn(reason, author, time, until, player, moreInfo, id, active);
+            case NOTE -> pu = new Note(reason, author, time, player, moreInfo, id, active);
+            case TEMPBAN -> pu = new TempBan(player, reason, author, time, until, moreInfo, id, active);
+            case TEMPMUTE -> pu = new TempMute(reason, author, time, until, player, moreInfo, id, active);
+            case BAN -> pu = new Ban(reason, author, time, player, moreInfo, id, active);
+            default -> {
                 return;
+            }
         }
         addPunishmentToPlayer(player, pu);
     }
@@ -166,7 +155,7 @@ public class PunishmentManager {
             //If i == 0 -> Its the Number
             if (i == 0) {
                 try {
-                    until = Integer.valueOf(u[i]);
+                    until = Integer.parseInt(u[i]);
                 } catch (NumberFormatException ex) {
                     return false;
                 }
@@ -242,7 +231,7 @@ public class PunishmentManager {
             //If i == 0 -> Its the Number
             if (i == 0) {
                 try {
-                    until = Integer.valueOf(u[i]);
+                    until = Integer.parseInt(u[i]);
                 } catch (NumberFormatException ex) {
                     return false;
                 }
@@ -337,7 +326,7 @@ public class PunishmentManager {
             //If i == 0 -> Its the Number
             if (i == 0) {
                 try {
-                    until = Integer.valueOf(u[i]);
+                    until = Integer.parseInt(u[i]);
                 } catch (NumberFormatException ex) {
                     return false;
                 }

@@ -22,7 +22,7 @@ public class Runner implements Runnable {
 
     private int time_to_update = Variables.SCOREBOARD_UPDATE_COOLDOWN;
 
-    FTSScoreboardManager scoreboardManager;
+    final FTSScoreboardManager scoreboardManager;
 
     public Runner(FtsSystem plugin) {
         this.plugin = plugin;

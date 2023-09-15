@@ -99,7 +99,7 @@ public class PunishmentBuilder {
             //If i == 0 -> Its the Number
             if (i == 0) {
                 try {
-                    until = Integer.valueOf(u[i]);
+                    until = Integer.parseInt(u[i]);
                 } catch (NumberFormatException ex) {
                     return 0;
                 }

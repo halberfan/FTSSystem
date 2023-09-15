@@ -199,7 +199,7 @@ public class InvClickListener implements Listener {
                 }
 
 
-                int id = Integer.valueOf(meta.getLore().get(3));
+                int id = Integer.parseInt(meta.getLore().get(3));
 
                 Punishment pun = plugin.getPunishmentManager().getPunishmentById(id);
 

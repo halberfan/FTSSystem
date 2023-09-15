@@ -168,7 +168,7 @@ public class PunishmentInventory {
                     mwarn.setDisplayName("§6Warn");
                     mwarn.setLore(Arrays.asList("§cErstellt von: " + a.getAuthor(), "§cAm: " + a.createdOn(), "§cGrund: " + a.getReason(), String.valueOf(a.getID()), "§eDeaktiviert: " + (!a.isActive() ? "Ja" : "Nein")));
                     warn.setItemMeta(mwarn);
-                    int id = Integer.valueOf(mwarn.getLore().get(3));
+                    int id = Integer.parseInt(mwarn.getLore().get(3));
                     if (!akte.contains(warn))
                         map.put(id, warn);
                 }

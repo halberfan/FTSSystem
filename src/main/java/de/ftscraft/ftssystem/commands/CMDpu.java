@@ -42,17 +42,11 @@ public class CMDpu implements FTSCommand {
         }
 
         switch (args.length) {
-            case 1:
+            case 1 -> {
                 OfflinePlayer t = Bukkit.getOfflinePlayer(args[0]);
-                if (t == null) {
-                    p.sendMessage(Messages.PLAYER_NOT_FOUND);
-                    return true;
-                }
-
                 p.openInventory(new PunishmentInventory(plugin, t.getName()).getInv(PunishmentInventory.PunishmentInvType.MAIN));
-
-                break;
-            case 2:
+            }
+            case 2 -> {
                 if (args[0].equalsIgnoreCase("remove")) {
 
                     p.sendMessage("§cBist du sicher? Das kann nicht rückgängig gemacht werden! Wenn ja, klicke: ");
@@ -62,8 +56,8 @@ public class CMDpu implements FTSCommand {
                     tc.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pu remove " + args[1] + " confirm"));
                     p.spigot().sendMessage(tc);
                 }
-                break;
-            case 3:
+            }
+            case 3 -> {
                 if (args[0].equalsIgnoreCase("remove") && args[2].equalsIgnoreCase("confirm")) {
 
                     Integer id = Integer.valueOf(args[1]);
@@ -82,7 +76,7 @@ public class CMDpu implements FTSCommand {
 
 
                 }
-                break;
+            }
         }
 
         return false;

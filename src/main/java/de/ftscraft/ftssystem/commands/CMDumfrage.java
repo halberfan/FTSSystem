@@ -116,7 +116,7 @@ public class CMDumfrage implements FTSCommand {
                     int id;
                     //Get Id from Args
                     try {
-                        id = Integer.valueOf(args[1]);
+                        id = Integer.parseInt(args[1]);
                     } catch (NumberFormatException e) {
                         cs.sendMessage(Messages.NUMBER);
                         return true;

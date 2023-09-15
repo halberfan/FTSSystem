@@ -111,7 +111,6 @@ public class FtsSystem extends JavaPlugin {
         forumHook = new ForumHook(this);
         new CMDakte(this);
         new CMDbroadcast(this);
-        new CMDchannel(this);
         new CMDcheckcv(this);
         new CMDdurchsage(this);
         new CMDfts(this);
@@ -121,7 +120,6 @@ public class FtsSystem extends JavaPlugin {
         new CMDpu(this);
         new CMDroleplay(this);
         new CMDsetvotehome(this);
-        new CMDtogglesidebar(this);
         new CMDtutorialbuch(this);
         new CMDumfrage(this);
         new CMDvoteban(this);

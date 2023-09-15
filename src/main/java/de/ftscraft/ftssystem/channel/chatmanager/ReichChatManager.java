@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 
 public class ReichChatManager extends ChatManager {
 
-    TownyAPI api;
+    final TownyAPI api;
 
     public ReichChatManager(FtsSystem plugin) {
         super(plugin);
@@ -116,8 +116,8 @@ public class ReichChatManager extends ChatManager {
         if (!u.getEnabledChannels().contains(channel)) {
             try {
                 u.joinChannel(channel);
-            } catch (Exception ignored) {
-                ignored.printStackTrace();
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         }
 

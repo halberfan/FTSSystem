@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class CMDsetvotehome implements CommandExecutor {
 
-    FtsSystem plugin;
+    final FtsSystem plugin;
 
     public CMDsetvotehome(FtsSystem plugin) {
         this.plugin = plugin;

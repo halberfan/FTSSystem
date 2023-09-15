@@ -28,15 +28,17 @@ public class Messages {
 
     public static final String
             HELP_CHANNEL =
-            "§c---- §e/channel §c---- \n" +
-            "§d/channel list §r§5- Listet alle Channel aus\n" +
-            "§d/channel join <Name> §r§5- Joint einem Channel \n" +
-            "§d/channel leave <Name> §r§5- Verlässt ein Channel \n" +
-            "§d/channel aktiv <Name> §r§5- Setzt einen Channel aktiv",
+            """
+                    §c---- §e/channel §c----\s
+                    §d/channel list §r§5- Listet alle Channel aus
+                    §d/channel join <Name> §r§5- Joint einem Channel\s
+                    §d/channel leave <Name> §r§5- Verlässt ein Channel\s
+                    §d/channel aktiv <Name> §r§5- Setzt einen Channel aktiv""",
 
     HELP_FTSSYSTEM =
-            "§c---- §e/ftssystem §c----\n" +
-            "§e/ftssystem fake <Join|Leave> §b- Täusche alle Spieler mit diesem einfachen Trick!\n" +
-            "§e/ftssystem mute <Spieler> §b- Mute einen Spieler mit diesem Command.";
+            """
+                    §c---- §e/ftssystem §c----
+                    §e/ftssystem fake <Join|Leave> §b- Täusche alle Spieler mit diesem einfachen Trick!
+                    §e/ftssystem mute <Spieler> §b- Mute einen Spieler mit diesem Command.""";
 
 }

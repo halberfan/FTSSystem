@@ -48,7 +48,7 @@ public class PunishmentIO {
             }
             int id;
             try {
-                id = Integer.valueOf(key);
+                id = Integer.parseInt(key);
             } catch (NumberFormatException ex) {
                 ex.printStackTrace();
                 return true;

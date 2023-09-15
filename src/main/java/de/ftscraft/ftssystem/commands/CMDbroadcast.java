@@ -12,6 +12,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class CMDbroadcast implements CommandExecutor {
 
@@ -23,7 +24,7 @@ public class CMDbroadcast implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean onCommand(CommandSender cs, @NotNull Command cmd, @NotNull String label, String[] args) {
 
         if (!cs.hasPermission("ftssystem.broadcast")) {
             cs.sendMessage(Messages.PREFIX + "Dafür hast du keine Rechte. Du kannst sie aber in Lohengrin für kurze Zeit auch kaufen");

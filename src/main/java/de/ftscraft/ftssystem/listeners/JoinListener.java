@@ -84,15 +84,7 @@ public class JoinListener implements Listener {
             if (umfrage != null && umfrage.isStarted()) {
                 if (!umfrage.getTeilnehmer().contains(event.getPlayer())) {
 
-                    Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-                        @Override
-                        public void run() {
-
-
-                            umfrage.sendToPlayer(event.getPlayer());
-
-                        }
-                    }, 20 * 2);
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> umfrage.sendToPlayer(event.getPlayer()), 20 * 2);
 
 
                 }
