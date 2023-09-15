@@ -1,5 +1,5 @@
 name: FTSSystem
-version: 1.11
+version: ${project.version}
 main: de.ftscraft.ftssystem.main.FtsSystem
 author: halberfan
 api-version: '1.20'

@@ -6,7 +6,7 @@
 
     <groupId>de.ftscraft.ftssystem</groupId>
     <artifactId>FTSSystem</artifactId>
-    <version>1.11</version>
+    <version>1.11.1</version>
     <build>
         <plugins>
             <plugin>
@@ -46,6 +46,12 @@
                 </executions>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
 
 
