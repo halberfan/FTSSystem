@@ -24,7 +24,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class JoinListener implements Listener {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public JoinListener(FtsSystem plugin) {
         this.plugin = plugin;
@@ -112,8 +112,7 @@ public class JoinListener implements Listener {
         if(p.hasPermission("group.premium")) {
             LuckPerms luckPerms = LuckPermsProvider.get();
             for (Node node : luckPerms.getUserManager().getUser(p.getUniqueId()).getNodes()) {
-                if(node instanceof InheritanceNode) {
-                    InheritanceNode inheritanceNode = (InheritanceNode) node;
+                if(node instanceof InheritanceNode inheritanceNode) {
                     if(inheritanceNode.getGroupName().equalsIgnoreCase("Premium")) {
                         premiumManager.addPremiumPlayer(p.getUniqueId(), inheritanceNode.getExpiry().getEpochSecond());
                     }

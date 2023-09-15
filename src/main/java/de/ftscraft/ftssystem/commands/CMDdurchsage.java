@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class CMDdurchsage implements CommandExecutor {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public CMDdurchsage(FtsSystem plugin) {
         this.plugin = plugin;

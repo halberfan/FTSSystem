@@ -21,7 +21,7 @@ import org.bukkit.entity.Player;
 
 public class CMDpu implements FTSCommand {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public CMDpu(FtsSystem plugin) {
         this.plugin = plugin;
@@ -31,12 +31,10 @@ public class CMDpu implements FTSCommand {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
 
-        if(!(cs instanceof Player)) {
+        if(!(cs instanceof Player p)) {
             cs.sendMessage(Messages.ONLY_PLAYER);
             return true;
         }
-
-        Player p = (Player)cs;
 
         if(!p.hasPermission("ftssystem.punish")) {
             p.sendMessage(Messages.NO_PERM);

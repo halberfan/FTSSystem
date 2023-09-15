@@ -18,9 +18,9 @@ import java.util.Arrays;
 public class CMDpasswort implements CommandExecutor {
 
     private final String password = "beere", password_blockreich = "glasflasche";
-    private ArrayList<String> commands = new ArrayList<>(Arrays.asList("lp user %s promote spieler", "warp taufeld %s"));
+    private final ArrayList<String> commands = new ArrayList<>(Arrays.asList("lp user %s promote spieler", "warp taufeld %s"));
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public CMDpasswort(FtsSystem plugin) {
         this.plugin = plugin;
@@ -30,11 +30,9 @@ public class CMDpasswort implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 
-        if(!(commandSender instanceof Player)) {
+        if(!(commandSender instanceof Player p)) {
             return true;
         }
-
-        Player p = (Player) commandSender;
 
         if(args.length == 1) {
 

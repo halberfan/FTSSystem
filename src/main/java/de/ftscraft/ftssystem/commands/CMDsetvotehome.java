@@ -21,7 +21,7 @@ public class CMDsetvotehome implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
-        if(!(cs instanceof Player)) {
+        if(!(cs instanceof Player player)) {
             return true;
         }
 
@@ -29,7 +29,6 @@ public class CMDsetvotehome implements CommandExecutor {
             return true;
         }
 
-        Player player = (Player) cs;
         User user = plugin.getUser(player);
 
         user.setVotehome(player.getLocation());

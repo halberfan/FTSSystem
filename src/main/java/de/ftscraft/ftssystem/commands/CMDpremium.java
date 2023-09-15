@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 
 public class CMDpremium implements CommandExecutor {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public CMDpremium(FtsSystem plugin) {
         this.plugin = plugin;
@@ -25,12 +25,10 @@ public class CMDpremium implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
 
-        if (!(cs instanceof Player)) {
+        if (!(cs instanceof Player p)) {
             cs.sendMessage("Dieser Command ist nur für Spieler :)");
             return true;
         }
-
-        Player p = (Player) cs;
 
         User u = plugin.getUser(p);
 

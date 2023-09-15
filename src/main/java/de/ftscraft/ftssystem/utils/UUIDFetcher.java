@@ -14,8 +14,8 @@ import java.util.UUID;
 
 public class UUIDFetcher {
 
-    private static Map<String, UUID> uuidCache = new HashMap<>();
-    private static Map<UUID, String> nameCache = new HashMap<>();
+    private static final Map<String, UUID> uuidCache = new HashMap<>();
+    private static final Map<UUID, String> nameCache = new HashMap<>();
 
     private String name;
     private UUID id;

@@ -11,7 +11,7 @@ public enum ConfigVal {
     WARTUNG("wartung"),
     MESSAGES("messages");
 
-    private String path;
+    private final String path;
 
     ConfigVal(String path) {
         this.path = path;

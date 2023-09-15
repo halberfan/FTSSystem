@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 public class CMDroleplay implements CommandExecutor {
 
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public CMDroleplay(FtsSystem plugin) {
         this.plugin = plugin;
@@ -24,11 +24,9 @@ public class CMDroleplay implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
 
-        if(!(commandSender instanceof Player)) {
+        if(!(commandSender instanceof Player p)) {
             return true;
         }
-
-        Player p = (Player) commandSender;
 
         if(p.hasPermission("ftssystem.roleplaymode")) {
 

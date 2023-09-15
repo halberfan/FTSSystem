@@ -147,16 +147,14 @@ public class FtsSystem extends JavaPlugin {
         while (recipes.hasNext()) {
             Recipe recipe = recipes.next();
 
-            if(recipe instanceof FurnaceRecipe) {
+            if(recipe instanceof FurnaceRecipe furnaceRecipe) {
 
-                FurnaceRecipe furnaceRecipe = (FurnaceRecipe) recipe;
                 if(furnaceRecipe.getInput().getType() == Material.RAW_GOLD) {
                     recipes.remove();
                 }
 
-            } else if(recipe instanceof BlastingRecipe) {
+            } else if(recipe instanceof BlastingRecipe blastingRecipe) {
 
-                BlastingRecipe blastingRecipe = (BlastingRecipe) recipe;
                 if(blastingRecipe.getInput().getType() == Material.RAW_GOLD) {
                     recipes.remove();
                 }

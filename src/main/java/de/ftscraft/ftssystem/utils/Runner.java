@@ -16,7 +16,7 @@ import java.util.Random;
 
 public class Runner implements Runnable {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     private int time_to_message = Variables.AUTO_MESSAGE_COOLDOWN;
 

@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 
 public class CMDumfrage implements FTSCommand {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public CMDumfrage(FtsSystem plugin) {
         this.plugin = plugin;
@@ -24,12 +24,10 @@ public class CMDumfrage implements FTSCommand {
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (!(cs instanceof Player)) {
+        if (!(cs instanceof Player p)) {
             cs.sendMessage(Messages.ONLY_PLAYER);
             return true;
         }
-
-        Player p = (Player) cs;
 
         if (args.length >= 1) {
             if (args[0].equalsIgnoreCase("create")) {

@@ -19,7 +19,7 @@ import org.bukkit.event.player.PlayerLoginEvent;
 
 public class LoginListener implements Listener {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public LoginListener(FtsSystem plugin) {
         this.plugin = plugin;

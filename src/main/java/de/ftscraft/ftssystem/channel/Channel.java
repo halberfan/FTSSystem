@@ -9,18 +9,18 @@ import de.ftscraft.ftssystem.main.FtsSystem;
 
 public class Channel {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
-    private String name;
-    private String prefix;
-    private String format;
+    private final String name;
+    private final String prefix;
+    private final String format;
 
-    private boolean defaultChannel;
+    private final boolean defaultChannel;
 
-    private String permission;
-    private int range;
+    private final String permission;
+    private final int range;
 
-    private ChannelType type;
+    private final ChannelType type;
 
     public Channel(FtsSystem plugin, String name, String prefix, String format, boolean defaultChannel, String permission, int range, ChannelType type) {
         this.plugin = plugin;

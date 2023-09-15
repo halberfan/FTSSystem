@@ -43,7 +43,7 @@ public class FTSChatManager extends ChatManager {
 
     public List<Channel> channels = new ArrayList<>();
 
-    private FPlayers fPlayers;
+    private final FPlayers fPlayers;
 
     public FTSChatManager(FtsSystem plugin) {
         super(plugin);

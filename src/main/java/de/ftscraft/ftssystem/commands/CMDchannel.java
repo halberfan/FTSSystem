@@ -17,7 +17,7 @@ import org.bukkit.entity.Player;
 
 public class CMDchannel implements FTSCommand {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public CMDchannel(FtsSystem plugin) {
         this.plugin = plugin;
@@ -25,12 +25,10 @@ public class CMDchannel implements FTSCommand {
     }
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (!(cs instanceof Player)) {
+        if (!(cs instanceof Player p)) {
             cs.sendMessage(Messages.ONLY_PLAYER);
             return true;
         }
-
-        Player p = (Player) cs;
 
         if (args.length >= 1) {
             if (args[0].equalsIgnoreCase("list")) {

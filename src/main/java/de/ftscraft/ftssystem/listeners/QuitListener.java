@@ -16,7 +16,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class QuitListener implements Listener {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public QuitListener(FtsSystem plugin) {
         this.plugin = plugin;

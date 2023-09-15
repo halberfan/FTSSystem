@@ -17,12 +17,12 @@ import java.util.*;
 
 public class PunishmentManager {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
     private int latestID;
 
-    private HashMap<UUID, List<Punishment>> players = new HashMap<>();
-    private HashMap<Player, PunishmentBuilder> builders;
-    private PunishmentIO punishmentIO;
+    private final HashMap<UUID, List<Punishment>> players = new HashMap<>();
+    private final HashMap<Player, PunishmentBuilder> builders;
+    private final PunishmentIO punishmentIO;
 
     public PunishmentManager(FtsSystem plugin)
     {
@@ -121,8 +121,7 @@ public class PunishmentManager {
 
     public void clearData(UUID player)
     {
-        if (players.containsKey(player))
-            players.remove(player);
+        players.remove(player);
     }
 
     public boolean addWarn(String reason, String author, String playerName, String moreInfo)

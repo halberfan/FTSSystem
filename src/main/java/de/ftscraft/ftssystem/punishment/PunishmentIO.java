@@ -15,10 +15,10 @@ import java.util.UUID;
 
 public class PunishmentIO {
 
-    private File folder;
+    private final File folder;
 
-    private FtsSystem plugin;
-    private PunishmentManager punishmentManager;
+    private final FtsSystem plugin;
+    private final PunishmentManager punishmentManager;
 
     PunishmentIO(FtsSystem plugin, PunishmentManager manager) {
         this.plugin = plugin;

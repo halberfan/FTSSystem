@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 public class CMDtutorialbuch implements CommandExecutor {
 
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     private String bookCommand;
 
@@ -27,7 +27,7 @@ public class CMDtutorialbuch implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
 
-        if(!(cs instanceof Player)) {
+        if(!(cs instanceof Player p)) {
 
             cs.sendMessage("§cDieser Befehl ist nur für SPieler");
             return true;
@@ -39,9 +39,6 @@ public class CMDtutorialbuch implements CommandExecutor {
             return true;
 
         }
-
-
-        Player p = (Player) cs;
 
 
         String name = p.getName();

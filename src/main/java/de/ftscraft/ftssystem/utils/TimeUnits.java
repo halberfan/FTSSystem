@@ -13,8 +13,8 @@ public enum TimeUnits {
     DAY(1000 * 60 * 60 * 24, "d"),
     WEEK(1000 * 60 * 60 * 24 * 7, "w");
 
-    private int millis;
-    private String unit;
+    private final int millis;
+    private final String unit;
 
     TimeUnits(int millis, String unit) {
         this.millis = millis;

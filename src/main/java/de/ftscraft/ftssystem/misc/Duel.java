@@ -9,14 +9,14 @@ import de.ftscraft.ftssystem.main.User;
 
 public class Duel {
 
-    private User challenger;
+    private final User challenger;
     private int challengerHealth;
-    private User opponent;
+    private final User opponent;
     private int opponentHealth;
 
-    private DuelStatus status;
+    private final DuelStatus status;
 
-    private int timer;
+    private final int timer;
 
     public Duel(User challenger, User opponent) {
         this.challenger = challenger;

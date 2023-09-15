@@ -16,7 +16,7 @@ import org.bukkit.event.entity.EntityTargetEvent;
 
 public class PlayerAttackListener implements Listener {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public PlayerAttackListener(FtsSystem plugin) {
         this.plugin = plugin;
@@ -26,13 +26,10 @@ public class PlayerAttackListener implements Listener {
     @EventHandler
     public void onAttack(EntityDamageByEntityEvent event) {
 
-        if (event.getDamager() instanceof Player) {
+        if (event.getDamager() instanceof Player ap) {
 
-            Player ap = (Player) event.getDamager();
+            if (event.getEntity() instanceof Player bp) {
 
-            if (event.getEntity() instanceof Player) {
-
-                Player bp = (Player) event.getEntity();
                 if (bp.hasMetadata("NPC")) {
                     return;
                 }
@@ -49,7 +46,6 @@ public class PlayerAttackListener implements Listener {
                 if (b.hasNoobProtection()) {
                     ap.sendMessage(Messages.PREFIX + "Dieser Spieler hat noch Noobschutz!");
                     event.setCancelled(true);
-                    return;
                 }
 
                 // Disable Fighting System
@@ -75,9 +71,8 @@ public class PlayerAttackListener implements Listener {
     @EventHandler
     public void onTarget(EntityTargetEvent event) {
 
-        if (event.getTarget() instanceof Player) {
+        if (event.getTarget() instanceof Player p) {
 
-            Player p = (Player) event.getTarget();
             User user = plugin.getUser(p);
 
             if (user.hasNoobProtection()) {

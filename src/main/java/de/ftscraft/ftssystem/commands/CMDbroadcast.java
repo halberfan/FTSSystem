@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 
 public class CMDbroadcast implements CommandExecutor {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public CMDbroadcast(FtsSystem plugin) {
         this.plugin = plugin;

@@ -15,7 +15,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class DeathListener implements Listener {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public DeathListener(FtsSystem plugin)
     {
@@ -31,8 +31,7 @@ public class DeathListener implements Listener {
 
 
         for (Entity nearbyEntity : bp.getLocation().getNearbyEntities(80, 100, 80)) {
-            if(nearbyEntity instanceof Player) {
-                Player t = (Player) nearbyEntity;
+            if(nearbyEntity instanceof Player t) {
                 t.sendMessage(event.deathMessage());
             }
         }

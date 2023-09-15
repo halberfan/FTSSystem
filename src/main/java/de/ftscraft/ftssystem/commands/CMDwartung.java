@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class CMDwartung implements CommandExecutor {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public CMDwartung(FtsSystem plugin) {
         this.plugin = plugin;

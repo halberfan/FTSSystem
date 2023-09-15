@@ -13,7 +13,7 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 public class SneakListener implements Listener {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public SneakListener(FtsSystem plugin) {
         this.plugin = plugin;

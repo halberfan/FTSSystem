@@ -15,7 +15,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 public class CommandListener implements Listener {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public CommandListener(FtsSystem plugin) {
         this.plugin = plugin;

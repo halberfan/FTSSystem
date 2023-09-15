@@ -12,13 +12,13 @@ import java.util.UUID;
 
 public class TempMute implements Punishment, Temporary {
 
-    private String reason;
-    private String author;
-    private String moreInfo;
-    private long time;
-    private long until;
-    private int ID;
-    private UUID player;
+    private final String reason;
+    private final String author;
+    private final String moreInfo;
+    private final long time;
+    private final long until;
+    private final int ID;
+    private final UUID player;
     private boolean active;
 
     TempMute(String reason, String author, long time, long until, UUID player, String moreInfo, int id, boolean active) {

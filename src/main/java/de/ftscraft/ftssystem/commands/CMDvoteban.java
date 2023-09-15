@@ -137,10 +137,10 @@ public class CMDvoteban implements CommandExecutor {
 
     class VoteBan {
 
-        private OfflinePlayer target;
-        private OfflinePlayer initiator;
-        private ArrayList<OfflinePlayer> voted;
-        private int neededVotes;
+        private final OfflinePlayer target;
+        private final OfflinePlayer initiator;
+        private final ArrayList<OfflinePlayer> voted;
+        private final int neededVotes;
         private boolean started;
 
         public VoteBan(OfflinePlayer target, OfflinePlayer initiator, int neededVotes) {

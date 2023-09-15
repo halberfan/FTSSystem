@@ -15,16 +15,16 @@ import java.util.UUID;
 
 public class FileManager {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
-    private File book_file;
-    private FileConfiguration book_cfg;
+    private final File book_file;
+    private final FileConfiguration book_cfg;
 
-    private File premiumFile;
-    private FileConfiguration premiumCfg;
+    private final File premiumFile;
+    private final FileConfiguration premiumCfg;
 
-    private File secretsFile;
-    private FileConfiguration secretsConfig;
+    private final File secretsFile;
+    private final FileConfiguration secretsConfig;
 
     String bookCMD;
     String bookBlockreichCMD;

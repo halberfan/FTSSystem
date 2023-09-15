@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 
 public class ChatListener implements Listener {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public ChatListener(FtsSystem plugin) {
         this.plugin = plugin;

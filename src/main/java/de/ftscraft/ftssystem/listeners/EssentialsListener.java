@@ -18,7 +18,7 @@ import org.bukkit.event.Listener;
 
 public class EssentialsListener implements Listener {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public EssentialsListener(FtsSystem plugin) {
         this.plugin = plugin;

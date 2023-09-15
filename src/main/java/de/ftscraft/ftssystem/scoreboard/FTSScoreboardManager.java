@@ -23,15 +23,15 @@ import java.util.List;
 
 public class FTSScoreboardManager {
 
-    private List<Player> playerInRpMode = new ArrayList<>();
+    private final List<Player> playerInRpMode = new ArrayList<>();
 
-    private List<Player> blinkingPlayers = new ArrayList<>();
+    private final List<Player> blinkingPlayers = new ArrayList<>();
 
-    private List<Player> sneakingPlayers = new ArrayList<>();
+    private final List<Player> sneakingPlayers = new ArrayList<>();
 
-    private List<Player> afkPlayers = new ArrayList<>();
+    private final List<Player> afkPlayers = new ArrayList<>();
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public FTSScoreboardManager(FtsSystem plugin) {
         this.plugin = plugin;
@@ -167,9 +167,7 @@ public class FTSScoreboardManager {
             if (!afkPlayers.contains(p))
                 afkPlayers.add(p);
         } else {
-            if (afkPlayers.contains(p)) {
-                afkPlayers.remove(p);
-            }
+            afkPlayers.remove(p);
         }
 
         setPlayerPrefix(p);

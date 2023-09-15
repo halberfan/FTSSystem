@@ -10,12 +10,12 @@ import java.util.UUID;
 
 public class Note implements Punishment {
 
-    private String reason;
-    private String author;
-    private String moreInfo;
-    private long time;
-    private UUID player;
-    private int ID;
+    private final String reason;
+    private final String author;
+    private final String moreInfo;
+    private final long time;
+    private final UUID player;
+    private final int ID;
     private boolean active;
 
     Note(String reason, String author, long time, UUID player, String moreInfo, int id, boolean active) {

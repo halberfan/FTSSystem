@@ -34,9 +34,9 @@ import java.util.UUID;
 
 public class InvClickListener implements Listener {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
-    private ArrayList<OfflinePlayer> printed = new ArrayList<>();
+    private final ArrayList<OfflinePlayer> printed = new ArrayList<>();
 
     public InvClickListener(FtsSystem plugin) {
         this.plugin = plugin;
@@ -147,7 +147,7 @@ public class InvClickListener implements Listener {
                     String content = "[{\"tag\":\"p\",\"children\":[\"REPLACE\"]}]";
                     //content = "[{\"tag\":\"p\",\"children\":[\"Strafe+1:+Griefing+\\nStrafe+2:+Trolling\"]}]";
 
-                    StringBuilder stringBuilder = new StringBuilder("");
+                    StringBuilder stringBuilder = new StringBuilder();
                     for (int i = 0; i < plugin.getPunishmentManager().getPlayers().get(p).size(); i++) {
                         Punishment pun = plugin.getPunishmentManager().getPlayers().get(p).get(i);
                         stringBuilder.append("Strafe ").append(i + 1).append(": ").append(pun.getReason()).append("%5Cn");
@@ -214,8 +214,7 @@ public class InvClickListener implements Listener {
                 p.sendMessage("§cTyp: §e" + pun.getType().toString());
                 p.sendMessage("§cWeitere Informationen: §e" + pun.getMoreInformation());
                 p.sendMessage("§cErstellt am: §e" + pun.createdOn());
-                if (pun instanceof Temporary) {
-                    Temporary temp = (Temporary) pun;
+                if (pun instanceof Temporary temp) {
                     p.sendMessage("§cBis: §e" + temp.untilAsCalString());
                 }
                 TextComponent rTC = new TextComponent("Deaktivieren");
@@ -255,10 +254,7 @@ public class InvClickListener implements Listener {
 
             String id = meta.getLore().get(meta.getLore().size() - 1).replace("§", "");
             if (id.equalsIgnoreCase("1")) {
-                if (u.isMsgSoundEnabled()) {
-                    u.setMsgSound(false);
-                } else
-                    u.setMsgSound(true);
+                u.setMsgSound(!u.isMsgSoundEnabled());
             } else if (id.equalsIgnoreCase("2")) {
                 switch (u.getDisturbStatus()) {
                     case OFF -> u.setDisturbStatus(User.ChannelStatusSwitch.RP);
@@ -266,10 +262,7 @@ public class InvClickListener implements Listener {
                     case ON -> u.setDisturbStatus(User.ChannelStatusSwitch.OFF);
                 }
             } else if (id.equalsIgnoreCase("3")) {
-                if (u.isScoreboardEnabled())
-                    u.setScoreboardEnabled(false);
-                else
-                    u.setScoreboardEnabled(true);
+                u.setScoreboardEnabled(!u.isScoreboardEnabled());
             } else if(id.equalsIgnoreCase("5")) {
                 switch (u.getOocChannelStatus()) {
                     case OFF -> u.setOocChannelStatus(User.ChannelStatusSwitch.RP);

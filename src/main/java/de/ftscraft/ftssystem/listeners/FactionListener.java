@@ -18,7 +18,7 @@ import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 
 public class FactionListener implements Listener {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public FactionListener(FtsSystem plugin) {
         this.plugin = plugin;

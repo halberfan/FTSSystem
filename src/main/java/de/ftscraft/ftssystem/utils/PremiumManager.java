@@ -10,8 +10,8 @@ import java.util.UUID;
 
 public class PremiumManager {
 
-    private FtsSystem plugin;
-    private HashMap<UUID, Long> premiumPlayers = new HashMap<>();
+    private final FtsSystem plugin;
+    private final HashMap<UUID, Long> premiumPlayers = new HashMap<>();
 
     public PremiumManager(FtsSystem plugin) {
         this.plugin = plugin;

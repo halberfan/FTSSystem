@@ -13,7 +13,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 
 public class EntityDeathListener implements Listener {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public EntityDeathListener(FtsSystem plugin)
     {

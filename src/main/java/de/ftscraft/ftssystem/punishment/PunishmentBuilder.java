@@ -29,8 +29,8 @@ public class PunishmentBuilder {
 
     private PunishmentManager.ChatProgress chatProgress;
 
-    private FtsSystem plugin;
-    private Player creator;
+    private final FtsSystem plugin;
+    private final Player creator;
 
     public PunishmentBuilder(FtsSystem plugin, PunishmentType type, Player player, String target) {
         this.type = type;
