@@ -30,6 +30,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 public class FtsSystem extends JavaPlugin {
 
@@ -62,12 +63,16 @@ public class FtsSystem extends JavaPlugin {
     private PremiumManager premiumManager;
     private ForumHook forumHook;
 
+    private static Logger pluginLogger;
+
     @Override
     public void onEnable() {
         super.onEnable();
         hook();
-        init();
 
+        pluginLogger = getLogger();
+
+        init();
     }
 
 
@@ -273,4 +278,9 @@ public class FtsSystem extends JavaPlugin {
     public ForumHook getForumHook() {
         return forumHook;
     }
+
+    public static Logger getPluginLogger() {
+        return pluginLogger;
+    }
+
 }
