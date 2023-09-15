@@ -11,6 +11,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,9 +19,9 @@ import java.util.Arrays;
 public class CMDpasswort implements CommandExecutor {
 
     private final String password = "beere", password_blockreich = "glasflasche";
-    private ArrayList<String> commands = new ArrayList<>(Arrays.asList("lp user %s promote spieler", "warp taufeld %s"));
+    private final ArrayList<String> commands = new ArrayList<>(Arrays.asList("lp user %s promote spieler", "warp taufeld %s"));
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public CMDpasswort(FtsSystem plugin) {
         this.plugin = plugin;
@@ -28,23 +29,21 @@ public class CMDpasswort implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, String[] args) {
 
-        if(!(commandSender instanceof Player)) {
+        if (!(commandSender instanceof Player p)) {
             return true;
         }
 
-        Player p = (Player) commandSender;
+        if (args.length == 1) {
 
-        if(args.length == 1) {
-
-            if(args[0].equalsIgnoreCase(password) || args[0].equalsIgnoreCase(password_blockreich)) {
+            if (args[0].equalsIgnoreCase(password) || args[0].equalsIgnoreCase(password_blockreich)) {
 
                 User user = plugin.getUser(p);
 
                 boolean neuling = !user.isApproved();
 
-                if(neuling) {
+                if (neuling) {
 
                     for (String s : commands) {
 

@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 
 public class CMDumfrage implements FTSCommand {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public CMDumfrage(FtsSystem plugin) {
         this.plugin = plugin;
@@ -24,12 +24,10 @@ public class CMDumfrage implements FTSCommand {
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (!(cs instanceof Player)) {
+        if (!(cs instanceof Player p)) {
             cs.sendMessage(Messages.ONLY_PLAYER);
             return true;
         }
-
-        Player p = (Player) cs;
 
         if (args.length >= 1) {
             if (args[0].equalsIgnoreCase("create")) {
@@ -72,7 +70,7 @@ public class CMDumfrage implements FTSCommand {
                     cs.sendMessage(Messages.UMFRAGE_ADDED_OPTION.replace("%s", stringBuilder.toString()));
                 }
             } else if (args[0].equalsIgnoreCase("start")) {
-                if(!cs.hasPermission("ftssystem.umfrage")) {
+                if (!cs.hasPermission("ftssystem.umfrage")) {
                     return true;
                 }
                 if (args.length == 1) {
@@ -89,7 +87,7 @@ public class CMDumfrage implements FTSCommand {
                     cs.sendMessage(Messages.UMFRAGE_STATED);
                 }
             } else if (args[0].equalsIgnoreCase("end")) {
-                if(!cs.hasPermission("ftssystem.umfrage")) {
+                if (!cs.hasPermission("ftssystem.umfrage")) {
                     return true;
                 }
                 if (args.length == 1) {
@@ -118,7 +116,7 @@ public class CMDumfrage implements FTSCommand {
                     int id;
                     //Get Id from Args
                     try {
-                        id = Integer.valueOf(args[1]);
+                        id = Integer.parseInt(args[1]);
                     } catch (NumberFormatException e) {
                         cs.sendMessage(Messages.NUMBER);
                         return true;
@@ -126,9 +124,9 @@ public class CMDumfrage implements FTSCommand {
                     //Add Vote to Umfrage
                     umfrage.addVote(p, id);
                 }
-            } else if(args[0].equalsIgnoreCase("resend")) {
+            } else if (args[0].equalsIgnoreCase("resend")) {
 
-                if(!cs.hasPermission("ftssystem.umfrage")) {
+                if (!cs.hasPermission("ftssystem.umfrage")) {
                     return true;
                 }
 

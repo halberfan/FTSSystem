@@ -6,7 +6,6 @@ import de.ftscraft.ftssystem.utils.FTSCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -17,7 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class CMDftssystem implements FTSCommand {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public CMDftssystem(FtsSystem plugin) {
         this.plugin = plugin;
@@ -61,11 +60,9 @@ public class CMDftssystem implements FTSCommand {
 
                         ItemMeta meta = item.getItemMeta();
 
-                        if (meta instanceof Damageable) {
+                        if (meta instanceof Damageable dmg) {
 
                             int maxDurability = item.getType().getMaxDurability();
-
-                            Damageable dmg = (Damageable) meta;
 
                             dmg.setDamage(maxDurability);
 
@@ -123,9 +120,9 @@ public class CMDftssystem implements FTSCommand {
                 }
 
 
-            } else if(args[0].equalsIgnoreCase("dev")) {
+            } else if (args[0].equalsIgnoreCase("dev")) {
                 Player t = Bukkit.getPlayer(args[1]);
-                int ticks = Integer.valueOf(args[2]);
+                int ticks = Integer.parseInt(args[2]);
 
                 t.setStatistic(Statistic.PLAY_ONE_MINUTE, ticks);
             }

@@ -15,7 +15,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 public class CommandListener implements Listener {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public CommandListener(FtsSystem plugin) {
         this.plugin = plugin;
@@ -25,9 +25,9 @@ public class CommandListener implements Listener {
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent event) {
 
-        if(event.getMessage().equalsIgnoreCase("/home")) {
+        if (event.getMessage().equalsIgnoreCase("/home")) {
             User user = plugin.getUser(event.getPlayer());
-            if(!user.getFights().isEmpty()) {
+            if (!user.getFights().isEmpty()) {
                 event.getPlayer().sendMessage("§cDu darfst dich nicht im Kampf tpn");
                 event.setCancelled(true);
             }
@@ -36,11 +36,11 @@ public class CommandListener implements Listener {
         String[] command = event.getMessage().replaceFirst("/", "").split(" ");
         String cmd = command[0];
 
-        if(command.length == 1) {
+        if (command.length == 1) {
             Channel c = plugin.getChatManager().getChannel(cmd);
-            if(c == null)
+            if (c == null)
                 return;
-            if(!event.getPlayer().hasPermission(c.getPermission())) {
+            if (!event.getPlayer().hasPermission(c.getPermission())) {
                 event.getPlayer().sendMessage(Messages.NO_PERM);
                 return;
             }
@@ -49,19 +49,19 @@ public class CommandListener implements Listener {
             event.getPlayer().sendMessage(Messages.NOW_ACTIVE_CHANNEL.replace("%s", c.getName()));
         } else {
             Channel c = plugin.getChatManager().getChannel(cmd);
-            if(c == null)
+            if (c == null)
                 return;
-            if(!event.getPlayer().hasPermission(c.getPermission())) {
+            if (!event.getPlayer().hasPermission(c.getPermission())) {
                 event.getPlayer().sendMessage(Messages.NO_PERM);
                 return;
             }
             event.setCancelled(true);
-            if(!plugin.getUser(event.getPlayer()).getEnabledChannels().contains(c)) {
+            if (!plugin.getUser(event.getPlayer()).getEnabledChannels().contains(c)) {
                 plugin.getUser(event.getPlayer()).joinChannel(c);
                 return;
             }
             StringBuilder msg = new StringBuilder();
-            for(int i = 1; i < command.length; i++) {
+            for (int i = 1; i < command.length; i++) {
                 msg.append(" ").append(command[i]);
             }
             msg = new StringBuilder(msg.toString().replaceFirst(" ", ""));

@@ -12,10 +12,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class CMDbroadcast implements CommandExecutor {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public CMDbroadcast(FtsSystem plugin) {
         this.plugin = plugin;
@@ -23,10 +24,10 @@ public class CMDbroadcast implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean onCommand(CommandSender cs, @NotNull Command cmd, @NotNull String label, String[] args) {
 
-        if(!cs.hasPermission("ftssystem.broadcast")) {
-            cs.sendMessage(Messages.PREFIX+"Dafür hast du keine Rechte. Du kannst sie aber in Lohengrin für kurze Zeit auch kaufen");
+        if (!cs.hasPermission("ftssystem.broadcast")) {
+            cs.sendMessage(Messages.PREFIX + "Dafür hast du keine Rechte. Du kannst sie aber in Lohengrin für kurze Zeit auch kaufen");
             return true;
         }
 
@@ -38,7 +39,7 @@ public class CMDbroadcast implements CommandExecutor {
                 if (i == args.length - 1) {
                     builder.append(args[i]);
                 } else
-                    builder.append(args[i] + " ");
+                    builder.append(args[i]).append(" ");
             }
 
             for (Player onlinePlayer : plugin.getServer().getOnlinePlayers()) {

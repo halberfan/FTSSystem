@@ -18,9 +18,9 @@ import java.util.List;
 
 public abstract class ChatManager {
 
-    public List<Channel> channels = new ArrayList<>();
+    public final List<Channel> channels = new ArrayList<>();
 
-    FtsSystem plugin;
+    final FtsSystem plugin;
 
     public ChatManager(FtsSystem plugin) {
         this.plugin = plugin;
@@ -82,8 +82,8 @@ public abstract class ChatManager {
                 Channel c = new Channel(plugin, a, prefix, format, defaultChannel, permission, range, channelType);
                 channels.add(c);
             }
-        } catch (Exception ignored) {
-            ignored.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

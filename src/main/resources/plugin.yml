@@ -4,43 +4,61 @@ main: de.ftscraft.ftssystem.main.FtsSystem
 author: halberfan
 api-version: '1.20'
 depend:
-    - FTSEngine
+  - FTSEngine
 softdepend:
-    - LuckPerms
-    - Factions
-    - ChestShop
-    - dynmap
-    - FTSPest
-    - Towny
-    - PlaceholderAPI
+  - LuckPerms
+  - Factions
+  - ChestShop
+  - dynmap
+  - FTSPest
+  - Towny
+  - PlaceholderAPI
 
 commands:
-    ftssystem:
-    channel:
-    umfrage:
-    togglesidebar:
-    pu:
-    tutorialbook:
-    akte:
-    broadcast:
-        aliases: [bc]
-    roleplay:
-        aliases: [rp]
-    passwort:
-    checkcv:
-    premium:
-    voteban:
-    fts:
-    wartung:
-
-    tc:
-        permission: ftssystem.chat.team
-        description: Der Team-Chat
-    g:
-    l:
-    ooc:
-    fl:
-    sc:
-    setvotehome:
-    votehome:
-    durchsage:
+  ftssystem:
+    description: Kleinigkeiten für Teamler
+  umfrage:
+    description: Erstellt eine Umfrage
+  pu:
+    description: Öffnet das Punishment Menü für Teamler
+  tutorialbook:
+    description: Gibt das Tutorialbuch
+  akte:
+    description: Zeigt dir deine Akte an
+  broadcast:
+    aliases: [ bc ]
+    description: Schalte eine Nachricht die an alle Spieler gesendet wird
+  roleplay:
+    aliases: [ rp ]
+    description: Gehe damit in den "Roleplay-Modus"
+  passwort:
+    description: Gebe das Passwort ein um dich freizuschalten
+  checkcv:
+    description: Überprüft die angegebene CV im Ausweis und promotet ggf. zum Bürger
+  premium:
+    description: Allerhand Nützlichkeiten für Premium-Spieler
+  voteban:
+    description: Startet oder stimmt für einen Voteban eines Spielers
+  fts:
+    description: Allerhand Nützlichkeiten rund um FTS
+  wartung:
+    description: Schaltet den Server in den Wartungsmodus.
+  tc:
+    permission: ftssystem.chat.team
+    description: Der Team-Chat
+  g:
+    description: Schalte den Global-Chat als deinen aktiven Channel
+  l:
+    description: Schalte den Lokal-Chat als deinen aktiven Channel
+  ooc:
+    description: Schalte den OOC-Chat als deinen aktiven Channel
+  fl:
+    description: Schalte den Flüster-Chat als deinen aktiven Channel
+  sc:
+    description: Schalte den Schreien-Chat als deinen aktiven Channel
+  setvotehome:
+    description: Setzt den Punkt deines Vote-Homes
+  votehome:
+    description: Teleportiert, wenn du es freigeschaltet hast, dich zu deinem Vote-Home
+  durchsage:
+    description: Lässt neue Durchsagen einfügen und welche löschen

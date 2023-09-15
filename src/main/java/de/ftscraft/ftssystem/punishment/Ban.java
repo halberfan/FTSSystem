@@ -20,13 +20,13 @@ public class Ban implements Punishment {
         this.active = active;
     }
 
-    private String reason;
-    private String author;
-    private long time;
-    private UUID player;
-    private String moreInfo;
+    private final String reason;
+    private final String author;
+    private final long time;
+    private final UUID player;
+    private final String moreInfo;
     private boolean active;
-    private int ID;
+    private final int ID;
 
     @Override
     public PunishmentType getType() {
@@ -78,7 +78,7 @@ public class Ban implements Punishment {
         int hour = cal.get(Calendar.HOUR_OF_DAY);
         int min = cal.get(Calendar.MINUTE);
 
-        return day+"."+(month+1)+" "+year+" - " + hour + ":" + min;
+        return day + "." + (month + 1) + " " + year + " - " + hour + ":" + min;
     }
 
     @Override

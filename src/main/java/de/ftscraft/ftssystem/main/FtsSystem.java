@@ -98,9 +98,9 @@ public class FtsSystem extends JavaPlugin {
         user = new HashMap<>();
         configManager = new ConfigManager(this);
         fileManager = new FileManager(this);
-        if(getServer().getPluginManager().isPluginEnabled("Factions")) {
+        if (getServer().getPluginManager().isPluginEnabled("Factions")) {
             chatManager = new FTSChatManager(this);
-        } else if(getServer().getPluginManager().isPluginEnabled("Towny")) {
+        } else if (getServer().getPluginManager().isPluginEnabled("Towny")) {
             chatManager = new ReichChatManager(this);
             blockreich = true;
         }
@@ -111,7 +111,6 @@ public class FtsSystem extends JavaPlugin {
         forumHook = new ForumHook(this);
         new CMDakte(this);
         new CMDbroadcast(this);
-        new CMDchannel(this);
         new CMDcheckcv(this);
         new CMDdurchsage(this);
         new CMDfts(this);
@@ -121,7 +120,6 @@ public class FtsSystem extends JavaPlugin {
         new CMDpu(this);
         new CMDroleplay(this);
         new CMDsetvotehome(this);
-        new CMDtogglesidebar(this);
         new CMDtutorialbuch(this);
         new CMDumfrage(this);
         new CMDvoteban(this);
@@ -147,17 +145,15 @@ public class FtsSystem extends JavaPlugin {
         while (recipes.hasNext()) {
             Recipe recipe = recipes.next();
 
-            if(recipe instanceof FurnaceRecipe) {
+            if (recipe instanceof FurnaceRecipe furnaceRecipe) {
 
-                FurnaceRecipe furnaceRecipe = (FurnaceRecipe) recipe;
-                if(furnaceRecipe.getInput().getType() == Material.RAW_GOLD) {
+                if (furnaceRecipe.getInput().getType() == Material.RAW_GOLD) {
                     recipes.remove();
                 }
 
-            } else if(recipe instanceof BlastingRecipe) {
+            } else if (recipe instanceof BlastingRecipe blastingRecipe) {
 
-                BlastingRecipe blastingRecipe = (BlastingRecipe) recipe;
-                if(blastingRecipe.getInput().getType() == Material.RAW_GOLD) {
+                if (blastingRecipe.getInput().getType() == Material.RAW_GOLD) {
                     recipes.remove();
                 }
 

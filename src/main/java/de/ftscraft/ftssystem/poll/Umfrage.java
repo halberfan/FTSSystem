@@ -14,20 +14,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
-import static de.ftscraft.ftssystem.utils.Utils.sendMessageToAllExceptDisturb;
-import static de.ftscraft.ftssystem.utils.Utils.sendMessageToAllPlayers;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static de.ftscraft.ftssystem.utils.Utils.sendMessageToAllExceptDisturb;
+
 public class Umfrage {
 
-    private String frage;
-    private ArrayList<String> antwortmoglichkeiten;
-    private HashMap<String, Integer> antworten;
-    private ArrayList<Player> teilnehmer;
+    private final String frage;
+    private final ArrayList<String> antwortmoglichkeiten;
+    private final HashMap<String, Integer> antworten;
+    private final ArrayList<Player> teilnehmer;
     private boolean started = false;
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public Umfrage(String frage, FtsSystem plugin) {
         this.frage = frage;

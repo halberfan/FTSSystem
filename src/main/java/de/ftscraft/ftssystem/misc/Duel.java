@@ -6,18 +6,17 @@
 package de.ftscraft.ftssystem.misc;
 
 import de.ftscraft.ftssystem.main.User;
-import org.bukkit.entity.Player;
 
 public class Duel {
 
-    private User challenger;
+    private final User challenger;
     private int challengerHealth;
-    private User opponent;
+    private final User opponent;
     private int opponentHealth;
 
-    private DuelStatus status;
+    private final DuelStatus status;
 
-    private int timer;
+    private final int timer;
 
     public Duel(User challenger, User opponent) {
         this.challenger = challenger;
@@ -27,13 +26,11 @@ public class Duel {
     }
 
 
-
     public enum DuelStatus {
 
         REQUEST, PREPARATION, FIGHT, END
 
     }
-
 
 
 }

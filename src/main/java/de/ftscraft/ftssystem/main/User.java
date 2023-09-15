@@ -32,13 +32,13 @@ public class User {
     private ChannelStatusSwitch factionChannelStatus = ChannelStatusSwitch.ON;
     private ChannelStatusSwitch oocChannelStatus = ChannelStatusSwitch.ON;
     private Channel activeChannel;
-    private List<Channel> enabledChannels;
+    private final List<Channel> enabledChannels;
     private Location votehome;
     private boolean turnedServerMessagesOn;
     private FTSMenuInventory menu;
     private int forumId = -1;
 
-    private HashMap<Player, Integer> fights;
+    private final HashMap<Player, Integer> fights;
 
     public User(FtsSystem plugin, Player p) {
         this.player = p;
@@ -63,7 +63,7 @@ public class User {
 
     public void save() {
 
-        File file = new File(plugin.getDataFolder() + "//user//" + player.getUniqueId().toString() + ".yml");
+        File file = new File(plugin.getDataFolder() + "//user//" + player.getUniqueId() + ".yml");
         YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 
         //Chat
@@ -106,7 +106,7 @@ public class User {
     }
 
     private void getData() {
-        File file = new File(plugin.getDataFolder() + "//user//" + player.getUniqueId().toString() + ".yml");
+        File file = new File(plugin.getDataFolder() + "//user//" + player.getUniqueId() + ".yml");
         YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
         if (!file.exists()) {
 
@@ -147,7 +147,7 @@ public class User {
         if (cfg.contains("globalStatus")) {
             this.globalChannelStatus = ChannelStatusSwitch.valueOf(cfg.getString("globalStatus"));
         }
-        if(cfg.contains("forumId")) {
+        if (cfg.contains("forumId")) {
             this.forumId = cfg.getInt("forumId");
         }
 

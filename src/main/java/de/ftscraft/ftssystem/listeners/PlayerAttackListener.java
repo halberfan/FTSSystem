@@ -14,12 +14,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 
-import java.util.HashMap;
-import java.util.Objects;
-
 public class PlayerAttackListener implements Listener {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public PlayerAttackListener(FtsSystem plugin) {
         this.plugin = plugin;
@@ -29,13 +26,10 @@ public class PlayerAttackListener implements Listener {
     @EventHandler
     public void onAttack(EntityDamageByEntityEvent event) {
 
-        if (event.getDamager() instanceof Player) {
+        if (event.getDamager() instanceof Player ap) {
 
-            Player ap = (Player) event.getDamager();
+            if (event.getEntity() instanceof Player bp) {
 
-            if (event.getEntity() instanceof Player) {
-
-                Player bp = (Player) event.getEntity();
                 if (bp.hasMetadata("NPC")) {
                     return;
                 }
@@ -52,24 +46,9 @@ public class PlayerAttackListener implements Listener {
                 if (b.hasNoobProtection()) {
                     ap.sendMessage(Messages.PREFIX + "Dieser Spieler hat noch Noobschutz!");
                     event.setCancelled(true);
-                    return;
                 }
 
                 // Disable Fighting System
-                /*
-                if (!a.getFights().containsKey(bp)) {
-                    ap.sendMessage("§cDu bist nun im Kampf");
-                }
-                if (b != null) {
-                    if (b.getFights() != null)
-                        if (!b.getFights().containsKey(ap)) {
-                            bp.sendMessage("§cDu bist nun im Kampf");
-                        }
-                }
-
-                a.getFights().put(bp, 20);
-                Objects.requireNonNull(b).getFights().put(ap, 20);
-                */
             }
         }
     }
@@ -78,9 +57,8 @@ public class PlayerAttackListener implements Listener {
     @EventHandler
     public void onTarget(EntityTargetEvent event) {
 
-        if (event.getTarget() instanceof Player) {
+        if (event.getTarget() instanceof Player p) {
 
-            Player p = (Player) event.getTarget();
             User user = plugin.getUser(p);
 
             if (user.hasNoobProtection()) {

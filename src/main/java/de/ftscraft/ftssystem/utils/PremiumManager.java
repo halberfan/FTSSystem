@@ -3,17 +3,15 @@ package de.ftscraft.ftssystem.utils;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import kong.unirest.UnirestException;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
 public class PremiumManager {
 
-    private FtsSystem plugin;
-    private HashMap<UUID, Long> premiumPlayers = new HashMap<>();
+    private final FtsSystem plugin;
+    private final HashMap<UUID, Long> premiumPlayers = new HashMap<>();
 
     public PremiumManager(FtsSystem plugin) {
         this.plugin = plugin;
@@ -24,7 +22,7 @@ public class PremiumManager {
     }
 
     public void addPremiumPlayer(UUID uuid, long duration) {
-        if(premiumPlayers.containsKey(uuid)) {
+        if (premiumPlayers.containsKey(uuid)) {
             premiumPlayers.put(uuid, duration);
             return;
         }
@@ -39,7 +37,7 @@ public class PremiumManager {
     public void checkPremiumPlayers() {
         ArrayList<UUID> uuidsToRemove = new ArrayList<>();
         for (UUID uuid : premiumPlayers.keySet()) {
-            if(premiumPlayers.get(uuid) < System.currentTimeMillis() / 1000) {
+            if (premiumPlayers.get(uuid) < System.currentTimeMillis() / 1000) {
                 uuidsToRemove.add(uuid);
             }
         }

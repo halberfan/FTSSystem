@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 
 public class ChatListener implements Listener {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public ChatListener(FtsSystem plugin) {
         this.plugin = plugin;
@@ -40,13 +40,12 @@ public class ChatListener implements Listener {
             event.setCancelled(true);
             PunishmentBuilder prog = plugin.getPunishmentManager().getBuilders().get(event.getPlayer());
             switch (prog.getChatProgress()) {
-                case REASON:
+                case REASON -> {
                     prog.setReason(event.getMessage());
                     event.getPlayer().sendMessage(Messages.PREFIX + "Okay. Bitte schreibe jetzt weitere Infos (zB Beweise, wer es Bemerkt hat). Schreibe wenn es nicht in den Chat passt ein + am Ende. Dann kannst du mit der nächsten Nachricht weiterschreiben");
                     prog.setChatProgress(PunishmentManager.ChatProgress.MOREINFO);
-                    break;
-                case MOREINFO:
-
+                }
+                case MOREINFO -> {
                     if (event.getMessage().endsWith("+")) {
                         if (prog.getMoreInfo() == null)
                             prog.setMoreInfo("");
@@ -66,7 +65,6 @@ public class ChatListener implements Listener {
                             return;
                         }
                     }
-
                     prog.setChatProgress(PunishmentManager.ChatProgress.PROOF);
                     event.getPlayer().sendMessage(Messages.PREFIX + "Bitte überprüfe nochmal deine Daten. Du kannst diese später NICHT ändern. Schreibe dann Ja oder Nein");
                     event.getPlayer().sendMessage(Messages.PREFIX + "Target: §e" + prog.getPlayer());
@@ -74,13 +72,9 @@ public class ChatListener implements Listener {
                     event.getPlayer().sendMessage(Messages.PREFIX + "Weitere Infos: §e" + prog.getMoreInfo());
                     if (prog.getUntil() != null)
                         event.getPlayer().sendMessage(Messages.PREFIX + "Zeitraum: §e" + Utils.convertToTime(prog.getUntilInMillis()));
-
-
-                    break;
-                case TIME:
-
+                }
+                case TIME -> {
                     prog.setUntil(event.getMessage());
-
                     prog.setChatProgress(PunishmentManager.ChatProgress.PROOF);
                     event.getPlayer().sendMessage(Messages.PREFIX + "Bitte überprüfe nochmal deine Daten. Du kannst diese später NICHT ändern. Schreibe dann Ja oder Nein");
                     event.getPlayer().sendMessage(Messages.PREFIX + "Target: §e" + prog.getPlayer());
@@ -88,9 +82,8 @@ public class ChatListener implements Listener {
                     event.getPlayer().sendMessage(Messages.PREFIX + "Weitere Infos: §e" + prog.getMoreInfo());
                     if (prog.getUntil() != null)
                         event.getPlayer().sendMessage(Messages.PREFIX + "Zeitraum: §e" + Utils.convertToTime(prog.getUntilInMillis()));
-
-                    break;
-                case PROOF:
+                }
+                case PROOF -> {
                     if (event.getMessage().equalsIgnoreCase("Ja")) {
 
                         prog.setProofed(true);
@@ -104,7 +97,7 @@ public class ChatListener implements Listener {
                         prog.abort();
                         event.getPlayer().sendMessage(Messages.PREFIX + "Okay. Das Setup wurde abgebrochen. Wenn du es erneut versuchen willst, gebe wieder /pu SPIELER ein");
                     }
-                    break;
+                }
             }
         }
 

@@ -1,6 +1,5 @@
 package de.ftscraft.ftssystem.utils.ForumHook;
 
-import com.google.gson.Gson;
 import de.ftscraft.ftssystem.commands.CMDcheckcv;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.utils.PremiumManager;
@@ -23,7 +22,7 @@ public class ForumHook {
     private String apiUser;
     private int premiumGroupId;
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public ForumHook(FtsSystem plugin) {
         this.plugin = plugin;
@@ -47,12 +46,12 @@ public class ForumHook {
 
         StringBuilder usersToDelete = new StringBuilder();
         for (String name : usersInGroup) {
-            if(!premiumUsers.contains(name)) {
+            if (!premiumUsers.contains(name)) {
                 usersToDelete.append(name).append(",");
             }
         }
 
-        if(usersToAdd.length() > 0) {
+        if (usersToAdd.length() > 0) {
             usersToAdd.deleteCharAt(usersToAdd.length() - 1);
         }
 
@@ -91,7 +90,7 @@ public class ForumHook {
 
     public void addUserToPremiumGroup(String username) throws UnirestException {
 
-        String jsonRequest = "{\"usernames\": \""+ username + "\"}";
+        String jsonRequest = "{\"usernames\": \"" + username + "\"}";
 
         HttpResponse<JsonNode> jsonPutResponse = Unirest.put("https://forum.ftscraft.de/groups/{X}/members.json".replace("{X}", String.valueOf(premiumGroupId)))
                 .header("accept", "application/json")
@@ -109,7 +108,7 @@ public class ForumHook {
                 .header("Api-Username", apiUser)
                 .header("Api-Key", apiKey)
                 .asJson();
-        if(jsonGetResponse.getStatus() >= 400) {
+        if (jsonGetResponse.getStatus() >= 400) {
             return CMDcheckcv.Response.WRONG_URL;
         }
 
@@ -119,15 +118,15 @@ public class ForumHook {
         JSONObject createdBy = object.getJSONObject("details").getJSONObject("created_by");
         String postedBy = createdBy.getString("username");
 
-        if(tags == null || tags.length() == 0) {
+        if (tags == null || tags.length() == 0) {
             return CMDcheckcv.Response.NOT_ACCEPTED;
         }
 
-        if(!tags.getString(0).equalsIgnoreCase("angenommen")) {
+        if (!tags.getString(0).equalsIgnoreCase("angenommen")) {
             return CMDcheckcv.Response.NOT_ACCEPTED;
         }
 
-        if(!name.equalsIgnoreCase(postedBy)) {
+        if (!name.equalsIgnoreCase(postedBy)) {
             return CMDcheckcv.Response.NOT_FROM_PLAYER;
         }
 

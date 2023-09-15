@@ -11,15 +11,14 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.UUID;
 
 public class PunishmentIO {
 
-    private File folder;
+    private final File folder;
 
-    private FtsSystem plugin;
-    private PunishmentManager punishmentManager;
+    private final FtsSystem plugin;
+    private final PunishmentManager punishmentManager;
 
     PunishmentIO(FtsSystem plugin, PunishmentManager manager) {
         this.plugin = plugin;
@@ -42,14 +41,14 @@ public class PunishmentIO {
             String author = cfg.getString("punishment." + key + ".author");
             String moreInfo = cfg.getString("punishment." + key + ".moreInfo");
             long time = cfg.getLong("punishment." + key + ".creation");
-            boolean active = cfg.getBoolean("punishment."+key+".active");
+            boolean active = cfg.getBoolean("punishment." + key + ".active");
             long until = 0;
             if (cfg.contains("punishment." + key + ".until")) {
                 until = cfg.getLong("punishment." + key + ".until");
             }
             int id;
             try {
-                id = Integer.valueOf(key);
+                id = Integer.parseInt(key);
             } catch (NumberFormatException ex) {
                 ex.printStackTrace();
                 return true;
@@ -70,7 +69,7 @@ public class PunishmentIO {
             cfg.set("punishment." + a.getID() + ".author", a.getAuthor());
             cfg.set("punishment." + a.getID() + ".moreInfo", a.getMoreInformation());
             cfg.set("punishment." + a.getID() + ".creation", a.getTime());
-            cfg.set("punishment."+a.getID()+".active", a.isActive());
+            cfg.set("punishment." + a.getID() + ".active", a.isActive());
             if (a instanceof Temporary) {
                 cfg.set("punishment." + a.getID() + ".until", ((Temporary) a).untilInMillis());
             }

@@ -20,7 +20,7 @@ public class ConfigManager {
 
     private boolean wartung = false;
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public ConfigManager(FtsSystem plugin) {
         this.plugin = plugin;

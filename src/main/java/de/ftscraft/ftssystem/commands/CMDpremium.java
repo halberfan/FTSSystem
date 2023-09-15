@@ -12,10 +12,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class CMDpremium implements CommandExecutor {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public CMDpremium(FtsSystem plugin) {
         this.plugin = plugin;
@@ -23,14 +24,12 @@ public class CMDpremium implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String label, String[] args) {
 
-        if (!(cs instanceof Player)) {
+        if (!(cs instanceof Player p)) {
             cs.sendMessage("Dieser Command ist nur für Spieler :)");
             return true;
         }
-
-        Player p = (Player) cs;
 
         User u = plugin.getUser(p);
 
@@ -71,10 +70,10 @@ public class CMDpremium implements CommandExecutor {
 
         return
                 Messages.PREFIX + "Hilfestellung für /premium: \n" +
-                        "§7/premium automessage §e- §7Schalte die automatischen Servernachrichten an/aus!\n" +
-                        "§7/item §e- §7Benenne deine Items um!\n" +
-                        "§7/hat §e- §7Zieh dir den Block, den du derzeit in der Hand hast auf den Kopf!\n" +
-                        "§7/es §e- §7Verändere Schilder ohne sie komplett neu hinbauen zu müssen!";
+                "§7/premium automessage §e- §7Schalte die automatischen Servernachrichten an/aus!\n" +
+                "§7/item §e- §7Benenne deine Items um!\n" +
+                "§7/hat §e- §7Zieh dir den Block, den du derzeit in der Hand hast auf den Kopf!\n" +
+                "§7/es §e- §7Verändere Schilder ohne sie komplett neu hinbauen zu müssen!";
 
     }
 

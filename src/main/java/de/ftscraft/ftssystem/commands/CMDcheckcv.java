@@ -35,7 +35,7 @@ public class CMDcheckcv implements CommandExecutor {
 
         if (playersThatUsedCommand.contains(p)) {
             p.sendMessage(Messages.PREFIX + "Du hast diesen Command erst neulich benutzt und es hat nicht geklappt. Bitte behebe den Fehler den wir dir vorhin angezeigt haben" +
-                    " und führe den Command nach dem nächsten Restart nochmal aus.");
+                          " und führe den Command nach dem nächsten Restart nochmal aus.");
             return true;
         }
 

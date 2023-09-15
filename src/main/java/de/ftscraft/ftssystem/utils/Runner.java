@@ -16,13 +16,13 @@ import java.util.Random;
 
 public class Runner implements Runnable {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     private int time_to_message = Variables.AUTO_MESSAGE_COOLDOWN;
 
     private int time_to_update = Variables.SCOREBOARD_UPDATE_COOLDOWN;
 
-    FTSScoreboardManager scoreboardManager;
+    final FTSScoreboardManager scoreboardManager;
 
     public Runner(FtsSystem plugin) {
         this.plugin = plugin;
@@ -36,9 +36,9 @@ public class Runner implements Runnable {
         time_to_message--;
         time_to_update--;
 
-        if(time_to_message == 0) {
+        if (time_to_message == 0) {
 
-            if(plugin.getConfigManager().getAutoMessages().size() > 1) {
+            if (plugin.getConfigManager().getAutoMessages().size() > 1) {
 
                 time_to_message = Variables.AUTO_MESSAGE_COOLDOWN;
                 int index = new Random().nextInt(plugin.getConfigManager().getAutoMessages().size());
@@ -54,35 +54,32 @@ public class Runner implements Runnable {
 
         }
 
-        if(time_to_update == 0) {
+        if (time_to_update == 0) {
             scoreboardManager.sendToAllScoreboard();
             time_to_update = Variables.SCOREBOARD_UPDATE_COOLDOWN;
         }
 
 
-        for(User all : plugin.getUser().values()) {
+        for (User all : plugin.getUser().values()) {
 
             //Combat
 
-            if(!all.getFights().isEmpty())
-            {
+            if (!all.getFights().isEmpty()) {
 
-                for(Player fights : all.getFights().keySet()) {
-                    if(all.getFights().get(fights) == 0) {
+                for (Player fights : all.getFights().keySet()) {
+                    if (all.getFights().get(fights) == 0) {
                         all.getFights().remove(fights);
-                        if(all.getFights().isEmpty()) {
+                        if (all.getFights().isEmpty()) {
                             all.getPlayer().sendMessage("§cDu bist nicht mehr im Kampf");
                         }
                         continue;
                     }
-                    all.getFights().put(fights, all.getFights().get(fights)-1);
+                    all.getFights().put(fights, all.getFights().get(fights) - 1);
                 }
 
             }
 
         }
-
-
 
 
     }

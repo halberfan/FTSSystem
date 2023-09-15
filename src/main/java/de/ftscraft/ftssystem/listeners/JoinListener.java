@@ -24,7 +24,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class JoinListener implements Listener {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public JoinListener(FtsSystem plugin) {
         this.plugin = plugin;
@@ -84,15 +84,7 @@ public class JoinListener implements Listener {
             if (umfrage != null && umfrage.isStarted()) {
                 if (!umfrage.getTeilnehmer().contains(event.getPlayer())) {
 
-                    Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-                        @Override
-                        public void run() {
-
-
-                            umfrage.sendToPlayer(event.getPlayer());
-
-                        }
-                    }, 20 * 2);
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> umfrage.sendToPlayer(event.getPlayer()), 20 * 2);
 
 
                 }
@@ -109,12 +101,11 @@ public class JoinListener implements Listener {
         }
 
         PremiumManager premiumManager = plugin.getPremiumManager();
-        if(p.hasPermission("group.premium")) {
+        if (p.hasPermission("group.premium")) {
             LuckPerms luckPerms = LuckPermsProvider.get();
             for (Node node : luckPerms.getUserManager().getUser(p.getUniqueId()).getNodes()) {
-                if(node instanceof InheritanceNode) {
-                    InheritanceNode inheritanceNode = (InheritanceNode) node;
-                    if(inheritanceNode.getGroupName().equalsIgnoreCase("Premium")) {
+                if (node instanceof InheritanceNode inheritanceNode) {
+                    if (inheritanceNode.getGroupName().equalsIgnoreCase("Premium")) {
                         premiumManager.addPremiumPlayer(p.getUniqueId(), inheritanceNode.getExpiry().getEpochSecond());
                     }
                 }

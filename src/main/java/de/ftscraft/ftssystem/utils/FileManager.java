@@ -15,16 +15,16 @@ import java.util.UUID;
 
 public class FileManager {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
-    private File book_file;
-    private FileConfiguration book_cfg;
+    private final File book_file;
+    private final FileConfiguration book_cfg;
 
-    private File premiumFile;
-    private FileConfiguration premiumCfg;
+    private final File premiumFile;
+    private final FileConfiguration premiumCfg;
 
-    private File secretsFile;
-    private FileConfiguration secretsConfig;
+    private final File secretsFile;
+    private final FileConfiguration secretsConfig;
 
     String bookCMD;
     String bookBlockreichCMD;
@@ -46,7 +46,7 @@ public class FileManager {
 
     public void loadPremium() {
         for (String user : premiumCfg.getKeys(false)) {
-            long seconds = premiumCfg.getLong(user+".time");
+            long seconds = premiumCfg.getLong(user + ".time");
             plugin.getPremiumManager().addPremiumPlayer(UUID.fromString(user), seconds);
         }
     }
@@ -56,9 +56,7 @@ public class FileManager {
         for (String key : premiumCfg.getKeys(false)) {
             premiumCfg.set(key, null);
         }
-        premiumManager.getPremiumPlayers().forEach((uuid, aLong) -> {
-            premiumCfg.set(uuid.toString()+".time", aLong);
-        });
+        premiumManager.getPremiumPlayers().forEach((uuid, aLong) -> premiumCfg.set(uuid.toString() + ".time", aLong));
 
         try {
             premiumCfg.save(premiumFile);

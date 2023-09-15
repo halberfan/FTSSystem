@@ -25,7 +25,7 @@ public class APIHandling {
             URL url = new URL("http://proxycheck.io/v2" + ip + "?vpn=1&asn=1&key=" + antiVpnApiKey);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
-            if(con.getResponseCode() != 200) {
+            if (con.getResponseCode() != 200) {
                 Logger.getLogger("Minecraft").log(Level.WARNING, "VPN Dienst bei der IP " + ip + " gefailt");
                 return false;
             }
@@ -40,7 +40,7 @@ public class APIHandling {
             JsonElement jsonElement = JsonParser.parseString(inline.toString());
             JsonObject object = jsonElement.getAsJsonObject();
 
-            if(!object.get("status").getAsString().equals("ok")) {
+            if (!object.get("status").getAsString().equals("ok")) {
                 Logger.getLogger("Minecraft").log(Level.WARNING, "VPN Dienst bei der IP " + ip + " gefailt");
                 return false;
             }

@@ -12,13 +12,13 @@ import java.util.UUID;
 
 public class TempBan implements Punishment, Temporary {
 
-    private UUID player;
-    private String reason;
-    private String author;
-    private String moreInfo;
-    private long time;
-    private long until;
-    private int ID;
+    private final UUID player;
+    private final String reason;
+    private final String author;
+    private final String moreInfo;
+    private final long time;
+    private final long until;
+    private final int ID;
     private boolean active;
 
     TempBan(UUID player, String reason, String author, long time, long until, String moreInfo, int id, boolean active) {
@@ -92,7 +92,7 @@ public class TempBan implements Punishment, Temporary {
         int hour = cal.get(Calendar.HOUR_OF_DAY);
         int min = cal.get(Calendar.MINUTE);
 
-        return day + "." + (month+1) + " " + year + " - " + hour + ":" + min;
+        return day + "." + (month + 1) + " " + year + " - " + hour + ":" + min;
     }
 
     @Override
@@ -105,7 +105,7 @@ public class TempBan implements Punishment, Temporary {
         int hour = cal.get(Calendar.HOUR_OF_DAY);
         int min = cal.get(Calendar.MINUTE);
 
-        return day + "." + (month+1) + " " + year + " - " + hour + ":" + min;
+        return day + "." + (month + 1) + " " + year + " - " + hour + ":" + min;
 
     }
 

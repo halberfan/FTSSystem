@@ -10,11 +10,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class CMDroleplay implements CommandExecutor {
 
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public CMDroleplay(FtsSystem plugin) {
         this.plugin = plugin;
@@ -22,15 +23,13 @@ public class CMDroleplay implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, String[] strings) {
 
-        if(!(commandSender instanceof Player)) {
+        if (!(commandSender instanceof Player p)) {
             return true;
         }
 
-        Player p = (Player) commandSender;
-
-        if(p.hasPermission("ftssystem.roleplaymode")) {
+        if (p.hasPermission("ftssystem.roleplaymode")) {
 
             plugin.getScoreboardManager().switchToRoleplayMode(p);
 

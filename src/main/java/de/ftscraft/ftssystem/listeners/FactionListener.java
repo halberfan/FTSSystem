@@ -5,7 +5,9 @@
 
 package de.ftscraft.ftssystem.listeners;
 
-import com.massivecraft.factions.*;
+import com.massivecraft.factions.Board;
+import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.Faction;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,17 +18,14 @@ import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 
 public class FactionListener implements Listener {
 
-    private FtsSystem plugin;
-
     public FactionListener(FtsSystem plugin) {
-        this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
 
-        if(event.getBlock().getType() != Material.ARMOR_STAND) {
+        if (event.getBlock().getType() != Material.ARMOR_STAND) {
             return;
         }
 
@@ -36,7 +35,7 @@ public class FactionListener implements Listener {
 
         Faction faction = Board.getInstance().getFactionAt(fLocation);
 
-        if(!faction.getOnlinePlayers().contains(event.getPlayer()) && !faction.isWilderness()) {
+        if (!faction.getOnlinePlayers().contains(event.getPlayer()) && !faction.isWilderness()) {
             event.getPlayer().sendMessage("§cDu darfst nicht Armorstands in anderen Factions griefen!");
             event.setCancelled(true);
         }
@@ -52,7 +51,7 @@ public class FactionListener implements Listener {
 
         Faction faction = Board.getInstance().getFactionAt(fLocation);
 
-        if(!faction.getOnlinePlayers().contains(event.getPlayer()) && !faction.isWilderness()) {
+        if (!faction.getOnlinePlayers().contains(event.getPlayer()) && !faction.isWilderness()) {
             event.getPlayer().sendMessage("§cDu darfst nicht Armorstands in anderen Factions griefen!");
             event.setCancelled(true);
         }

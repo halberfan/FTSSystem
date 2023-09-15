@@ -13,14 +13,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.UUID;
 
 public class CMDwartung implements CommandExecutor {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public CMDwartung(FtsSystem plugin) {
         this.plugin = plugin;

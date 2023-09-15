@@ -19,7 +19,7 @@ import org.bukkit.event.player.PlayerLoginEvent;
 
 public class LoginListener implements Listener {
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public LoginListener(FtsSystem plugin) {
         this.plugin = plugin;
@@ -43,9 +43,10 @@ public class LoginListener implements Listener {
         if (plugin.isInWartung()) {
             if (!p.hasPermission("ftssystem.wartung.bypass")) {
                 event.setResult(PlayerLoginEvent.Result.KICK_WHITELIST);
-                event.setKickMessage("§4Wir haben derzeit Wartungsarbeiten.\n" +
-                                     "§bProbier es später nochmal. Im Forum oder im Discord wirst du wahrscheinlich weitere Infos erhalten!\n" +
-                                     "§bBis später :)");
+                event.setKickMessage("""
+                        §4Wir haben derzeit Wartungsarbeiten.
+                        §bProbier es später nochmal. Im Forum oder im Discord wirst du wahrscheinlich weitere Infos erhalten!
+                        §bBis später :)""");
             }
             return;
         }
@@ -54,10 +55,11 @@ public class LoginListener implements Listener {
         if (!p.hasPermission("ftssystem.vpnbypass")) {
             if (APIHandling.hasUserVPN(event.getAddress())) {
                 event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
-                event.setKickMessage("§bGrüße!\n" +
-                                     "Schön, dass du auf FTS spielen möchtest. Leider haben wir aber bei dir einen VPN festgestellt.\n" +
-                                     "Um rege Bann-Umgehungen zu verhindern, werden §cneue §bAccounts, die einen VPN nutzen, §cblockiert§b.\n" +
-                                     "Bitte stelle dein VPN §caus §boder wenn du VPN/Proxy §cnicht ausschalten kannst§b, melde dich bei uns im §cDiscord§b.");
+                event.setKickMessage("""
+                        §bGrüße!
+                        Schön, dass du auf FTS spielen möchtest. Leider haben wir aber bei dir einen VPN festgestellt.
+                        Um rege Bann-Umgehungen zu verhindern, werden §cneue §bAccounts, die einen VPN nutzen, §cblockiert§b.
+                        Bitte stelle dein VPN §caus §boder wenn du VPN/Proxy §cnicht ausschalten kannst§b, melde dich bei uns im §cDiscord§b.""");
                 return;
             }
         }

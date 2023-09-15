@@ -23,14 +23,14 @@ public class PunishmentBuilder {
     private String moreInfo;
     private String reason;
 
-    private String  until;
+    private String until;
 
     private boolean proofed = false;
 
     private PunishmentManager.ChatProgress chatProgress;
 
-    private FtsSystem plugin;
-    private Player creator;
+    private final FtsSystem plugin;
+    private final Player creator;
 
     public PunishmentBuilder(FtsSystem plugin, PunishmentType type, Player player, String target) {
         this.type = type;
@@ -99,7 +99,7 @@ public class PunishmentBuilder {
             //If i == 0 -> Its the Number
             if (i == 0) {
                 try {
-                    until = Integer.valueOf(u[i]);
+                    until = Integer.parseInt(u[i]);
                 } catch (NumberFormatException ex) {
                     return 0;
                 }
@@ -138,8 +138,8 @@ public class PunishmentBuilder {
     }
 
     public void build() {
-        if(!proofed) {
-            creator.sendMessage(Messages.PREFIX+"Irgendwas ist schief gelaufen. (Wahrscheinlich bei der: Bestätigung)");
+        if (!proofed) {
+            creator.sendMessage(Messages.PREFIX + "Irgendwas ist schief gelaufen. (Wahrscheinlich bei der: Bestätigung)");
             return;
         }
         UUID target = UUIDFetcher.getUUID(player);

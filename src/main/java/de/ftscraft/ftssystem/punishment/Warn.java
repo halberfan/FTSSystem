@@ -10,12 +10,12 @@ import java.util.UUID;
 
 public class Warn implements Punishment {
 
-    private String reason;
-    private String author;
-    private String moreInfo;
-    private long time;
-    private UUID player;
-    private int ID;
+    private final String reason;
+    private final String author;
+    private final String moreInfo;
+    private final long time;
+    private final UUID player;
+    private final int ID;
     private boolean active;
 
     Warn(String reason, String author, long time, UUID player, String moreInfo, int id, boolean active) {
@@ -78,7 +78,7 @@ public class Warn implements Punishment {
         int hour = cal.get(Calendar.HOUR_OF_DAY);
         int min = cal.get(Calendar.MINUTE);
 
-        return day+"."+(month+1)+" "+year+" - " + hour + ":" + min;
+        return day + "." + (month + 1) + " " + year + " - " + hour + ":" + min;
     }
 
 

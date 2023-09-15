@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class CMDsetvotehome implements CommandExecutor {
 
-    FtsSystem plugin;
+    final FtsSystem plugin;
 
     public CMDsetvotehome(FtsSystem plugin) {
         this.plugin = plugin;
@@ -21,20 +21,19 @@ public class CMDsetvotehome implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
-        if(!(cs instanceof Player)) {
+        if (!(cs instanceof Player player)) {
             return true;
         }
 
-        if(args.length != 0) {
+        if (args.length != 0) {
             return true;
         }
 
-        Player player = (Player) cs;
         User user = plugin.getUser(player);
 
         user.setVotehome(player.getLocation());
 
-        player.sendMessage(Messages.PREFIX+"Du hast erfolgreich dein Votehome gesetzt! Wenn du zugriff auf dein Votehome hast, kannst du mit /votehome wieder hierhin reisen!");
+        player.sendMessage(Messages.PREFIX + "Du hast erfolgreich dein Votehome gesetzt! Wenn du zugriff auf dein Votehome hast, kannst du mit /votehome wieder hierhin reisen!");
 
         return false;
     }
