@@ -14,9 +14,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 
-import java.util.HashMap;
-import java.util.Objects;
-
 public class PlayerAttackListener implements Listener {
 
     private FtsSystem plugin;

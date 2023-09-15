@@ -14,11 +14,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
-import static de.ftscraft.ftssystem.utils.Utils.sendMessageToAllExceptDisturb;
-import static de.ftscraft.ftssystem.utils.Utils.sendMessageToAllPlayers;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static de.ftscraft.ftssystem.utils.Utils.sendMessageToAllExceptDisturb;
 
 public class Umfrage {
 

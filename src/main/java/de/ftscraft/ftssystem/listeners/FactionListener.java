@@ -5,7 +5,9 @@
 
 package de.ftscraft.ftssystem.listeners;
 
-import com.massivecraft.factions.*;
+import com.massivecraft.factions.Board;
+import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.Faction;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import org.bukkit.Location;
 import org.bukkit.Material;

@@ -6,7 +6,6 @@
 package de.ftscraft.ftssystem.misc;
 
 import de.ftscraft.ftssystem.main.User;
-import org.bukkit.entity.Player;
 
 public class Duel {
 

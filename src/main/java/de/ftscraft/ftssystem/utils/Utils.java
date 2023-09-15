@@ -9,7 +9,6 @@ import de.ftscraft.ftssystem.main.FtsSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Scanner;

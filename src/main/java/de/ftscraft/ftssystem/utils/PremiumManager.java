@@ -3,9 +3,7 @@ package de.ftscraft.ftssystem.utils;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import kong.unirest.UnirestException;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;

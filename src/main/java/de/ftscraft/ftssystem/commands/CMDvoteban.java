@@ -1,6 +1,5 @@
 package de.ftscraft.ftssystem.commands;
 
-import com.destroystokyo.paper.event.player.PlayerReadyArrowEvent;
 import de.ftscraft.ftssystem.configs.Messages;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import org.bukkit.Bukkit;

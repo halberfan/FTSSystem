@@ -1,6 +1,5 @@
 package de.ftscraft.ftssystem.utils.ForumHook;
 
-import com.google.gson.Gson;
 import de.ftscraft.ftssystem.commands.CMDcheckcv;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.utils.PremiumManager;
@@ -23,7 +22,7 @@ public class ForumHook {
     private String apiUser;
     private int premiumGroupId;
 
-    private FtsSystem plugin;
+    private final FtsSystem plugin;
 
     public ForumHook(FtsSystem plugin) {
         this.plugin = plugin;
