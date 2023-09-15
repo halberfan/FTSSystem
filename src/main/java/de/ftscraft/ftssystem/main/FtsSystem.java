@@ -123,6 +123,7 @@ public class FtsSystem extends JavaPlugin {
         new CMDpasswort(this);
         new CMDpremium(this);
         new CMDpu(this);
+        new CMDradius(this);
         new CMDroleplay(this);
         new CMDsetvotehome(this);
         new CMDtutorialbuch(this);

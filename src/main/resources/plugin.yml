@@ -62,3 +62,5 @@ commands:
     description: Teleportiert, wenn du es freigeschaltet hast, dich zu deinem Vote-Home
   durchsage:
     description: Lässt neue Durchsagen einfügen und welche löschen
+  radius:
+    description: Zeigt den Radius deines aktiven Channels an

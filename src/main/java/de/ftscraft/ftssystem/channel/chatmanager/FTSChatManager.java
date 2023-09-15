@@ -156,7 +156,7 @@ public class FTSChatManager extends ChatManager {
             }
 
 
-            if (!anyoneRecived) {
+            if (!anyoneRecived && !u.getPlayer().hasPermission("ftssystem.chat.noinfo")) {
                 u.getPlayer().sendMessage("§cNiemand hat deine Nachricht gelesen. Schreibe ein ! vor deine Nachricht um in den Globalchat zu schreiben");
             }
 
