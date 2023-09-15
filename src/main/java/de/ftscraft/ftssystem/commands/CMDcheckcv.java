@@ -1,11 +1,11 @@
 package de.ftscraft.ftssystem.commands;
 
-import com.mashape.unirest.http.exceptions.UnirestException;
 import de.ftscraft.ftsengine.utils.Ausweis;
 import de.ftscraft.ftsengine.utils.Gender;
 import de.ftscraft.ftsengine.utils.Messages;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.scoreboard.TeamPrefixs;
+import kong.unirest.UnirestException;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -51,7 +51,7 @@ public class CMDcheckcv implements CommandExecutor {
         }
 
         if (ausweis.getFirstName() == null || ausweis.getLastName() == null || ausweis.getDesc() == null || ausweis.getRace() == null) {
-            p.sendMessage(Messages.PREFIX + "Dein Ausweis ist nicht komplett! Bitte fülle deinen Ausweis richtig auf.");
+            p.sendMessage(Messages.PREFIX + "Dein Ausweis ist nicht komplett! Bitte fülle deinen Ausweis richtig aus.");
             return true;
         }
 
