@@ -6,7 +6,7 @@
 
     <groupId>de.ftscraft.ftssystem</groupId>
     <artifactId>FTSSystem</artifactId>
-    <version>1.10.0.2</version>
+    <version>1.11</version>
     <build>
         <plugins>
             <plugin>
@@ -30,7 +30,7 @@
                         <configuration>
                             <artifactSet>
                                 <includes>
-                                    <include>com.mashape.unirest:unirest-java</include>
+                                    <include>com.konghq:unirest-java</include>
                                     <include>org.apache.httpcomponents:httpclient</include>
                                     <include>org.apache.httpcomponents:httpcore</include>
                                     <include>org.apache.httpcomponents:httpcore-nio</include>
@@ -62,18 +62,22 @@
             <id>ess-repo</id>
             <url>https://ci.ender.zone/plugin/repository/everything/</url>
         </repository>
+        <repository>
+            <id>placeholderapi</id>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
     </repositories>
     <dependencies>
-        <dependency>
-            <groupId>net.milkbowl.vault</groupId>
-            <artifactId>VaultAPI</artifactId>
-            <version>1.7</version>
-            <scope>provided</scope>
-        </dependency>
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
             <version>1.20.1-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.milkbowl.vault</groupId>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.7</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -89,14 +93,32 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.mashape.unirest</groupId>
+            <groupId>com.massivecraft</groupId>
+            <artifactId>Factions</artifactId>
+            <version>1.6.9.5-U0.6.15-b296</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/.idea/artifacts/Factions.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.konghq</groupId>
             <artifactId>unirest-java</artifactId>
-            <version>1.4.9</version>
+            <version>3.11.09</version>
         </dependency>
         <dependency>
             <groupId>net.luckperms</groupId>
             <artifactId>api</artifactId>
             <version>5.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.halberfan</groupId>
+            <artifactId>FTSEngine</artifactId>
+            <version>56fb290b57</version>
+        </dependency>
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>LATEST</version>
             <scope>provided</scope>
         </dependency>
 

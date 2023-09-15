@@ -48,7 +48,6 @@ public class FTSChatManager extends ChatManager {
     public FTSChatManager(FtsSystem plugin) {
         super(plugin);
         this.fPlayers = FPlayers.getInstance();
-        //channels = new ArrayList<>();
     }
 
     public void chat(User u, String msg) {

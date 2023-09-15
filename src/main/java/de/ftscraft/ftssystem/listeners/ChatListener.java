@@ -143,7 +143,7 @@ public class ChatListener implements Listener {
                 Ausweis a = plugin.getEngine().getAusweis(event.getPlayer());
 
                 if (a == null) {
-                    event.getPlayer().sendMessage("§cBitte erstell dir erst einen Ausweis");
+                    event.getPlayer().sendPlainMessage("§cBitte erstell dir erst einen Ausweis");
                     return;
                 }
 
@@ -167,8 +167,7 @@ public class ChatListener implements Listener {
                 msg = msg.replace("((", "§7((");
                 msg = msg.replace("))", "§7))§e");
 
-                msg = msg.replace("\"", "§7\"");
-                msg = msg.replace("\"", "§7\"§e");
+                msg = turnEverythingInQuotationsWhite(msg);
 
                 event.setCancelled(true);
 
@@ -191,6 +190,24 @@ public class ChatListener implements Listener {
 
         plugin.getChatManager().chat(u, event.getMessage());
 
+    }
+
+    private String turnEverythingInQuotationsWhite(String text) {
+        StringBuilder n = new StringBuilder();
+        boolean waitingForNextQuotation = false;
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            if (c == '"') {
+                n.append("§r\"");
+                if (waitingForNextQuotation) {
+                    n.append("§e");
+                    waitingForNextQuotation = false;
+                } else {
+                    waitingForNextQuotation = true;
+                }
+            } else n.append(c);
+        }
+        return n.toString();
     }
 
 

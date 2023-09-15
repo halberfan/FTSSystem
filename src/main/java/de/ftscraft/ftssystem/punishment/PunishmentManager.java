@@ -139,6 +139,8 @@ public class PunishmentManager {
         Player op = Bukkit.getPlayer(playerName);
         if (op != null) {
             op.sendMessage(Messages.PREFIX + "Du hast ein Warn von §c" + warn.getAuthor() + " §7wegen §c" + warn.getReason() + "§7 erhalten. Dieser Warn ist Permanent");
+        } else {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + playerName + "Du hast ein Warn von §c" + warn.getAuthor() + " §7wegen §c" + warn.getReason() + "§7 erhalten. Dieser Warn ist Permanent");
         }
 
         for (Player all : Bukkit.getOnlinePlayers()) {
@@ -200,6 +202,9 @@ public class PunishmentManager {
         Player op = Bukkit.getPlayer(playerName);
         if (op != null) {
             op.sendMessage(Messages.PREFIX + "Du hast ein Warn von §c" + tempWarn.getAuthor() + " §7wegen §c" + tempWarn.getReason() + "§7 erhalten. Dieser Warn verschwindet in" + tempWarn.untilAsString());
+        } else {
+
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + playerName + "Du hast ein Warn von §c" + tempWarn.getAuthor() + " §7wegen §c" + tempWarn.getReason() + "§7 erhalten. Dieser Warn verschwindet in" + tempWarn.untilAsString());
         }
 
         for (Player all : Bukkit.getOnlinePlayers()) {

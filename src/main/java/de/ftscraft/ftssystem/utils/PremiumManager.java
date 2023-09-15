@@ -1,7 +1,7 @@
 package de.ftscraft.ftssystem.utils;
 
-import com.mashape.unirest.http.exceptions.UnirestException;
 import de.ftscraft.ftssystem.main.FtsSystem;
+import kong.unirest.UnirestException;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 

@@ -1,6 +1,5 @@
 package de.ftscraft.ftssystem.main;
 
-import de.afgmedia.ftspest.main.FTSPest;
 import de.ftscraft.ftsengine.main.Engine;
 import de.ftscraft.ftssystem.channel.chatmanager.ChatManager;
 import de.ftscraft.ftssystem.channel.chatmanager.FTSChatManager;
@@ -17,7 +16,6 @@ import de.ftscraft.ftssystem.utils.FileManager;
 import de.ftscraft.ftssystem.utils.ForumHook.ForumHook;
 import de.ftscraft.ftssystem.utils.PremiumManager;
 import de.ftscraft.ftssystem.utils.Runner;
-import de.ftscraft.survivalminus.main.Survival;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -51,11 +49,9 @@ public class FtsSystem extends JavaPlugin {
     private FTSScoreboardManager scoreboardManager;
     private MenuItems menuItems;
 
-    private Survival survival;
     private Engine engine;
 
     private PunishmentManager punishmentManager;
-    private FTSPest pest = null;
 
     private boolean wartung;
 
@@ -80,16 +76,7 @@ public class FtsSystem extends JavaPlugin {
         setupEconomy();
         setupChat();
         setupPermissions();
-        survival = (Survival) getServer().getPluginManager().getPlugin("FTSSurvival");
         engine = (Engine) getServer().getPluginManager().getPlugin("FTSEngine");
-        if (getServer().getPluginManager().isPluginEnabled("FTSPest"))
-            pest = (FTSPest) getServer().getPluginManager().getPlugin("FTSPest");
-        /*RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
-        if (provider != null) {
-            LuckPerms api = provider.getProvider();
-        }
-
-         */
     }
 
     @Override
@@ -157,7 +144,6 @@ public class FtsSystem extends JavaPlugin {
         new Runner(this);
 
         Iterator<Recipe> recipes = Bukkit.recipeIterator();
-
         while (recipes.hasNext()) {
             Recipe recipe = recipes.next();
 
@@ -227,9 +213,6 @@ public class FtsSystem extends JavaPlugin {
         this.umfrage = umfrage;
     }
 
-    public Survival getSurvival() {
-        return survival;
-    }
 
     public FTSScoreboardManager getScoreboardManager() {
         return scoreboardManager;
@@ -241,10 +224,6 @@ public class FtsSystem extends JavaPlugin {
 
     public PremiumManager getPremiumManager() {
         return premiumManager;
-    }
-
-    public FTSPest getPest() {
-        return pest;
     }
 
     private boolean setupEconomy() {

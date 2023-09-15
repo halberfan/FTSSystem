@@ -8,7 +8,7 @@ package de.ftscraft.ftssystem.scoreboard;
 import de.ftscraft.ftsengine.utils.Ausweis;
 import de.ftscraft.ftsengine.utils.Gender;
 import de.ftscraft.ftssystem.main.FtsSystem;
-import de.ftscraft.survivalminus.user.User;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextColor;
@@ -59,8 +59,6 @@ public class FTSScoreboardManager {
             if (!sneakingPlayers.contains(p))
                 rpTeam.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
 
-            User u = plugin.getSurvival().getUser(p.getName());
-
             if (plugin.getUser(p).isScoreboardEnabled()) {
 
                 Objective objective;
@@ -72,7 +70,11 @@ public class FTSScoreboardManager {
                     objective = s.registerNewObjective(p.getName(), "dummy");
                 }
                 objective.setDisplayName("§lGesundheit");
-                if (u.getKohlenhydrate() <= 5 || u.getProteine() <= 5 || u.getThirst() <= 5 || u.getVitamine() <= 5) {
+                int kh = Integer.parseInt(PlaceholderAPI.setPlaceholders(p, "%survival_kh%"));
+                int proteine = Integer.parseInt(PlaceholderAPI.setPlaceholders(p, "%survival_p%"));
+                int durst = Integer.parseInt(PlaceholderAPI.setPlaceholders(p, "%survival_d%"));
+                int vitamine = Integer.parseInt(PlaceholderAPI.setPlaceholders(p, "%survival_v%"));
+                if (kh <= 5 || proteine <= 5 || durst <= 5 || vitamine <= 5) {
                     if (blinkingPlayers.contains(p)) {
                         blinkingPlayers.remove(p);
                         objective.setDisplayName("§4§lGesundheit");
@@ -81,18 +83,15 @@ public class FTSScoreboardManager {
                     blinkingPlayers.remove(p);
                 }
                 objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-                Score s1 = objective.getScore("§6Kohlenhydrate: §c" + u.getKohlenhydrate());
-                Score s2 = objective.getScore("§6Durst: §c" + u.getThirst());
-                Score s3 = objective.getScore("§6Proteine: §c" + u.getProteine());
-                Score s4 = objective.getScore("§6Vitamine: §c" + u.getVitamine());
-                if (plugin.getPest() != null) {
-                    Score s6;
-                    String infection = plugin.getPest().getInfectionManager().getUser(p).getDiseaseName();
-                    s6 = objective.getScore("§6Krankheit: §c" + infection);
-                    Score s7 = objective.getScore("§6Fortschritt: §c" + plugin.getPest().getInfectionManager().getUser(p).getSicknessLevel());
-                    s6.setScore(3);
-                    s7.setScore(2);
-                }
+                Score s1 = objective.getScore("§6Kohlenhydrate: §c" + kh);
+                Score s2 = objective.getScore("§6Durst: §c" + durst);
+                Score s3 = objective.getScore("§6Proteine: §c" + proteine);
+                Score s4 = objective.getScore("§6Vitamine: §c" + vitamine);
+                Score s6 = objective.getScore(PlaceholderAPI.setPlaceholders(p, "§6Krankheit: §c%pest_disease%"));
+                Score s7 = objective.getScore(PlaceholderAPI.setPlaceholders(p, "§6Fortschritt: §c%pest_level%"));
+                s6.setScore(3);
+                s7.setScore(2);
+
                 Score s8 = objective.getScore("§4--------");
 
                 Score s9 = objective.getScore("§6Taler: §c" + round(plugin.getEcon().getBalance(p), 0));

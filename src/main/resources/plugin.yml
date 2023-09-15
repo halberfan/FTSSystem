@@ -1,5 +1,5 @@
 name: FTSSystem
-version: 1.10.0.2
+version: 1.11
 main: de.ftscraft.ftssystem.main.FtsSystem
 author: halberfan
 api-version: '1.20'
@@ -8,11 +8,11 @@ depend:
 softdepend:
     - LuckPerms
     - Factions
-    - MassiveCore
     - ChestShop
     - dynmap
     - FTSPest
     - Towny
+    - PlaceholderAPI
 
 commands:
     ftssystem:

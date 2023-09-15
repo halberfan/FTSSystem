@@ -71,6 +71,7 @@ public class FileManager {
         plugin.getForumHook().setApiKey(secretsConfig.getString("apiKey"));
         plugin.getForumHook().setApiUser(secretsConfig.getString("apiUser"));
         plugin.getForumHook().setPremiumGroupId(secretsConfig.getInt("premiumGroupId"));
+        APIHandling.setAntiVpnApiKey(secretsConfig.getString("antiVpnApiKey"));
     }
 
     public void loadBookComamnd() {
