@@ -19,7 +19,7 @@ public class CMDakte implements FTSCommand {
 
     public CMDakte(FtsSystem plugin) {
         this.plugin = plugin;
-        plugin.getCommand("akte").setExecutor(this::onCommand);
+        plugin.getCommand("akte").setExecutor(this);
     }
 
     @Override

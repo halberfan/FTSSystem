@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class CMDvoteban implements CommandExecutor {
 
@@ -204,7 +205,7 @@ public class CMDvoteban implements CommandExecutor {
 
             String moreInfo = sb.toString();
 
-            plugin.getPunishmentManager().addTempBan("§cDie Mehrheit des Servers war der Meinung, dass du gebannt werden solltest. Wenn du denkst, dass das eine Fehlentscheidung war, melde dich bitte im Discord o.ä.", "System", target.getName(), moreInfo, "12h");
+            plugin.getPunishmentManager().addTempBan("§cDie Mehrheit des Servers war der Meinung, dass du gebannt werden solltest. Wenn du denkst, dass das eine Fehlentscheidung war, melde dich bitte im Discord o.ä.", UUID.fromString("291af7c7-2114-45bb-a97a-d3b4077392e8"), target.getName(), moreInfo, "12h");
 
             voteBans.remove(target);
 

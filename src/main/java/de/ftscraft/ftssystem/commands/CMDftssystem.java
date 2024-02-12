@@ -62,9 +62,7 @@ public class CMDftssystem implements FTSCommand {
 
                         if (meta instanceof Damageable dmg) {
 
-                            int maxDurability = item.getType().getMaxDurability();
-
-                            dmg.setDamage(maxDurability);
+                            dmg.setDamage(0);
 
                             item.setItemMeta(meta);
 
@@ -120,11 +118,6 @@ public class CMDftssystem implements FTSCommand {
                 }
 
 
-            } else if (args[0].equalsIgnoreCase("dev")) {
-                Player t = Bukkit.getPlayer(args[1]);
-                int ticks = Integer.parseInt(args[2]);
-
-                t.setStatistic(Statistic.PLAY_ONE_MINUTE, ticks);
             }
         } else p.sendMessage(Messages.HELP_FTSSYSTEM);
         return false;

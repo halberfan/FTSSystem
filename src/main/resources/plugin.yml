@@ -5,6 +5,7 @@ author: halberfan
 api-version: '1.20'
 depend:
   - FTSEngine
+  - FTSUtils
 softdepend:
   - LuckPerms
   - Factions
@@ -64,3 +65,10 @@ commands:
     description: Lässt neue Durchsagen einfügen und welche löschen
   radius:
     description: Zeigt den Radius deines aktiven Channels an
+  travel:
+    description: Befehl exklusiv für die Konsole
+    permission: ftssystem.console
+  repair:
+    description: Repariert das Item in der Hand des angegebenen Spielers
+    usage: /repair [Spieler]
+    permission: ftssystem.console

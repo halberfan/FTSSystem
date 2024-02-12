@@ -66,11 +66,10 @@ public class CMDdurchsage implements CommandExecutor {
             if (a == 1) {
                 cm.getAutoMessages().add(sb.toString());
                 cs.sendMessage(Messages.PREFIX + "Die Nachricht wurde zum Pool hinzugefügt.");
-                return true;
             } else {
                 cs.sendMessage(Messages.PREFIX + "So würde die Nachricht aussehen: \n" + sb + "\n Wenn das so richtig ist, sende den gleichen Befehl nochmal. Schreibe nur am Ende ein \"Ja\" dazu");
-                return true;
             }
+            return true;
 
         } else if (args[0].equalsIgnoreCase("remove")) {
 

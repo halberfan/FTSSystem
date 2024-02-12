@@ -18,14 +18,13 @@ import java.util.Arrays;
 
 public class CMDpasswort implements CommandExecutor {
 
-    private final String password = "beere", password_blockreich = "glasflasche";
     private final ArrayList<String> commands = new ArrayList<>(Arrays.asList("lp user %s promote spieler", "warp taufeld %s"));
 
     private final FtsSystem plugin;
 
     public CMDpasswort(FtsSystem plugin) {
         this.plugin = plugin;
-        plugin.getCommand("passwort").setExecutor(this::onCommand);
+        plugin.getCommand("passwort").setExecutor(this);
     }
 
     @Override
@@ -37,6 +36,8 @@ public class CMDpasswort implements CommandExecutor {
 
         if (args.length == 1) {
 
+            String password_blockreich = "glasflasche";
+            String password = "beere";
             if (args[0].equalsIgnoreCase(password) || args[0].equalsIgnoreCase(password_blockreich)) {
 
                 User user = plugin.getUser(p);

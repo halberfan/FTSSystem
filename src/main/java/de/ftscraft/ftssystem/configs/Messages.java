@@ -1,9 +1,14 @@
 package de.ftscraft.ftssystem.configs;
 
+import net.kyori.adventure.text.format.NamedTextColor;
+
 public class Messages {
 
+    public static final NamedTextColor TEXT_COLOR = NamedTextColor.GRAY;
+    public static final NamedTextColor HIGHLIGHT_COLOR = NamedTextColor.RED;
+
     public static final String
-            PREFIX = "§7[§4FTS-System§7]" + " ",
+            PREFIX = "§7[§4FTS-System§7] ",
             NO_PERM = PREFIX + "Dazu hast du keine Rechte!",
             NUMBER = PREFIX + "Bitte benutz eine gültige Zahl",
             NO_ACTIVE_CHANNEL = PREFIX + "Du hast keinen aktiven Channel ausgewählt. Mache dies mit /channel aktiv <Name>",
@@ -19,21 +24,17 @@ public class Messages {
             NO_UMFRAGE_FOUND = PREFIX + "Du hast keine Umfrage mit /umfrage create FRAGE erstellt!",
             UMFRAGE_ALREADY_STARTED = PREFIX + "Die Umfrage wurde schon gestartet!",
             UMFRAGE_ADDED_OPTION = PREFIX + "Die Option §c%s§7wurde hinzugefügt!",
-            UMFRAGE_NOT_STARTED = PREFIX + "Die Umfrage wurde noch garnicht gestartet",
+            UMFRAGE_NOT_STARTED = PREFIX + "Die Umfrage wurde noch gar nicht gestartet",
             UMFRAGE_STATED = PREFIX + "Die Umfrage wurde gestartet!",
             UMFRAGE_ENDED = PREFIX + "Die Umfrage wurde beendet!",
             UMFRAGE_ALREADY_CONFIG = PREFIX + "Es wird derzeit eine Umfrage erstellt / ist am laufen",
             PLAYER_NOT_FOUND = PREFIX + "Der Spieler wurde nicht gefunden!",
+            WRONG_USAGE = PREFIX + "Bitte nutze den Befehl so: " + HIGHLIGHT_COLOR + "%s",
+            NOT_ENOUGH_MONEY = PREFIX + "Du brauchst %d Taler.",
             ONLY_PLAYER = PREFIX + "Dieser CMD ist nur für Spieler!";
 
+
     public static final String
-            HELP_CHANNEL =
-            """
-                    §c---- §e/channel §c----\s
-                    §d/channel list §r§5- Listet alle Channel aus
-                    §d/channel join <Name> §r§5- Joint einem Channel\s
-                    §d/channel leave <Name> §r§5- Verlässt ein Channel\s
-                    §d/channel aktiv <Name> §r§5- Setzt einen Channel aktiv""",
 
     HELP_FTSSYSTEM =
             """

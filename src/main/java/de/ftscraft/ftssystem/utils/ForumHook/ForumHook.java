@@ -51,7 +51,7 @@ public class ForumHook {
             }
         }
 
-        if (usersToAdd.length() > 0) {
+        if (!usersToAdd.isEmpty()) {
             usersToAdd.deleteCharAt(usersToAdd.length() - 1);
         }
 
@@ -118,7 +118,7 @@ public class ForumHook {
         JSONObject createdBy = object.getJSONObject("details").getJSONObject("created_by");
         String postedBy = createdBy.getString("username");
 
-        if (tags == null || tags.length() == 0) {
+        if (tags == null || tags.isEmpty()) {
             return CMDcheckcv.Response.NOT_ACCEPTED;
         }
 

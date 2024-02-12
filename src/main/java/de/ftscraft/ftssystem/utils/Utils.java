@@ -6,11 +6,14 @@
 package de.ftscraft.ftssystem.utils;
 
 import de.ftscraft.ftssystem.main.FtsSystem;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Utils {
@@ -18,6 +21,7 @@ public class Utils {
     public static String convertToTime(long millis) {
         millis = millis - System.currentTimeMillis();
         long seconds = millis / 1000;
+        seconds += 1;
         long minutes = 0;
         long hours = 0;
         long days = 0;
@@ -45,6 +49,41 @@ public class Utils {
 
     public static String[] splitToNumbers(String str) {
         return str.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
+    }
+
+    public static long calculateUntil(String unit) {
+        String[] u = Utils.splitToNumbers(unit);
+        //Check if its 2 size big for 1 Number + 1 Unit
+        if (u.length != 2) {
+            return -1;
+        }
+        //Init Until value
+        long until = 0;
+
+        for (int i = 0; i < u.length; i++) {
+            //If i == 0 -> Its the Number
+            if (i == 0) {
+                try {
+                    until = Integer.parseInt(u[i]);
+                } catch (NumberFormatException ex) {
+                    return -1;
+                }
+                //If i == 1 -> Its the Unit
+            } else {
+                //Check if Unit exists
+                if (TimeUnits.getTimeUnitByUnit(u[i]) == null) {
+                    return -1;
+                }
+                //Calculate until
+                //Get Millis from TimeUnit
+                long time = Objects.requireNonNull(TimeUnits.getTimeUnitByUnit(u[i])).getMillis();
+                //Get Millis from TimeUnit * how many of these
+                until = until * time;
+                //Get final Millis from Current Millis + the Millis of duration
+                until = until + System.currentTimeMillis();
+            }
+        }
+        return until;
     }
 
     public static void sendMessageToAllPlayers(String message) {
@@ -83,5 +122,17 @@ public class Utils {
         return title;
     }
 
+    public static void runConsoleCommand(String command, FtsSystem plugin) {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Bukkit.dispatchCommand(plugin.getServer().getConsoleSender(), command);
+            }
+        }.runTask(plugin);
+    }
+
+    public static void msg(Player p, String miniMessage) {
+        p.sendMessage(MiniMessage.miniMessage().deserialize(miniMessage));
+    }
 
 }

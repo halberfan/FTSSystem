@@ -20,7 +20,7 @@ public class CMDbroadcast implements CommandExecutor {
 
     public CMDbroadcast(FtsSystem plugin) {
         this.plugin = plugin;
-        plugin.getCommand("broadcast").setExecutor(this::onCommand);
+        plugin.getCommand("broadcast").setExecutor(this);
     }
 
     @Override

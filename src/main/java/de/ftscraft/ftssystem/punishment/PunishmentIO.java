@@ -5,12 +5,14 @@
 
 package de.ftscraft.ftssystem.punishment;
 
+import de.ftscraft.ftssystem.database.entities.PunishmentEntity;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.UUID;
 
 public class PunishmentIO {
@@ -26,11 +28,11 @@ public class PunishmentIO {
         this.folder = new File(plugin.getDataFolder() + "//puns//");
     }
 
-    public boolean loadPlayerData(UUID player) {
+    public void loadPlayerData(UUID player) {
         File file = new File(folder + "//" + player.toString() + ".yml");
 
         if (!file.exists()) {
-            return false;
+            return;
         }
 
         FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
@@ -51,16 +53,16 @@ public class PunishmentIO {
                 id = Integer.parseInt(key);
             } catch (NumberFormatException ex) {
                 ex.printStackTrace();
-                return true;
+                return;
             }
-            punishmentManager.loadPunishmentFromData(player, type, reason, author, moreInfo, time, until, id, active);
+            punishmentManager.loadPunishmentFromData(player, type, reason, UUID.fromString(author), moreInfo, time, until, id, active);
         }
 
-        return true;
     }
 
-    public boolean savePlayerData(UUID player) {
-        File file = new File(folder + "//" + player.toString() + ".yml");
+    public void savePlayerData(UUID player) {
+        //TODO
+        /*File file = new File(folder + "//" + player.toString() + ".yml");
         YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 
         for (Punishment a : punishmentManager.getPlayers().get(player)) {
@@ -70,8 +72,8 @@ public class PunishmentIO {
             cfg.set("punishment." + a.getID() + ".moreInfo", a.getMoreInformation());
             cfg.set("punishment." + a.getID() + ".creation", a.getTime());
             cfg.set("punishment." + a.getID() + ".active", a.isActive());
-            if (a instanceof Temporary) {
-                cfg.set("punishment." + a.getID() + ".until", ((Temporary) a).untilInMillis());
+            if (a instanceof TemporaryPunishment) {
+                cfg.set("punishment." + a.getID() + ".until", ((TemporaryPunishment) a).untilInMillis());
             }
         }
 
@@ -79,10 +81,26 @@ public class PunishmentIO {
             cfg.save(file);
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
+        }*/
+        for (Punishment punishment : punishmentManager.getPlayers().get(player)) {
+            PunishmentEntity punishmentEntity = new PunishmentEntity();
+            punishmentEntity.setType(punishment.getType().toString());
+            punishmentEntity.setReason(punishment.getReason());
+            punishmentEntity.setAuthor(punishment.getAuthor().toString());
+            punishmentEntity.setMoreInfo(punishment.getMoreInfo());
+            punishmentEntity.setTime(punishment.getTime());
+            punishmentEntity.setActive(punishment.isActive());
+            punishmentEntity.setID(punishment.getID());
+            punishmentEntity.setPlayer(punishment.getPlayer().toString());
+            if (PunishmentType.isTemporary(punishment.getType())) {
+                punishmentEntity.setUntil(((TemporaryPunishment) punishment).getUntil());
+            }
+            try {
+                plugin.getDatabaseManager().getPunishmentsDao().createOrUpdate(punishmentEntity);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
-
-        return true;
 
     }
 

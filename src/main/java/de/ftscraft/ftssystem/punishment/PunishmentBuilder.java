@@ -19,7 +19,7 @@ public class PunishmentBuilder {
 
     private PunishmentType type;
     private String player;
-    private String author;
+    private UUID author;
     private String moreInfo;
     private String reason;
 
@@ -36,7 +36,7 @@ public class PunishmentBuilder {
         this.type = type;
         this.plugin = plugin;
         this.creator = player;
-        this.author = player.getName();
+        this.author = player.getUniqueId();
         this.player = target;
         plugin.getPunishmentManager().getBuilders().put(player, this);
     }
@@ -58,11 +58,11 @@ public class PunishmentBuilder {
         this.player = player;
     }
 
-    public String getAuthor() {
+    public UUID getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(UUID author) {
         this.author = author;
     }
 
@@ -142,13 +142,12 @@ public class PunishmentBuilder {
             creator.sendMessage(Messages.PREFIX + "Irgendwas ist schief gelaufen. (Wahrscheinlich bei der: Bestätigung)");
             return;
         }
-        UUID target = UUIDFetcher.getUUID(player);
         switch (type) {
             case NOTE -> plugin.getPunishmentManager().addNote(reason, author, player, moreInfo);
-            case TEMPWARN -> plugin.getPunishmentManager().addTempwarn(reason, author, player, moreInfo, until);
+            case TEMP_WARN -> plugin.getPunishmentManager().addTempwarn(reason, author, player, moreInfo, until);
             case WARN -> plugin.getPunishmentManager().addWarn(reason, author, player, moreInfo);
-            case TEMPMUTE -> plugin.getPunishmentManager().addTempMute(reason, author, player, moreInfo, until);
-            case TEMPBAN -> plugin.getPunishmentManager().addTempBan(reason, author, player, moreInfo, until);
+            case TEMP_MUTE -> plugin.getPunishmentManager().addTempMute(reason, author, player, moreInfo, until);
+            case TEMP_BAN -> plugin.getPunishmentManager().addTempBan(reason, author, player, moreInfo, until);
             case BAN -> plugin.getPunishmentManager().addBan(reason, author, player, moreInfo);
             default -> creator.sendMessage("§cIrgendwas ist schief gelaufen. Überprüfe nochmal deine Daten");
         }

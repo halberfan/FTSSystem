@@ -12,8 +12,10 @@ import de.ftscraft.ftssystem.main.User;
 import de.ftscraft.ftssystem.punishment.PunishmentBuilder;
 import de.ftscraft.ftssystem.punishment.PunishmentManager;
 import de.ftscraft.ftssystem.punishment.PunishmentType;
-import de.ftscraft.ftssystem.punishment.Temporary;
+import de.ftscraft.ftssystem.punishment.TemporaryPunishment;
 import de.ftscraft.ftssystem.utils.Utils;
+import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -34,30 +36,30 @@ public class ChatListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onChat(AsyncPlayerChatEvent event) {
-
+    public void onChat(AsyncChatEvent event) {
+        String msg = PlainTextComponentSerializer.plainText().serialize(event.message());
         if (plugin.getPunishmentManager().getBuilders().get(event.getPlayer()) != null) {
             event.setCancelled(true);
             PunishmentBuilder prog = plugin.getPunishmentManager().getBuilders().get(event.getPlayer());
             switch (prog.getChatProgress()) {
                 case REASON -> {
-                    prog.setReason(event.getMessage());
+                    prog.setReason(msg);
                     event.getPlayer().sendMessage(Messages.PREFIX + "Okay. Bitte schreibe jetzt weitere Infos (zB Beweise, wer es Bemerkt hat). Schreibe wenn es nicht in den Chat passt ein + am Ende. Dann kannst du mit der nächsten Nachricht weiterschreiben");
                     prog.setChatProgress(PunishmentManager.ChatProgress.MOREINFO);
                 }
                 case MOREINFO -> {
-                    if (event.getMessage().endsWith("+")) {
+                    if (msg.endsWith("+")) {
                         if (prog.getMoreInfo() == null)
                             prog.setMoreInfo("");
-                        prog.setMoreInfo(prog.getMoreInfo() + " " + event.getMessage().substring(0, event.getMessage().length() - 1));
+                        prog.setMoreInfo(prog.getMoreInfo() + " " + msg.substring(0, msg.length() - 1));
                         return;
                     } else {
                         if (prog.getMoreInfo() == null)
                             //Wenn es noch keine Nachricht davor gab, setzt er es zu der Nachricht die gerade kam
-                            prog.setMoreInfo(event.getMessage());
+                            prog.setMoreInfo(msg);
                         else
                             //Sonst das was schon da ist mit nem Leerzeichen und der Nachricht die gerade kam verbinden
-                            prog.setMoreInfo(prog.getMoreInfo() + " " + event.getMessage());
+                            prog.setMoreInfo(prog.getMoreInfo() + " " + msg);
 
                         if (PunishmentType.isTemporary(prog.getType())) {
                             event.getPlayer().sendMessage(Messages.PREFIX + "Okay. Bitte schreibe jetzt wie lange es andauern soll. zB(3d; 3w)");
@@ -74,7 +76,7 @@ public class ChatListener implements Listener {
                         event.getPlayer().sendMessage(Messages.PREFIX + "Zeitraum: §e" + Utils.convertToTime(prog.getUntilInMillis()));
                 }
                 case TIME -> {
-                    prog.setUntil(event.getMessage());
+                    prog.setUntil(msg);
                     prog.setChatProgress(PunishmentManager.ChatProgress.PROOF);
                     event.getPlayer().sendMessage(Messages.PREFIX + "Bitte überprüfe nochmal deine Daten. Du kannst diese später NICHT ändern. Schreibe dann Ja oder Nein");
                     event.getPlayer().sendMessage(Messages.PREFIX + "Target: §e" + prog.getPlayer());
@@ -84,7 +86,7 @@ public class ChatListener implements Listener {
                         event.getPlayer().sendMessage(Messages.PREFIX + "Zeitraum: §e" + Utils.convertToTime(prog.getUntilInMillis()));
                 }
                 case PROOF -> {
-                    if (event.getMessage().equalsIgnoreCase("Ja")) {
+                    if (msg.equalsIgnoreCase("Ja")) {
 
                         prog.setProofed(true);
                         plugin.getPunishmentManager().getBuilders().remove(event.getPlayer());
@@ -93,7 +95,7 @@ public class ChatListener implements Listener {
                         prog.build();
                         event.getPlayer().sendMessage(Messages.PREFIX + "§cFertig. §eDer Spieler hat seine Strafe erhalten.");
 
-                    } else if (event.getMessage().equalsIgnoreCase("Nein")) {
+                    } else if (msg.equalsIgnoreCase("Nein")) {
                         prog.abort();
                         event.getPlayer().sendMessage(Messages.PREFIX + "Okay. Das Setup wurde abgebrochen. Wenn du es erneut versuchen willst, gebe wieder /pu SPIELER ein");
                     }
@@ -102,7 +104,7 @@ public class ChatListener implements Listener {
         }
 
         if (plugin.getPunishmentManager().isMuted(event.getPlayer()) != null) {
-            Temporary mute = (Temporary) plugin.getPunishmentManager().isMuted(event.getPlayer());
+            TemporaryPunishment mute = (TemporaryPunishment) plugin.getPunishmentManager().isMuted(event.getPlayer());
             event.getPlayer().sendMessage(Messages.PREFIX + "Du bist noch " + mute.untilAsString() + " lang gemuted aufgrund von: §e" + mute.getReason());
             event.setCancelled(true);
         }
@@ -116,10 +118,10 @@ public class ChatListener implements Listener {
             return;
         }
         event.setCancelled(true);
-        if (event.getMessage().startsWith("*")) {
-            if (event.getMessage().startsWith(String.valueOf('*'))) {
+        if (msg.startsWith("*")) {
+            if (msg.startsWith(String.valueOf('*'))) {
 
-                String[] msgs = event.getMessage().split(" ");
+                String[] msgs = msg.split(" ");
 
                 for (int i = 0; i < msgs.length; i++) {
                     for (Player a : Bukkit.getOnlinePlayers()) {
@@ -131,7 +133,7 @@ public class ChatListener implements Listener {
                     }
                 }
 
-                String msg;
+                StringBuilder newMsg;
 
                 Ausweis a = plugin.getEngine().getAusweis(event.getPlayer());
 
@@ -142,46 +144,46 @@ public class ChatListener implements Listener {
 
                 msgs[0] = msgs[0].substring(1);
 
-                if (!event.getMessage().startsWith("**")) {
+                if (!msg.startsWith("**")) {
 
-                    msg = "§e" + a.getFirstName() + " " + a.getLastName() + " (" + event.getPlayer().getName() + ") ";
+                    newMsg = new StringBuilder("§e" + a.getFirstName() + " " + a.getLastName() + " (" + event.getPlayer().getName() + ") ");
 
                 } else {
                     msgs[0] = msgs[0].substring(1);
-                    msg = "§e";
+                    newMsg = new StringBuilder("§e");
                 }
 
                 //msgs[0].replace("*", "");
 
                 for (String m : msgs) {
-                    msg += m + " ";
+                    newMsg.append(m).append(" ");
                 }
 
-                msg = msg.replace("((", "§7((");
-                msg = msg.replace("))", "§7))§e");
+                newMsg = new StringBuilder(newMsg.toString().replace("((", "§7(("));
+                newMsg = new StringBuilder(newMsg.toString().replace("))", "§7))§e"));
 
-                msg = turnEverythingInQuotationsWhite(msg);
+                newMsg = new StringBuilder(turnEverythingInQuotationsWhite(newMsg.toString()));
 
                 event.setCancelled(true);
 
                 for (User b : plugin.getUser().values()) {
                     if (b.getPlayer().getWorld().getName().equalsIgnoreCase(u.getPlayer().getWorld().getName())) {
                         if (b.getPlayer().getLocation().distance(u.getPlayer().getLocation()) <= u.getActiveChannel().getRange()) {
-                            b.getPlayer().sendMessage(msg);
+                            b.getPlayer().sendMessage(newMsg.toString());
                         }
                     }
                 }
 
-                Logger.getLogger("Minecraft").log(Level.INFO, "[Chat] " + event.getPlayer().getName() + " [RP] " + event.getMessage());
+                Logger.getLogger("Minecraft").log(Level.INFO, "[Chat] " + event.getPlayer().getName() + " [RP] " + msg);
             }
             return;
         }
-        if (event.getMessage().startsWith("!")) {
-            plugin.getChatManager().chat(u, event.getMessage().replaceFirst("!", ""), plugin.getChatManager().getChannel("Global"));
+        if (msg.startsWith("!")) {
+            plugin.getChatManager().chat(u, msg.replaceFirst("!", ""), plugin.getChatManager().getChannel("Global"));
             return;
         }
 
-        plugin.getChatManager().chat(u, event.getMessage());
+        plugin.getChatManager().chat(u, msg);
 
     }
 

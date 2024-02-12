@@ -7,7 +7,9 @@ package de.ftscraft.ftssystem.commands;
 
 import de.ftscraft.ftssystem.configs.Messages;
 import de.ftscraft.ftssystem.main.FtsSystem;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -37,7 +39,6 @@ public class CMDwartung implements CommandExecutor {
                 return true;
             } else if (args.length == 1 && args[0].equalsIgnoreCase("confirm")) {
 
-                //wenn server noch nicht in wartung
                 if (!plugin.isInWartung()) {
 
                     if (taskId != -1) {
@@ -45,7 +46,9 @@ public class CMDwartung implements CommandExecutor {
                     }
 
                     taskId = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
-                        Bukkit.broadcastMessage("§cEs wird gleich eine Wartungsarbeit geben. Ihr werdet nach Ablauf des Timers gekickt! §b" + seconds);
+                        Bukkit.getServer().broadcast(Component.text(
+                                "§cEs wird gleich eine Wartungsarbeit geben. Ihr werdet nach Ablauf des Timers gekickt! §b" + seconds
+                        ));
                         seconds--;
                         if (seconds == 0) {
                             startWartung();
@@ -57,8 +60,6 @@ public class CMDwartung implements CommandExecutor {
                 } else {
 
                     endWartung();
-
-                    World w = null;
 
                 }
             }
@@ -74,7 +75,7 @@ public class CMDwartung implements CommandExecutor {
 
         for (Player onlinePlayer : plugin.getServer().getOnlinePlayers()) {
             if (!onlinePlayer.hasPermission("ftssystem.wartung.bypass")) {
-                onlinePlayer.kickPlayer("§cWir gehen in Wartungsarbeiten! \n §bDu wirst wahrscheinlich im Forum oder im Discord mehr Infos erhalten");
+                onlinePlayer.kick(Component.text("§cWir gehen in Wartungsarbeiten! \n §bDu wirst wahrscheinlich im Forum oder im Discord mehr Infos erhalten"));
             }
         }
 
@@ -83,7 +84,7 @@ public class CMDwartung implements CommandExecutor {
     private void endWartung() {
         plugin.setWartung(false);
 
-        Bukkit.broadcastMessage("§bDie Wartungsarbeiten wurden beendet!");
+        Bukkit.getServer().broadcast(Component.text("§bDie Wartungsarbeiten wurden beendet!"));
     }
 
     private void cancelTask() {

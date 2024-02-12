@@ -5,7 +5,10 @@
 
 package de.ftscraft.ftssystem.punishment;
 
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 import de.ftscraft.ftssystem.configs.Messages;
+import de.ftscraft.ftssystem.database.entities.PunishmentEntity;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.utils.TimeUnits;
 import de.ftscraft.ftssystem.utils.UUIDFetcher;
@@ -13,12 +16,12 @@ import de.ftscraft.ftssystem.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.sql.SQLException;
 import java.util.*;
 
 public class PunishmentManager {
 
     private final FtsSystem plugin;
-    private int latestID;
 
     private final HashMap<UUID, List<Punishment>> players = new HashMap<>();
     private final HashMap<Player, PunishmentBuilder> builders;
@@ -28,7 +31,6 @@ public class PunishmentManager {
         this.plugin = plugin;
         builders = new HashMap<>();
         punishmentIO = new PunishmentIO(plugin, this);
-        this.latestID = plugin.getConfigManager().getLatestPunID();
     }
 
     private void addPunishmentToPlayer(UUID player, Punishment pu) {
@@ -52,7 +54,7 @@ public class PunishmentManager {
                 if (punishment.isActive()) {
 
                     if (punishment instanceof TempWarn) {
-                        if (((Temporary) punishment).untilInMillis() < System.currentTimeMillis()) {
+                        if (((TemporaryPunishment) punishment).untilInMillis() < System.currentTimeMillis()) {
                             continue;
                         }
                     }
@@ -68,34 +70,27 @@ public class PunishmentManager {
 
             if (numberOfPunishments == 3) {
 
-                addTempBan("System: 3 Strafen erhalten",
-                        "System",
-                        UUIDFetcher.getName(player),
-                        "Der Spieler hat 3 Strafen erhalten und wurde deshalb bestraft.",
-                        "2d");
+                addTempBan("System: 3 Strafen erhalten", UUID.fromString("291af7c7-2114-45bb-a97a-d3b4077392e8"), UUIDFetcher.getName(player), "Der Spieler hat 3 Strafen erhalten und wurde deshalb bestraft.", "2d");
 
             }
 
             if (numberOfPunishments > 6) {
 
-                addBan("System: 6 Strafen (oder mehr) erhalten",
-                        "System",
-                        UUIDFetcher.getName(player),
-                        "Der Spieler hat 6 (oder mehr) Strafen erhalten und wurde deshalb bestraft.");
+                addBan("System: 6 Strafen (oder mehr) erhalten", UUID.fromString("291af7c7-2114-45bb-a97a-d3b4077392e8"), UUIDFetcher.getName(player), "Der Spieler hat 6 (oder mehr) Strafen erhalten und wurde deshalb bestraft.");
 
             }
         }
 
     }
 
-    public void loadPunishmentFromData(UUID player, PunishmentType type, String reason, String author, String moreInfo, long time, long until, int id, boolean active) {
+    public void loadPunishmentFromData(UUID player, PunishmentType type, String reason, UUID author, String moreInfo, long time, long until, int id, boolean active) {
         Punishment pu;
         switch (type) {
             case WARN -> pu = new Warn(reason, author, time, player, moreInfo, id, active);
-            case TEMPWARN -> pu = new TempWarn(reason, author, time, until, player, moreInfo, id, active);
+            case TEMP_WARN -> pu = new TempWarn(reason, author, time, until, player, moreInfo, id, active);
             case NOTE -> pu = new Note(reason, author, time, player, moreInfo, id, active);
-            case TEMPBAN -> pu = new TempBan(player, reason, author, time, until, moreInfo, id, active);
-            case TEMPMUTE -> pu = new TempMute(reason, author, time, until, player, moreInfo, id, active);
+            case TEMP_BAN -> pu = new TempBan(reason, author, time, until, player, moreInfo, id, active);
+            case TEMP_MUTE -> pu = new TempMute(reason, author, time, until, player, moreInfo, id, active);
             case BAN -> pu = new Ban(reason, author, time, player, moreInfo, id, active);
             default -> {
                 return;
@@ -108,26 +103,33 @@ public class PunishmentManager {
         players.remove(player);
     }
 
-    public boolean addWarn(String reason, String author, String playerName, String moreInfo) {
+    public boolean addWarn(String reason, UUID author, String playerName, String moreInfo) {
         UUID uuid = UUIDFetcher.getUUID(playerName);
-        if (uuid == null)
-            return false;
+        if (uuid == null) return false;
 
-        Warn warn = new Warn(reason, author, System.currentTimeMillis(), uuid, moreInfo, latestID, true);
-        latestID++;
-        addPunishmentToPlayer(uuid, warn);
-        punishmentIO.savePlayerData(uuid);
+        PunishmentEntity punishmentEntity = new PunishmentEntity(
+                reason,
+                author,
+                System.currentTimeMillis(),
+                uuid.toString(),
+                moreInfo,
+                true,
+                -1,
+                PunishmentType.WARN.toString()
+        );
+        Punishment punishment = saveNewPunishmentToDatabase(punishmentEntity);
+        addPunishmentToPlayer(uuid, punishment);
 
         Player op = Bukkit.getPlayer(playerName);
         if (op != null) {
-            op.sendMessage(Messages.PREFIX + "Du hast ein Warn von §c" + warn.getAuthor() + " §7wegen §c" + warn.getReason() + "§7 erhalten. Dieser Warn ist Permanent");
+            op.sendMessage(Messages.PREFIX + "Du hast einen Warn von §c" + punishment.getAuthorName() + " §7wegen §c" + punishment.getReason() + "§7 erhalten. Dieser Warn ist Permanent");
         } else {
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + playerName + "Du hast ein Warn von §c" + warn.getAuthor() + " §7wegen §c" + warn.getReason() + "§7 erhalten. Dieser Warn ist Permanent");
+            Utils.runConsoleCommand( "mail send " + playerName + " Du hast einen Warn von §c" + punishment.getAuthorName() + " §7wegen §c" + punishment.getReason() + "§7 erhalten. Dieser Warn ist Permanent", plugin);
         }
 
         for (Player all : Bukkit.getOnlinePlayers()) {
             if (all.hasPermission("ftssystem.punish")) {
-                all.sendMessage(Messages.PREFIX + playerName + " hat von " + warn.getAuthor() + " einen Permanenten Warn erhalten wegen: " + warn.getReason());
+                all.sendMessage(Messages.PREFIX + playerName + " hat von " + punishment.getAuthorName() + " einen Permanenten Warn erhalten wegen: " + punishment.getReason());
             }
         }
 
@@ -136,161 +138,126 @@ public class PunishmentManager {
         return true;
     }
 
-    public boolean addTempwarn(String reason, String author, String playerName, String moreInfo, String unit) {
+    public boolean addTempwarn(String reason, UUID author, String playerName, String moreInfo, String unit) {
+        //Get UUID from Player
+        UUID uuid = UUIDFetcher.getUUID(playerName);
+
+        long until = Utils.calculateUntil(unit);
+        if (until == -1)
+            return false;
+
+        PunishmentEntity punishmentEntity = new PunishmentEntity(
+                reason,
+                author,
+                System.currentTimeMillis(),
+                uuid.toString(),
+                moreInfo,
+                true,
+                until,
+                PunishmentType.TEMP_WARN.toString()
+        );
+        TemporaryPunishment punishment = (TemporaryPunishment) saveNewPunishmentToDatabase(punishmentEntity);
+        addPunishmentToPlayer(uuid, punishment);
+
+        Player op = Bukkit.getPlayer(playerName);
+        if (op != null) {
+            op.sendMessage(Messages.PREFIX + "Du hast ein Warn von §c" + punishment.getAuthorName() + " §7wegen §c" +
+                    punishment.getReason() + "§7 erhalten. Dieser Warn verschwindet in" + punishment.untilAsString());
+        } else {
+            Utils.runConsoleCommand("mail send " + playerName +
+                    "Du hast ein Warn von §c" + punishment.getAuthorName() + " §7wegen §c" + punishment.getReason() +
+                    "§7 erhalten. Dieser Warn verschwindet in" + punishment.untilAsString(), plugin);
+        }
+
+        for (Player all : Bukkit.getOnlinePlayers()) {
+            if (all.hasPermission("ftssystem.punish")) {
+                all.sendMessage(Messages.PREFIX + playerName + " hat von " + punishment.getAuthorName() +
+                        " einen Temp Warn erhalten wegen: " + punishment.getReason());
+            }
+        }
+
+
+        checkForAutoBan(uuid);
+
+        return true;
+    }
+
+    public boolean addNote(String reason, UUID author, String playerName, String moreInfo) {
+        UUID uuid = UUIDFetcher.getUUID(playerName);
+        PunishmentEntity punishmentEntity = new PunishmentEntity(
+                reason,
+                author,
+                System.currentTimeMillis(),
+                uuid.toString(),
+                moreInfo,
+                true,
+                -1,
+                PunishmentType.NOTE.toString()
+        );
+        addPunishmentToPlayer(uuid, saveNewPunishmentToDatabase(punishmentEntity));
+
+        return true;
+    }
+
+    public boolean addTempBan(String reason, UUID author, String playerName, String moreInfo, String unit) {
         //Get UUID from Player
         UUID uuid = UUIDFetcher.getUUID(playerName);
 
         //Get Current Millis
         long current = System.currentTimeMillis();
 
-        String[] u = Utils.splitToNumbers(unit);
-        //Check if its 2 size big for 1 Number + 1 Unit
-        if (u.length != 2) {
+        long until = Utils.calculateUntil(unit);
+        if (until == -1)
             return false;
-        }
-        //Init Until value
-        long until = 0;
 
-        for (int i = 0; i < u.length; i++) {
-            //If i == 0 -> Its the Number
-            if (i == 0) {
-                try {
-                    until = Integer.parseInt(u[i]);
-                } catch (NumberFormatException ex) {
-                    return false;
-                }
-                //If i == 1 -> Its the Unit
-            } else {
-                //Check if Unit exists
-                if (TimeUnits.getTimeUnitByUnit(u[i]) == null) {
-                    return false;
-                }
-                //Calculate until
-                //Get Millis from TimeUnit
-                long time = Objects.requireNonNull(TimeUnits.getTimeUnitByUnit(u[i])).getMillis();
-                //Get Millis from TimeUnit * how many of these
-                until = until * time;
-                //Get final Millis from Current Millis + the Millis of duration
-                until = until + current;
-            }
-        }
-        TempWarn tempWarn = new TempWarn(reason, author, current, until, uuid, moreInfo, latestID, true);
-        latestID++;
-        addPunishmentToPlayer(uuid, tempWarn);
-        punishmentIO.savePlayerData(uuid);
+        PunishmentEntity punishmentEntity = new PunishmentEntity(
+                reason,
+                author,
+                System.currentTimeMillis(),
+                uuid.toString(),
+                moreInfo,
+                true,
+                until,
+                PunishmentType.TEMP_BAN.toString()
+        );
+        TemporaryPunishment punishment = (TemporaryPunishment) saveNewPunishmentToDatabase(punishmentEntity);
+        addPunishmentToPlayer(uuid, punishment);
 
         Player op = Bukkit.getPlayer(playerName);
         if (op != null) {
-            op.sendMessage(Messages.PREFIX + "Du hast ein Warn von §c" + tempWarn.getAuthor() + " §7wegen §c" + tempWarn.getReason() + "§7 erhalten. Dieser Warn verschwindet in" + tempWarn.untilAsString());
-        } else {
-
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + playerName + "Du hast ein Warn von §c" + tempWarn.getAuthor() + " §7wegen §c" + tempWarn.getReason() + "§7 erhalten. Dieser Warn verschwindet in" + tempWarn.untilAsString());
+            Bukkit.getScheduler().runTaskLater(plugin, () -> op.kickPlayer("§4Du wurdest gebannt! \n" + "§eGebannt von: §b" + punishment.getAuthorName() + "\n" + "§eBis: " + punishment.untilAsString() + "\n" + "§eGrund: §b" + reason + "\n" + " \n" + "§6Du kannst ein Entbannungsbeitrag im Forum schreiben"), 4);
         }
 
         for (Player all : Bukkit.getOnlinePlayers()) {
             if (all.hasPermission("ftssystem.punish")) {
-                all.sendMessage(Messages.PREFIX + playerName + " hat von " + tempWarn.getAuthor() + " einen Temp Warn erhalten wegen: " + tempWarn.getReason());
+                all.sendMessage(FtsSystem.PREFIX + "§c" + playerName + " §7wurde für " + punishment.untilAsString() + " von §c" + punishment.getAuthorName() + " §7wegen §c" + reason + " §7gebannt");
             }
         }
-
-
-        checkForAutoBan(uuid);
-
-        return true;
-    }
-
-    public boolean addNote(String reason, String author, String playerName, String moreInfo) {
-        UUID uuid = UUIDFetcher.getUUID(playerName);
-        if (uuid == null)
-            return false;
-        Note note = new Note(reason, author, System.currentTimeMillis(), uuid, moreInfo, latestID, true);
-        latestID++;
-        addPunishmentToPlayer(uuid, note);
-        punishmentIO.savePlayerData(uuid);
-
-        return true;
-    }
-
-    public boolean addTempBan(String reason, String author, String playerName, String moreInfo, String unit) {
-        //Get UUID from Player
-        UUID uuid = UUIDFetcher.getUUID(playerName);
-
-        //Get Current Millis
-        long current = System.currentTimeMillis();
-
-        String[] u = Utils.splitToNumbers(unit);
-        //Check if its 2 size big for 1 Number + 1 Unit
-        assert u != null;
-        if (u.length != 2) {
-            return false;
-        }
-        //Init Until value
-        long until = 0;
-
-        for (int i = 0; i < u.length; i++) {
-            //If i == 0 -> Its the Number
-            if (i == 0) {
-                try {
-                    until = Integer.parseInt(u[i]);
-                } catch (NumberFormatException ex) {
-                    return false;
-                }
-                //If i == 1 -> Its the Unit
-            } else {
-                //Check if Unit exists
-                if (TimeUnits.getTimeUnitByUnit(u[i]) == null) {
-                    return false;
-                }
-                //Calculate until
-                //Get Millis from TimeUnit
-                long time = Objects.requireNonNull(TimeUnits.getTimeUnitByUnit(u[i])).getMillis();
-                //Get Millis from TimeUnit * how many of these
-                until = until * time;
-                //Get final Millis from Current Millis + the Millis of duration
-                until = until + current;
-            }
-        }
-        TempBan tempBan = new TempBan(uuid, reason, author, current, until, moreInfo, latestID, true);
-        latestID++;
-        Player op = Bukkit.getPlayer(playerName);
-        if (op != null) {
-            Bukkit.getScheduler().runTaskLater(plugin, () -> op.kickPlayer(
-                    "§4Du wurdest gebannt! \n" +
-                    "§eGebannt von: §b" + author + "\n" +
-                    "§eBis: " + tempBan.untilAsString() + "\n" +
-                    "§eGrund: §b" + reason + "\n" +
-                    " \n" +
-                    "§6Du kannst ein Entbannungsbeitrag im Forum schreiben"), 4);
-        }
-
-        for (Player all : Bukkit.getOnlinePlayers()) {
-            if (all.hasPermission("ftssystem.punish")) {
-                all.sendMessage(FtsSystem.PREFIX + "§c" + playerName + " §7wurde für " + tempBan.untilAsString() + " von §c" + author + " §7wegen §c" + reason + " §7gebannt");
-            }
-        }
-
-        addPunishmentToPlayer(uuid, tempBan);
-        punishmentIO.savePlayerData(uuid);
 
         checkForAutoBan(uuid);
         return true;
     }
 
-    public boolean addBan(String reason, String author, String playerName, String moreInfo) {
+    public boolean addBan(String reason, UUID author, String playerName, String moreInfo) {
         UUID uuid = UUIDFetcher.getUUID(playerName);
-        if (uuid == null)
-            return false;
-        Ban ban = new Ban(reason, author, System.currentTimeMillis(), uuid, moreInfo, latestID, true);
-        latestID++;
+        if (uuid == null) return false;
+
+        PunishmentEntity punishmentEntity = new PunishmentEntity(
+                reason,
+                author,
+                System.currentTimeMillis(),
+                uuid.toString(),
+                moreInfo,
+                true,
+                -1,
+                PunishmentType.BAN.toString()
+        );
+        Punishment punishment = saveNewPunishmentToDatabase(punishmentEntity);
+        addPunishmentToPlayer(uuid, punishment);
+
         Player op = Bukkit.getPlayer(playerName);
         if (op != null) {
-            Bukkit.getScheduler().runTaskLater(plugin, () -> op.kickPlayer(
-                    "§4Du wurdest gebannt! \n" +
-                    "§eGebannt von: §b" + author + "\n" +
-                    "§eBis: §bPERMANENT \n" +
-                    "§eGrund: §b" + reason + "\n" +
-                    " \n" +
-                    "§6Du kannst ein Entbannungsbeitrag im Forum schreiben"), 4);
+            Bukkit.getScheduler().runTaskLater(plugin, () -> op.kickPlayer("§4Du wurdest gebannt! \n" + "§eGebannt von: §b" + punishment.getAuthorName() + "\n" + "§eBis: §bPERMANENT \n" + "§eGrund: §b" + reason + "\n" + " \n" + "§6Du kannst ein Entbannungsbeitrag im Forum schreiben"), 4);
         }
 
         for (Player all : Bukkit.getOnlinePlayers()) {
@@ -299,56 +266,30 @@ public class PunishmentManager {
             }
         }
 
-        addPunishmentToPlayer(uuid, ban);
-
-        punishmentIO.savePlayerData(uuid);
+        addPunishmentToPlayer(uuid, punishment);
 
         return true;
     }
 
-    public boolean addTempMute(String reason, String author, String playerName, String moreInfo, String unit) {
+    public boolean addTempMute(String reason, UUID author, String playerName, String moreInfo, String unit) {
         //Get UUID from Player
         UUID uuid = UUIDFetcher.getUUID(playerName);
 
-        //Get Current Millis
-        long current = System.currentTimeMillis();
-
-        String[] u = Utils.splitToNumbers(unit);
-        //Check if its 2 size big for 1 Number + 1 Unit
-        assert u != null;
-        if (u.length != 2) {
+        long until = Utils.calculateUntil(unit);
+        if (until == -1)
             return false;
-        }
-        //Init Until value
-        long until = 0;
-
-        for (int i = 0; i < u.length; i++) {
-            //If i == 0 -> Its the Number
-            if (i == 0) {
-                try {
-                    until = Integer.parseInt(u[i]);
-                } catch (NumberFormatException ex) {
-                    return false;
-                }
-                //If i == 1 -> Its the Unit
-            } else {
-                //Check if Unit exists
-                if (TimeUnits.getTimeUnitByUnit(u[i]) == null) {
-                    return false;
-                }
-                //Calculate until
-                //Get Millis from TimeUnit
-                long time = Objects.requireNonNull(TimeUnits.getTimeUnitByUnit(u[i])).getMillis();
-                //Get Millis from TimeUnit * how many of these
-                until = until * time;
-                //Get final Millis from Current Millis + the Millis of duration
-                until = until + current;
-            }
-        }
-        TempMute tempMute = new TempMute(reason, author, current, until, uuid, moreInfo, latestID, true);
-        latestID++;
-        addPunishmentToPlayer(uuid, tempMute);
-        punishmentIO.savePlayerData(uuid);
+        PunishmentEntity punishmentEntity = new PunishmentEntity(
+                reason,
+                author,
+                System.currentTimeMillis(),
+                uuid.toString(),
+                moreInfo,
+                true,
+                until,
+                PunishmentType.TEMP_MUTE.toString()
+        );
+        TemporaryPunishment punishment = (TemporaryPunishment) saveNewPunishmentToDatabase(punishmentEntity);
+        addPunishmentToPlayer(uuid, punishment);
 
         checkForAutoBan(uuid);
         return true;
@@ -359,66 +300,55 @@ public class PunishmentManager {
     }
 
     public Punishment isBanned(Player player) {
-        clearData(player.getUniqueId());
-        loadPlayer(player.getUniqueId());
-        if (players.get(player.getUniqueId()) == null)
-            return null;
+        if (!isLoaded(player.getUniqueId()))
+            loadPlayer(player.getUniqueId());
+        if (players.get(player.getUniqueId()) == null) return null;
         for (Punishment a : players.get(player.getUniqueId())) {
             if (a.getType() == PunishmentType.BAN) {
-                if (a.isActive())
-                    return a;
-            } else if (a.getType() == PunishmentType.TEMPBAN) {
-                if (a.isActive())
-                    if (((Temporary) a).untilInMillis() > System.currentTimeMillis())
-                        return a;
+                if (a.isActive()) return a;
+            } else if (a.getType() == PunishmentType.TEMP_BAN) {
+                if (a.isActive()) if (((TemporaryPunishment) a).untilInMillis() > System.currentTimeMillis()) return a;
             }
         }
         return null;
     }
 
     public boolean isBanned(UUID player) {
-        clearData(player);
+        if (!isLoaded(player))
+            loadPlayer(player);
         loadPlayer(player);
-        if (players.get(player) == null)
-            return false;
+        if (players.get(player) == null) return false;
         for (Punishment a : players.get(player)) {
             if (a.getType() == PunishmentType.BAN) {
+                if (a.isActive()) return true;
+            } else if (a.getType() == PunishmentType.TEMP_BAN) {
                 if (a.isActive())
-                    return true;
-            } else if (a.getType() == PunishmentType.TEMPBAN) {
-                if (a.isActive())
-                    if (((Temporary) a).untilInMillis() > System.currentTimeMillis())
-                        return true;
+                    if (((TemporaryPunishment) a).untilInMillis() > System.currentTimeMillis()) return true;
             }
         }
         return false;
     }
 
     public Punishment isMuted(Player player) {
-        clearData(player.getUniqueId());
-        loadPlayer(player.getUniqueId());
-        if (players.get(player.getUniqueId()) == null)
-            return null;
+        if (!isLoaded(player.getUniqueId()))
+            loadPlayer(player.getUniqueId());
+        if (players.get(player.getUniqueId()) == null) return null;
         for (Punishment a : players.get(player.getUniqueId())) {
-            if (a.getType() == PunishmentType.TEMPMUTE) {
-                if (a.isActive())
-                    if (((Temporary) a).untilInMillis() > System.currentTimeMillis())
-                        return a;
+            if (a.getType() == PunishmentType.TEMP_MUTE) {
+                if (a.isActive()) if (((TemporaryPunishment) a).untilInMillis() > System.currentTimeMillis()) return a;
             }
         }
         return null;
     }
 
     public boolean isMuted(UUID player) {
-        clearData(player);
-        loadPlayer(player);
-        if (players.get(player) == null)
-            return false;
+        if (!isLoaded(player))
+            loadPlayer(player);
+        if (players.get(player) == null) return false;
         for (Punishment a : players.get(player)) {
-            if (a.getType() == PunishmentType.TEMPMUTE) {
+            if (a.getType() == PunishmentType.TEMP_MUTE) {
                 if (a.isActive())
-                    if (((Temporary) a).untilInMillis() > System.currentTimeMillis())
-                        return true;
+                    if (((TemporaryPunishment) a).untilInMillis() > System.currentTimeMillis()) return true;
             }
         }
         return false;
@@ -430,18 +360,50 @@ public class PunishmentManager {
 
     public void loadPlayer(UUID uuid) {
         punishmentIO.loadPlayerData(uuid);
+        try {
+            QueryBuilder<PunishmentEntity, Integer> queryBuilder = plugin.getDatabaseManager().getPunishmentsDao().queryBuilder();
+            List<PunishmentEntity> punishmentEntities = plugin.getDatabaseManager().getPunishmentsDao().query(queryBuilder.where().eq("player", uuid.toString()).prepare());
+            for (PunishmentEntity punishmentEntity : punishmentEntities) {
+                addPunishmentToPlayer(uuid, punishmentEntity.turnIntoPunishment());
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public int getLatestID() {
-        return latestID;
+    public Punishment saveNewPunishmentToDatabase(PunishmentEntity punishmentEntity) {
+        try {
+            plugin.getDatabaseManager().getPunishmentsDao().createOrUpdate(punishmentEntity);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return punishmentEntity.turnIntoPunishment();
+    }
+
+    public boolean deletePunishment(int punishmentId) {
+        try {
+            PunishmentEntity entity = plugin.getDatabaseManager().getPunishmentsDao().queryForId(punishmentId);
+            plugin.getDatabaseManager().getPunishmentsDao().delete(entity);
+            Punishment delete = null;
+            List<Punishment> punishments = players.get(UUID.fromString(entity.getPlayer()));
+            for (Punishment punishment : punishments) {
+                if (punishment.getID() == punishmentId)
+                    delete = punishment;
+            }
+            if (delete != null) {
+                punishments.remove(delete);
+            }
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
     public Punishment getPunishmentById(int id) {
 
         for (List<Punishment> list : players.values()) {
             for (Punishment pu : list) {
-                if (pu.getID() == id)
-                    return pu;
+                if (pu.getID() == id) return pu;
             }
         }
 
@@ -452,6 +414,26 @@ public class PunishmentManager {
 
     public void savePlayer(UUID player) {
         punishmentIO.savePlayerData(player);
+    }
+
+    public void savePunishment(Punishment punishment) {
+        PunishmentEntity punishmentEntity = new PunishmentEntity();
+        punishmentEntity.setType(punishment.getType().toString());
+        punishmentEntity.setReason(punishment.getReason());
+        punishmentEntity.setAuthor(punishment.getAuthor().toString());
+        punishmentEntity.setMoreInfo(punishment.getMoreInfo());
+        punishmentEntity.setTime(punishment.getTime());
+        punishmentEntity.setActive(punishment.isActive());
+        punishmentEntity.setID(punishment.getID());
+        punishmentEntity.setPlayer(punishment.getPlayer().toString());
+        if (PunishmentType.isTemporary(punishment.getType())) {
+            punishmentEntity.setUntil(((TemporaryPunishment) punishment).getUntil());
+        }
+        try {
+            plugin.getDatabaseManager().getPunishmentsDao().createOrUpdate(punishmentEntity);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

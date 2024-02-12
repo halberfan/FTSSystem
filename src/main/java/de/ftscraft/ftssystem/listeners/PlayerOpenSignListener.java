@@ -13,7 +13,6 @@ import org.bukkit.event.Listener;
 public class PlayerOpenSignListener implements Listener {
 
     private final FtsSystem plugin;
-
     public PlayerOpenSignListener(FtsSystem plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
@@ -26,7 +25,7 @@ public class PlayerOpenSignListener implements Listener {
         SignSide signSide = sign.getSide(side);
         boolean empty = true;
         for (Component line : signSide.lines()) {
-            if (!((TextComponent) line).content().equals(""))
+            if (!((TextComponent) line).content().isEmpty())
                 empty = false;
         }
         event.setCancelled(!empty);

@@ -1,5 +1,6 @@
 package de.ftscraft.ftssystem.main;
 
+import com.earth2me.essentials.Essentials;
 import de.ftscraft.ftsengine.main.Engine;
 import de.ftscraft.ftssystem.channel.chatmanager.ChatManager;
 import de.ftscraft.ftssystem.channel.chatmanager.FTSChatManager;
@@ -7,6 +8,7 @@ import de.ftscraft.ftssystem.channel.chatmanager.ReichChatManager;
 import de.ftscraft.ftssystem.commands.*;
 import de.ftscraft.ftssystem.configs.ConfigManager;
 import de.ftscraft.ftssystem.configs.ConfigVal;
+import de.ftscraft.ftssystem.database.entities.DatabaseManager;
 import de.ftscraft.ftssystem.listeners.*;
 import de.ftscraft.ftssystem.menus.fts.MenuItems;
 import de.ftscraft.ftssystem.poll.Umfrage;
@@ -28,6 +30,7 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Logger;
@@ -43,6 +46,7 @@ public class FtsSystem extends JavaPlugin {
     private Economy econ;
     private Permission perms;
     private Chat chat;
+    private Essentials essentialsPlugin;
 
     private ConfigManager configManager;
     private FileManager fileManager;
@@ -65,14 +69,16 @@ public class FtsSystem extends JavaPlugin {
 
     private static Logger pluginLogger;
 
+    private DatabaseManager databaseManager;
+
     @Override
     public void onEnable() {
-        super.onEnable();
         hook();
 
         pluginLogger = getLogger();
 
         init();
+        postInit();
     }
 
 
@@ -82,16 +88,16 @@ public class FtsSystem extends JavaPlugin {
         setupChat();
         setupPermissions();
         engine = (Engine) getServer().getPluginManager().getPlugin("FTSEngine");
+        if (getServer().getPluginManager().isPluginEnabled("Essentials"))
+            essentialsPlugin = (Essentials) getServer().getPluginManager().getPlugin("Essentials");
     }
 
     @Override
     public void onDisable() {
-        super.onDisable();
         save();
     }
 
     private void save() {
-        configManager.setConfig(ConfigVal.LATEST_PUNISH_ID, getPunishmentManager().getLatestID());
         configManager.setConfig(ConfigVal.WARTUNG, isInWartung());
         configManager.setConfig(ConfigVal.MESSAGES, configManager.getAutoMessages());
 
@@ -126,11 +132,13 @@ public class FtsSystem extends JavaPlugin {
         new CMDradius(this);
         new CMDroleplay(this);
         new CMDsetvotehome(this);
+        new CMDtravel(this);
         new CMDtutorialbuch(this);
         new CMDumfrage(this);
         new CMDvoteban(this);
         new CMDvotehome(this);
         new CMDwartung(this);
+        new CMDrepair(this);
 
         new DeathListener(this);
         new CommandListener(this);
@@ -145,6 +153,8 @@ public class FtsSystem extends JavaPlugin {
         new PlayerAttackListener(this);
         new FactionListener(this);
         new PlayerOpenSignListener(this);
+        new PlayerInteractEntityListener(this);
+
         new Runner(this);
 
         Iterator<Recipe> recipes = Bukkit.recipeIterator();
@@ -167,8 +177,6 @@ public class FtsSystem extends JavaPlugin {
 
         }
 
-        postInit();
-
     }
 
     private void postInit() {
@@ -177,6 +185,15 @@ public class FtsSystem extends JavaPlugin {
         fileManager.loadSecrets();
         fileManager.loadPremium();
         premiumManager.checkPremiumPlayers();
+        try {
+            databaseManager = new DatabaseManager(getDataFolder().getAbsolutePath() + "/ftssystem.db");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public DatabaseManager getDatabaseManager() {
+        return databaseManager;
     }
 
     public User getUser(Player player) {
@@ -215,7 +232,6 @@ public class FtsSystem extends JavaPlugin {
         this.umfrage = umfrage;
     }
 
-
     public FTSScoreboardManager getScoreboardManager() {
         return scoreboardManager;
     }
@@ -228,28 +244,25 @@ public class FtsSystem extends JavaPlugin {
         return premiumManager;
     }
 
-    private boolean setupEconomy() {
+    private void setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            return false;
+            return;
         }
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
-            return false;
+            return;
         }
         econ = rsp.getProvider();
-        return econ != null;
     }
 
-    private boolean setupChat() {
+    private void setupChat() {
         RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
         chat = rsp.getProvider();
-        return chat != null;
     }
 
-    private boolean setupPermissions() {
+    private void setupPermissions() {
         RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
         perms = rsp.getProvider();
-        return perms != null;
     }
 
     public FileManager getFileManager() {
@@ -284,4 +297,7 @@ public class FtsSystem extends JavaPlugin {
         return pluginLogger;
     }
 
+    public Essentials getEssentialsPlugin() {
+        return essentialsPlugin;
+    }
 }

@@ -87,7 +87,7 @@ public class FTSChatManager extends ChatManager {
                 componentBuilder.append(textComponent);
                 componentBuilder.append(" ").event((HoverEvent) null);
             } else {
-                if (!code.equals(""))
+                if (!code.isEmpty())
                     componentBuilder.append(new TextComponent("§" + code + s + " "));
                 else componentBuilder.append(s + " ");
             }

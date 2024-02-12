@@ -6,6 +6,7 @@
 package de.ftscraft.ftssystem.configs;
 
 import de.ftscraft.ftssystem.main.FtsSystem;
+import de.ftscraft.ftssystem.travelsystem.TravelType;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
@@ -35,6 +36,9 @@ public class ConfigManager {
         cfg.addDefault("messages", autoMessages);
         cfg.addDefault("latestPunishID", 0);
         cfg.addDefault("wartung", false);
+        for (TravelType value : TravelType.values()) {
+            cfg.addDefault("travel_price." + value.name().toLowerCase(), value.getPrice());
+        }
         cfg.options().copyDefaults(true);
         plugin.saveConfig();
 
@@ -45,15 +49,16 @@ public class ConfigManager {
         //AutoMessage
         cfg = plugin.getConfig();
         autoMessages.clear();
-        List messages = cfg.getList("messages");
-        String[] amessages = (String[]) messages.toArray(new String[messages.size()]);
-        autoMessages.addAll(Arrays.asList(amessages));
+        autoMessages.addAll(cfg.getStringList("messages"));
         this.autoMessages = autoMessages;
 
         //Latest ID for Punishments
         latestPunID = cfg.getInt("latestPunishID");
 
         wartung = cfg.getBoolean("wartung");
+        for (TravelType value : TravelType.values()) {
+            value.setPrice(cfg.getInt("travel_price." + value.name().toLowerCase()));
+        }
 
     }
 

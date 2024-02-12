@@ -9,7 +9,7 @@ import com.destroystokyo.paper.event.server.PaperServerListPingEvent;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.punishment.Punishment;
 import de.ftscraft.ftssystem.punishment.PunishmentType;
-import de.ftscraft.ftssystem.punishment.Temporary;
+import de.ftscraft.ftssystem.punishment.TemporaryPunishment;
 import de.ftscraft.ftssystem.utils.APIHandling;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,7 +30,7 @@ public class LoginListener implements Listener {
     @EventHandler
     public void onPing(PaperServerListPingEvent event) {
         if (plugin.isInWartung()) {
-            event.setMotd("\u00a7bDer Server ist leider derzeit in\u00a74 Wartung\u00a7r!\n\u00a7bWeitere Infos findest du im Forum oder im Discord");
+            event.setMotd("§bDer Server ist leider derzeit in§4 Wartung§r!\n§bWeitere Infos findest du im Forum oder im Discord");
             event.setMaxPlayers(0);
         }
     }
@@ -58,8 +58,8 @@ public class LoginListener implements Listener {
                 event.setKickMessage("""
                         §bGrüße!
                         Schön, dass du auf FTS spielen möchtest. Leider haben wir aber bei dir einen VPN festgestellt.
-                        Um rege Bann-Umgehungen zu verhindern, werden §cneue §bAccounts, die einen VPN nutzen, §cblockiert§b.
-                        Bitte stelle dein VPN §caus §boder wenn du VPN/Proxy §cnicht ausschalten kannst§b, melde dich bei uns im §cDiscord§b.""");
+                        Um rege Bann-Umgehungen zu verhindern, werden §cneue §bAccounts(nach der Freischaltung sind Proxys erlaubt), die einen VPN nutzen, §cblockiert§b.
+                        Bitte stelle dein VPN §caus, §boder, wenn du VPN/Proxy §cnicht ausschalten kannst§b, melde dich bei uns im §cDiscord§b.""");
                 return;
             }
         }
@@ -77,19 +77,19 @@ public class LoginListener implements Listener {
         if (pu.getType() == PunishmentType.BAN) {
             event.setResult(PlayerLoginEvent.Result.KICK_BANNED);
             event.setKickMessage("§4Du wurdest gebannt! \n" +
-                                 "§eGebannt von: §b" + pu.getAuthor() + "\n" +
+                                 "§eGebannt von: §b" + pu.getAuthorName() + "\n" +
                                  "§eBis: §bPERMANENT \n" +
                                  "§eGrund: §b" + pu.getReason() + "\n" +
                                  " \n" +
-                                 "§6Du kannst ein Entbannungsbeitrag im Forum schreiben");
+                                 "§6Du kannst einen Entbannungsbeitrag im Forum schreiben");
         } else {
             event.setResult(PlayerLoginEvent.Result.KICK_BANNED);
             event.setKickMessage("§4Du wurdest gebannt! \n" +
-                                 "§eGebannt von: §b" + pu.getAuthor() + "\n" +
-                                 "§eNoch: §b" + ((Temporary) pu).untilAsString() + "\n" +
+                                 "§eGebannt von: §b" + pu.getAuthorName() + "\n" +
+                                 "§eNoch: §b" + ((TemporaryPunishment) pu).untilAsString() + "\n" +
                                  "§eGrund: §b" + pu.getReason() + "\n" +
                                  " \n" +
-                                 "§6Du kannst ein Entbannungsbeitrag im Forum schreiben");
+                                 "§6Du kannst einen Entbannungsbeitrag im Forum schreiben");
         }
 
     }

@@ -19,7 +19,7 @@ public class CMDroleplay implements CommandExecutor {
 
     public CMDroleplay(FtsSystem plugin) {
         this.plugin = plugin;
-        this.plugin.getCommand("roleplay").setExecutor(this::onCommand);
+        this.plugin.getCommand("roleplay").setExecutor(this);
     }
 
     @Override

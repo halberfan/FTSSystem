@@ -10,9 +10,11 @@ import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.main.User;
 import de.ftscraft.ftssystem.punishment.*;
 import de.ftscraft.ftssystem.utils.UUIDFetcher;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -72,7 +74,7 @@ public class InvClickListener implements Listener {
                     }
                     p.sendMessage("§cBitte schreibe den Grund");
                 } else if (itemMeta.getDisplayName().equalsIgnoreCase("§4Tempban")) {
-                    PunishmentBuilder prog = new PunishmentBuilder(plugin, PunishmentType.TEMPBAN, p, target);
+                    PunishmentBuilder prog = new PunishmentBuilder(plugin, PunishmentType.TEMP_BAN, p, target);
                     prog.setChatProgress(PunishmentManager.ChatProgress.REASON);
                     p.closeInventory();
                     if (plugin.getPunishmentManager().isBanned(UUIDFetcher.getUUID(target))) {
@@ -81,7 +83,7 @@ public class InvClickListener implements Listener {
                     }
                     p.sendMessage("§cBitte schreibe den Grund");
                 } else if (itemMeta.getDisplayName().equalsIgnoreCase("§cTempmute")) {
-                    PunishmentBuilder prog = new PunishmentBuilder(plugin, PunishmentType.TEMPMUTE, p, target);
+                    PunishmentBuilder prog = new PunishmentBuilder(plugin, PunishmentType.TEMP_MUTE, p, target);
                     prog.setChatProgress(PunishmentManager.ChatProgress.REASON);
                     p.closeInventory();
                     if (plugin.getPunishmentManager().isMuted(UUIDFetcher.getUUID(target))) {
@@ -95,7 +97,7 @@ public class InvClickListener implements Listener {
                     p.closeInventory();
                     p.sendMessage("§cBitte schreibe den Grund");
                 } else if (itemMeta.getDisplayName().equalsIgnoreCase("§6Tempwarn")) {
-                    PunishmentBuilder prog = new PunishmentBuilder(plugin, PunishmentType.TEMPWARN, p, target);
+                    PunishmentBuilder prog = new PunishmentBuilder(plugin, PunishmentType.TEMP_WARN, p, target);
                     prog.setChatProgress(PunishmentManager.ChatProgress.REASON);
                     p.closeInventory();
                     p.sendMessage("§cBitte schreibe den Grund");
@@ -119,14 +121,14 @@ public class InvClickListener implements Listener {
             ItemMeta meta = item.getItemMeta();
             if (!meta.getDisplayName().equalsIgnoreCase(" ")) {
 
-                if (printed.contains(event.getWhoClicked())) {
-                    if (!event.getWhoClicked().hasPermission("ftssystem.admin")) {
-                        event.getWhoClicked().sendMessage("§cDu kannst das nächste mal diese Funktion benutzen nach einem Server-Neustart!");
-                        return;
-                    }
-                }
-
                 if (meta.getDisplayName().equalsIgnoreCase("§6Druck mir das aus!")) {
+
+                    if (printed.contains(event.getWhoClicked())) {
+                        if (!event.getWhoClicked().hasPermission("ftssystem.punish")) {
+                            event.getWhoClicked().sendMessage("§cDu kannst das nächste mal diese Funktion benutzen nach einem Server-Neustart!");
+                            return;
+                        }
+                    }
 
                     ItemStack firstPunishment = event.getInventory().getItem(0);
                     UUID p;
@@ -153,10 +155,10 @@ public class InvClickListener implements Listener {
                         stringBuilder.append("Strafe ").append(i + 1).append(": ").append(pun.getReason()).append("%5Cn");
                         stringBuilder.append("  - Weitere Infos: ").append(pun.getMoreInformation()).append("%5Cn");
                         stringBuilder.append("  - Typ: ").append(pun.getType()).append("%5Cn");
-                        if (pun instanceof Temporary) {
-                            stringBuilder.append("  - Bis: ").append(((Temporary) pun).untilAsCalString()).append("%5Cn");
+                        if (pun instanceof TemporaryPunishment) {
+                            stringBuilder.append("  - Bis: ").append(((TemporaryPunishment) pun).untilAsCalString()).append("%5Cn");
                         }
-                        stringBuilder.append("  - Autor: ").append(pun.getAuthor()).append("%5Cn");
+                        stringBuilder.append("  - Autor: ").append(pun.getAuthorName()).append("%5Cn");
                         stringBuilder.append("  - Deaktiviert: ").append(!pun.isActive()).append("%5Cn %5Cn");
                     }
 
@@ -176,7 +178,7 @@ public class InvClickListener implements Listener {
                         e.printStackTrace();
                     }
 
-                    StringBuffer sb = new StringBuffer();
+                    StringBuilder sb = new StringBuilder();
                     while (sc.hasNext()) {
                         sb.append(sc.next());
                     }
@@ -209,23 +211,44 @@ public class InvClickListener implements Listener {
 
                 p.sendMessage("§5----------------");
                 p.sendMessage("§cSpieler: §e" + UUIDFetcher.getName(pun.getPlayer()));
-                p.sendMessage("§cAutor: §e" + pun.getAuthor());
+                p.sendMessage("§cAutor: §e" + pun.getAuthorName());
                 p.sendMessage("§cGrund: §e" + pun.getReason());
                 p.sendMessage("§cTyp: §e" + pun.getType().toString());
                 p.sendMessage("§cWeitere Informationen: §e" + pun.getMoreInformation());
                 p.sendMessage("§cErstellt am: §e" + pun.createdOn());
-                if (pun instanceof Temporary temp) {
+                if (pun instanceof TemporaryPunishment temp) {
                     p.sendMessage("§cBis: §e" + temp.untilAsCalString());
                 }
-                TextComponent rTC = new TextComponent("Deaktivieren");
-                rTC.setColor(ChatColor.DARK_GREEN);
-                rTC.setBold(true);
-                rTC.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pu remove " + id));
 
-                TextComponent bTC = new TextComponent("§5----");
+                if (p.hasPermission("ftssystem.punish")) {
+                    Component management = Component.empty();
+                    if (pun.isActive()) {
+                        Component deactivate = Component.text("Deaktivieren ")
+                                .color(NamedTextColor.DARK_GREEN)
+                                .decorate(TextDecoration.BOLD)
+                                .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/pu remove " + id));
+                        management = management.append(deactivate);
+                    }
+                    if (pun instanceof TemporaryPunishment) {
+                        Component retime = Component.text("Laufzeit ändern ")
+                                .color(NamedTextColor.DARK_GREEN)
+                                .decorate(TextDecoration.BOLD)
+                                .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/pu bis " + id + " LAUFZEIT"))
+                                .hoverEvent(HoverEvent.showText(Component.text("LAUFZEIT durch die neue Laufzeit ersetzen. " +
+                                        "Wichtig: Die neue Laufzeit geht von dem Zeitpunkt JETZT aus. " +
+                                        "Also wenn du 5d angibst ist die neue Laufzeit bis Jetzt in 5 Tagen.")));
+                        management = management.append(retime);
+                    }
 
-                p.spigot().sendMessage(bTC, rTC, bTC);
-
+                    if (p.hasPermission("ftssystem.admin")) {
+                        Component delete = Component.text("Löschen ")
+                                .color(NamedTextColor.RED)
+                                .decorate(TextDecoration.BOLD)
+                                .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/pu tilgen " + id));
+                        management = management.append(delete);
+                    }
+                    p.sendMessage(management);
+                }
             }
 
         }
