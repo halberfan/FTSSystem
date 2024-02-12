@@ -6,7 +6,7 @@
 
     <groupId>de.ftscraft.ftssystem</groupId>
     <artifactId>FTSSystem</artifactId>
-    <version>1.11.1.7</version>
+    <version>1.14.3</version>
     <build>
         <plugins>
             <plugin>
@@ -39,8 +39,10 @@
                                     <include>org.json:json</include>
                                     <include>commons-logging:commons-logging</include>
                                     <include>commons-codec:commons-codec</include>
+                                    <include>com.j256.ormlite:ormlite-jdbc</include>
                                 </includes>
                             </artifactSet>
+                            <minimizeJar>true</minimizeJar>
                         </configuration>
                     </execution>
                 </executions>
@@ -122,10 +124,25 @@
             <version>56fb290b57</version>
         </dependency>
         <dependency>
+            <groupId>com.github.halberfan</groupId>
+            <artifactId>FTSUtils</artifactId>
+            <version>a54538935e</version>
+        </dependency>
+        <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
             <version>LATEST</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.j256.ormlite</groupId>
+            <artifactId>ormlite-jdbc</artifactId>
+            <version>6.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>LATEST</version>
         </dependency>
 
     </dependencies>
