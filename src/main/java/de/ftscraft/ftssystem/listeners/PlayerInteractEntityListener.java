@@ -21,17 +21,7 @@ public class PlayerInteractEntityListener implements Listener {
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         Entity cow = event.getRightClicked();
         if (cow.getType() == EntityType.MUSHROOM_COW) {
-            boolean turnIntoCow = false;
-            if (event.getHand() == EquipmentSlot.HAND && event.getPlayer().getInventory().getItemInMainHand().getType() == Material.BOWL) {
-                turnIntoCow = true;
-            } else if(event.getHand() == EquipmentSlot.OFF_HAND && event.getPlayer().getInventory().getItemInOffHand().getType() == Material.BOWL) {
-                turnIntoCow = true;
-            }
-            if (turnIntoCow) {
-                Location location = cow.getLocation();
-                cow.remove();
-                location.getWorld().spawn(location, Cow.class);
-            }
+            event.setCancelled(true);
         }
     }
 

@@ -42,42 +42,6 @@ public class CMDftssystem implements FTSCommand {
                         }
                     } else p.sendMessage(Messages.HELP_FTSSYSTEM);
                 }
-            } else if (args[0].equalsIgnoreCase("repair")) {
-
-                if (args.length == 2) {
-
-                    if (p.hasPermission("ftssystem.admin")) {
-
-                        Player t = Bukkit.getPlayer(args[1]);
-
-                        ItemStack item = t.getInventory().getItemInMainHand();
-
-                        if (item.getType() == Material.AIR || !item.hasItemMeta()) {
-                            t.sendMessage("Probier es noch mal mit nem richtigen Item!");
-                            givePearl(t);
-                            return true;
-                        }
-
-                        ItemMeta meta = item.getItemMeta();
-
-                        if (meta instanceof Damageable dmg) {
-
-                            dmg.setDamage(0);
-
-                            item.setItemMeta(meta);
-
-                            t.sendMessage("Das sollte funktioniert haben!");
-                            return true;
-
-                        } else
-                            t.sendMessage("§cDas Item hat keine Haltbarkeit!");
-
-                        givePearl(t);
-
-                    }
-
-                }
-
             } else if (args[0].equalsIgnoreCase("playtime")) {
 
                 if (p.hasPermission("ftssystem.admin")) {

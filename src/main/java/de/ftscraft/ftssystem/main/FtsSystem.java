@@ -18,6 +18,7 @@ import de.ftscraft.ftssystem.utils.FileManager;
 import de.ftscraft.ftssystem.utils.ForumHook.ForumHook;
 import de.ftscraft.ftssystem.utils.PremiumManager;
 import de.ftscraft.ftssystem.utils.Runner;
+import de.ftscraft.ftssystem.utils.discordhook.DiscordHook;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -42,43 +43,34 @@ public class FtsSystem extends JavaPlugin {
 
     public boolean factionHooked = false;
     public static final String PREFIX = "§7[§cFTS-System§7] ";
-
     private Economy econ;
     private Permission perms;
     private Chat chat;
     private Essentials essentialsPlugin;
-
     private ConfigManager configManager;
     private FileManager fileManager;
-
     private FTSScoreboardManager scoreboardManager;
     private MenuItems menuItems;
-
     private Engine engine;
-
     private PunishmentManager punishmentManager;
-
     private boolean wartung;
-
     private ChatManager chatManager;
-
     private boolean blockreich = false;
-
     private PremiumManager premiumManager;
     private ForumHook forumHook;
-
+    private DiscordHook discordHook;
     private static Logger pluginLogger;
-
     private DatabaseManager databaseManager;
 
     @Override
     public void onEnable() {
-        hook();
-
         pluginLogger = getLogger();
+        pluginLogger.info("Starting Plugin...");
+        hook();
 
         init();
         postInit();
+        pluginLogger.info("Plugin started!");
     }
 
 
@@ -120,6 +112,8 @@ public class FtsSystem extends JavaPlugin {
         menuItems = new MenuItems();
         premiumManager = new PremiumManager(this);
         forumHook = new ForumHook(this);
+        //TODO
+        discordHook = new DiscordHook("oma");
         new CMDakte(this);
         new CMDbroadcast(this);
         new CMDcheckcv(this);
@@ -130,7 +124,6 @@ public class FtsSystem extends JavaPlugin {
         new CMDpremium(this);
         new CMDpu(this);
         new CMDradius(this);
-        new CMDroleplay(this);
         new CMDsetvotehome(this);
         new CMDtravel(this);
         new CMDtutorialbuch(this);
@@ -154,6 +147,11 @@ public class FtsSystem extends JavaPlugin {
         new FactionListener(this);
         new PlayerOpenSignListener(this);
         new PlayerInteractEntityListener(this);
+        new LootGenerateListener(this);
+        new FishingListener(this);
+        new GrindstoneListener(this);
+        new EnchantListener(this);
+        new ItemPickUpListener(this);
 
         new Runner(this);
 
@@ -299,5 +297,9 @@ public class FtsSystem extends JavaPlugin {
 
     public Essentials getEssentialsPlugin() {
         return essentialsPlugin;
+    }
+
+    public DiscordHook getDiscordHook() {
+        return discordHook;
     }
 }

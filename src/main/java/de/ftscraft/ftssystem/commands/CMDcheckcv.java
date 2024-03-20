@@ -1,7 +1,6 @@
 package de.ftscraft.ftssystem.commands;
 
 import de.ftscraft.ftsengine.utils.Ausweis;
-import de.ftscraft.ftsengine.utils.Gender;
 import de.ftscraft.ftsengine.utils.Messages;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.scoreboard.TeamPrefixs;
@@ -39,7 +38,7 @@ public class CMDcheckcv implements CommandExecutor {
             return true;
         }
 
-        if (!TeamPrefixs.getPrefix(p, Gender.MALE).equalsIgnoreCase("§6Reisender")) {
+        if (!TeamPrefixs.getPrefix(p, Ausweis.Gender.MALE).equalsIgnoreCase("§6Reisender")) {
             p.sendMessage(Messages.PREFIX + "Sieht so aus als wärst du schon kein Reisender mehr.");
             return true;
         }

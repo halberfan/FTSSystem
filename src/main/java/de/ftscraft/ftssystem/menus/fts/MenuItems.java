@@ -8,6 +8,7 @@ package de.ftscraft.ftssystem.menus.fts;
 import de.ftscraft.ftsutils.items.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 public class MenuItems {
@@ -18,6 +19,7 @@ public class MenuItems {
     private ItemStack oocChannelOff, oocChannelOn, oocChannelRP;
     private ItemStack globalChannelOff, globalChannelOn, globalChannelRP;
     private ItemStack factionChannelOff, factionChannelOn, factionChannelRP;
+    private ItemStack roleplayModeOn, roleplayModeOff;
 
     public MenuItems() {
         init();
@@ -28,11 +30,11 @@ public class MenuItems {
         messageSoundOn = new ItemBuilder(Material.PAPER)
                 .name("§5MSG-Sound: " + ChatColor.GREEN + "An")
                 .shiny()
+                .addFlags(ItemFlag.HIDE_ENCHANTS)
                 .lore("§7Du bekommst derzeit einen Sound wenn du eine MSG erhälst", "§7Klicke, um dies zu ändern!", "§1")
                 .build();
         messageSoundOff = new ItemBuilder(Material.PAPER)
                 .name("§5MSG-Sound: " + ChatColor.RED + "Aus")
-                .shiny()
                 .lore("§7Derzeit bekommst du keinen Sound wenn du eine MSG erhälst", "§7Klicke, um dies zu ändern!", "§1")
                 .build();
 
@@ -47,12 +49,13 @@ public class MenuItems {
                 .build();
 
         doNotDisturbOnRP = new ItemBuilder(Material.BLUE_DYE)
-                .name("§3Nicht-Stören: " + ChatColor.DARK_BLUE + "Nur im RP an")
+                .name("§3Nicht-Stören: " + ChatColor.BLUE + "Nur im RP an")
                 .lore("§7Diese Funktion lässt folgendes für dich ausblenden: ", "§7-Umfragen", "§7-Broadcasts", "§7-Marktschreier", "§2")
                 .build();
 
         scoreboardOn = new ItemBuilder(Material.OAK_SIGN)
                 .shiny()
+                .addFlags(ItemFlag.HIDE_ENCHANTS)
                 .lore("§7Bitte beachte dass es bis zu 5 Sekunden dauern kann", "§7bis die Einstellung übernommen wird!", "§3")
                 .name("§5Scoreboard: " + ChatColor.GREEN + "An")
                 .build();
@@ -77,7 +80,7 @@ public class MenuItems {
         oocChannelRP = new ItemBuilder(Material.PLAYER_HEAD)
                 .skullTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNmNDZjY2FlMmJiMTI0M2M4M2Q2Njc2YjI0OGMyYjFkNDM0MmVlYTM3OTMxNWNhZWMwMjFiN2QxZDM1NTcifX19")
                 .lore("§7Wann möchtest du den OOC Channel sehen?", "§5")
-                .name("§3OOC-Channel: " + ChatColor.DARK_BLUE + "Nur im RP aus")
+                .name("§3OOC-Channel: " + ChatColor.BLUE + "Nur im RP aus")
                 .build();
 
         factionChannelOn = new ItemBuilder(Material.PLAYER_HEAD)
@@ -95,7 +98,7 @@ public class MenuItems {
         factionChannelRP = new ItemBuilder(Material.PLAYER_HEAD)
                 .skullTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2Y5ZmQyMWEyZTJmNTcyZTllNWJmMGI1NTJmMDljNDE2YzQ4NzZjYmVhMGQ0YWMzZWMxZTY5ZGVlYzU5YSJ9fX0")
                 .lore("§7Wann möchtest du den Faction Channel sehen?", "§6")
-                .name("§3Faction-Channel: " + ChatColor.DARK_BLUE + "Nur im RP aus")
+                .name("§3Faction-Channel: " + ChatColor.BLUE + "Nur im RP aus")
                 .build();
 
         globalChannelOn = new ItemBuilder(Material.PLAYER_HEAD)
@@ -113,10 +116,20 @@ public class MenuItems {
         globalChannelRP = new ItemBuilder(Material.PLAYER_HEAD)
                 .skullTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmM3NmI0ZTlmZDg3Yjc3YjhjOTVhOGQxODQ4NDE2OGNiZWI3OGZhYjVkNTI5ZDZiNmMxMzIyNDZjYzNjYmFjIn19fQ")
                 .lore("§7Wann möchtest du den Global Channel sehen?", "§7")
-                .name("§3Global-Channel: " + ChatColor.DARK_BLUE + "Nur im RP aus")
+                .name("§3Global-Channel: " + ChatColor.BLUE + "Nur im RP aus")
                 .build();
 
+        roleplayModeOn = new ItemBuilder(Material.FEATHER)
+                .lore("§7Schalte den Rollenspielmodus um", "§8")
+                .shiny()
+                .addFlags(ItemFlag.HIDE_ENCHANTS)
+                .name("§3RP-Modus: " + ChatColor.GREEN + "Ein")
+                .build();
 
+        roleplayModeOff = new ItemBuilder(Material.FEATHER)
+                .lore("§7Schalte den Rollenspielmodus um", "§8")
+                .name("§3RP-Modus: §4Aus")
+                .build();
     }
 
     public ItemStack getMessageSoundOff() {
@@ -181,5 +194,13 @@ public class MenuItems {
 
     public ItemStack getFactionChannelRP() {
         return factionChannelRP;
+    }
+
+    public ItemStack getRoleplayModeOn() {
+        return roleplayModeOn;
+    }
+
+    public ItemStack getRoleplayModeOff() {
+        return roleplayModeOff;
     }
 }

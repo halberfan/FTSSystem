@@ -29,9 +29,9 @@ commands:
   broadcast:
     aliases: [ bc ]
     description: Schalte eine Nachricht die an alle Spieler gesendet wird
-  roleplay:
-    aliases: [ rp ]
-    description: Gehe damit in den "Roleplay-Modus"
+#  roleplay:
+#    aliases: [ rp ]
+#    description: Gehe damit in den "Roleplay-Modus"
   passwort:
     description: Gebe das Passwort ein um dich freizuschalten
   checkcv:

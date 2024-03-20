@@ -6,7 +6,6 @@
 package de.ftscraft.ftssystem.scoreboard;
 
 import de.ftscraft.ftsengine.utils.Ausweis;
-import de.ftscraft.ftsengine.utils.Gender;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
@@ -17,6 +16,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import static de.ftscraft.ftsengine.utils.Ausweis.Gender;
 
 public class FTSScoreboardManager {
 
@@ -119,9 +119,9 @@ public class FTSScoreboardManager {
                             continue;
                         if (onlinePlayer.hasPermission(value.getPermission())) {
                             Ausweis ausweis = plugin.getEngine().getAusweis(onlinePlayer);
-                            if (ausweis == null || ausweis.getGender() == null || ausweis.getGender() == Gender.MALE || ausweis.getGender() == Gender.DIVERS)
+                            if (ausweis == null || ausweis.getGender() == null || ausweis.getGender() == Ausweis.Gender.MALE || ausweis.getGender() == Ausweis.Gender.DIVERS)
                                 team.addEntry(onlinePlayer.getName());
-                            else if (ausweis.getGender() == Gender.FEMALE)
+                            else if (ausweis.getGender() == Ausweis.Gender.FEMALE)
                                 teamf.addEntry(onlinePlayer.getName());
                             isRanked.add(onlinePlayer);
                         }

@@ -25,12 +25,10 @@ public class PunishmentManager {
 
     private final HashMap<UUID, List<Punishment>> players = new HashMap<>();
     private final HashMap<Player, PunishmentBuilder> builders;
-    private final PunishmentIO punishmentIO;
 
     public PunishmentManager(FtsSystem plugin) {
         this.plugin = plugin;
         builders = new HashMap<>();
-        punishmentIO = new PunishmentIO(plugin, this);
     }
 
     private void addPunishmentToPlayer(UUID player, Punishment pu) {
@@ -359,7 +357,6 @@ public class PunishmentManager {
     }
 
     public void loadPlayer(UUID uuid) {
-        punishmentIO.loadPlayerData(uuid);
         try {
             QueryBuilder<PunishmentEntity, Integer> queryBuilder = plugin.getDatabaseManager().getPunishmentsDao().queryBuilder();
             List<PunishmentEntity> punishmentEntities = plugin.getDatabaseManager().getPunishmentsDao().query(queryBuilder.where().eq("player", uuid.toString()).prepare());
@@ -411,10 +408,6 @@ public class PunishmentManager {
 
     }
 
-
-    public void savePlayer(UUID player) {
-        punishmentIO.savePlayerData(player);
-    }
 
     public void savePunishment(Punishment punishment) {
         PunishmentEntity punishmentEntity = new PunishmentEntity();

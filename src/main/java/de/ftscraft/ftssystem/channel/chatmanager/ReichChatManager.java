@@ -9,7 +9,7 @@ import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Resident;
 import de.ftscraft.ftsengine.utils.Ausweis;
-import de.ftscraft.ftsengine.utils.Gender;
+import static de.ftscraft.ftsengine.utils.Ausweis.Gender;
 import de.ftscraft.ftssystem.channel.Channel;
 import de.ftscraft.ftssystem.channel.ChannelType;
 import de.ftscraft.ftssystem.configs.Messages;
@@ -103,9 +103,8 @@ public class ReichChatManager extends ChatManager {
 
             }
 
-
-            Logger.getLogger("Minecraft").log(Level.INFO, "[Chat] " + u.getPlayer().getName() + " [" + a.getPrefix() + "] " + msg);
         }
+        FtsSystem.getPluginLogger().info("[Chat] " + u.getPlayer().getName() + " [" + a.getPrefix() + "] " + msg);
     }
 
     public void chat(User u, String msg, Channel channel) {
@@ -190,9 +189,8 @@ public class ReichChatManager extends ChatManager {
             }
 
 
-            Logger.getLogger("Minecraft").log(Level.INFO, "[Chat] " + u.getPlayer().getName() + " [" + channel.getPrefix() + "] " + msg);
-
         }
+        FtsSystem.getPluginLogger().info("[Chat] " + u.getPlayer().getName() + " [" + channel.getPrefix() + "] " + msg);
     }
 
     private String format(User u, Channel c, String msg) {

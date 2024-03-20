@@ -3,6 +3,7 @@ package de.ftscraft.ftssystem.utils;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import de.ftscraft.ftssystem.main.FtsSystem;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -26,7 +27,7 @@ public class APIHandling {
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             if (con.getResponseCode() != 200) {
-                Logger.getLogger("Minecraft").log(Level.WARNING, "VPN Dienst bei der IP " + ip + " gefailt");
+                FtsSystem.getPluginLogger().warning("VPN Dienst bei der IP " + ip + " gefailt");
                 return false;
             }
 
@@ -41,7 +42,7 @@ public class APIHandling {
             JsonObject object = jsonElement.getAsJsonObject();
 
             if (!object.get("status").getAsString().equals("ok")) {
-                Logger.getLogger("Minecraft").log(Level.WARNING, "VPN Dienst bei der IP " + ip + " gefailt");
+                FtsSystem.getPluginLogger().warning( "VPN Dienst bei der IP " + ip + " gefailt");
                 return false;
             }
 
@@ -59,4 +60,7 @@ public class APIHandling {
     public static void setAntiVpnApiKey(String antiVpnApiKey) {
         APIHandling.antiVpnApiKey = antiVpnApiKey;
     }
+
+
+
 }

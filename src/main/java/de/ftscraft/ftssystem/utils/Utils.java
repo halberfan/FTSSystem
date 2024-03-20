@@ -6,6 +6,8 @@
 package de.ftscraft.ftssystem.utils;
 
 import de.ftscraft.ftssystem.main.FtsSystem;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -134,5 +136,11 @@ public class Utils {
     public static void msg(Player p, String miniMessage) {
         p.sendMessage(MiniMessage.miniMessage().deserialize(miniMessage));
     }
+
+    public static Component msg(String miniMessage) {
+        return MiniMessage.miniMessage().deserialize(miniMessage);
+    }
+
+
 
 }

@@ -10,7 +10,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.perms.Relation;
 import de.ftscraft.ftsengine.utils.Ausweis;
-import de.ftscraft.ftsengine.utils.Gender;
+import static de.ftscraft.ftsengine.utils.Ausweis.Gender;
 import de.ftscraft.ftssystem.channel.Channel;
 import de.ftscraft.ftssystem.channel.ChannelType;
 import de.ftscraft.ftssystem.configs.Messages;
@@ -197,7 +197,7 @@ public class FTSChatManager extends ChatManager {
 
         }
 
-        Logger.getLogger("Minecraft").log(Level.INFO, "[Chat] " + u.getPlayer().getName() + " [" + channel.getPrefix() + "] " + msg);
+        FtsSystem.getPluginLogger().info("[Chat] " + u.getPlayer().getName() + " [" + channel.getPrefix() + "] " + msg);
 
     }
 

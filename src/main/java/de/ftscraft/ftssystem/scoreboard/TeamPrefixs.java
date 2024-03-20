@@ -5,7 +5,7 @@
 
 package de.ftscraft.ftssystem.scoreboard;
 
-import de.ftscraft.ftsengine.utils.Gender;
+import static de.ftscraft.ftsengine.utils.Ausweis.Gender;
 import org.bukkit.entity.Player;
 
 public enum TeamPrefixs {

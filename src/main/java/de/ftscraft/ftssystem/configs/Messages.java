@@ -9,16 +9,12 @@ public class Messages {
 
     public static final String
             PREFIX = "§7[§4FTS-System§7] ",
+            MINI_PREFIX = "<gray>[<dark_red>FTS-System</dark_red>] ",
             NO_PERM = PREFIX + "Dazu hast du keine Rechte!",
             NUMBER = PREFIX + "Bitte benutz eine gültige Zahl",
             NO_ACTIVE_CHANNEL = PREFIX + "Du hast keinen aktiven Channel ausgewählt. Mache dies mit /channel aktiv <Name>",
             NOW_ACTIVE_CHANNEL = PREFIX + "%s ist nun dein aktiver Channel!",
             CHOOSE_CHANNEL = PREFIX + "Bitte wähle einen Channel. Du kannst die Channel mit §c/channel list §7sehen!",
-            LIST_CHANNEL = PREFIX + "Es gibt diese Channel:",
-            NO_CHANNEL = PREFIX + "Es wurde kein Channel mit diesem Namen gefunden",
-            ALREADY_IN_CHANNEL = PREFIX + "Du bist bereits in diesem Channel",
-            NOT_IN_CHANNEL = PREFIX + "Du bist nicht in diesem Channel",
-            JOINED_CHANNEL = PREFIX + "Du bist dem Channel %s beigetreten!",
             LEFT_CHANNEL = PREFIX + "Du hast den Channel %s verlassen :(",
             UMFRAGE_CREATED = PREFIX + "Die Umfrage mit der Frage §c%s§7wurde erstellt!",
             NO_UMFRAGE_FOUND = PREFIX + "Du hast keine Umfrage mit /umfrage create FRAGE erstellt!",
@@ -40,6 +36,6 @@ public class Messages {
             """
                     §c---- §e/ftssystem §c----
                     §e/ftssystem fake <Join|Leave> §b- Täusche alle Spieler mit diesem einfachen Trick!
-                    §e/ftssystem mute <Spieler> §b- Mute einen Spieler mit diesem Command.""";
+                    §e/ftssystem playtime §b- Zeigt Spieler ohne Bürgerrang und über 50h Spielzeit an.""";
 
 }

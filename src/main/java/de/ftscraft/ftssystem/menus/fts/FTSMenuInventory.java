@@ -5,6 +5,7 @@
 
 package de.ftscraft.ftssystem.menus.fts;
 
+import de.ftscraft.ftsengine.main.Engine;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.main.User;
 import org.bukkit.Bukkit;
@@ -91,6 +92,11 @@ public class FTSMenuInventory {
         if (user.isScoreboardEnabled())
             inv.setItem(scoreboardSlot, plugin.getMenuItems().getScoreboardOn());
         else inv.setItem(scoreboardSlot, plugin.getMenuItems().getScoreboardOff());
+
+        final int roleplayModeSlot = 12;
+        if (plugin.getScoreboardManager().isInRoleplayMode(player)) {
+            inv.setItem(roleplayModeSlot, plugin.getMenuItems().getRoleplayModeOn());
+        } else inv.setItem(roleplayModeSlot, plugin.getMenuItems().getRoleplayModeOff());
 
         for (int i = 0; i < 9 * 5; i++) {
             if (inv.getItem(i) == null) {

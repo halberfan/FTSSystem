@@ -6,7 +6,7 @@
 
     <groupId>de.ftscraft.ftssystem</groupId>
     <artifactId>FTSSystem</artifactId>
-    <version>1.14.3</version>
+    <version>1.15</version>
     <build>
         <plugins>
             <plugin>
@@ -79,7 +79,7 @@
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.20.1-R0.1-SNAPSHOT</version>
+            <version>1.20.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -110,7 +110,7 @@
         <dependency>
             <groupId>com.konghq</groupId>
             <artifactId>unirest-java</artifactId>
-            <version>3.11.09</version>
+            <version>3.14.5</version>
         </dependency>
         <dependency>
             <groupId>net.luckperms</groupId>
@@ -121,12 +121,12 @@
         <dependency>
             <groupId>com.github.halberfan</groupId>
             <artifactId>FTSEngine</artifactId>
-            <version>56fb290b57</version>
+            <version>8577cc02b9</version>
         </dependency>
         <dependency>
             <groupId>com.github.halberfan</groupId>
             <artifactId>FTSUtils</artifactId>
-            <version>a54538935e</version>
+            <version>22245601a4</version>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>

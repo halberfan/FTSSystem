@@ -2,6 +2,7 @@ package de.ftscraft.ftssystem.commands;
 
 import de.ftscraft.ftssystem.configs.Messages;
 import de.ftscraft.ftssystem.main.FtsSystem;
+import de.ftscraft.ftssystem.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -56,8 +57,9 @@ public class CMDrepair implements CommandExecutor {
         ItemMeta itemMeta = item.getItemMeta();
         if (itemMeta instanceof Damageable damageable) {
             damageable.setDamage(0);
+            item.setItemMeta(damageable);
             plugin.getEcon().withdrawPlayer(target, PRICE);
-            cs.sendMessage(Messages.PREFIX + "Dein Item wurde repariert und dir wurden " + Messages.HIGHLIGHT_COLOR + PRICE + Messages.TEXT_COLOR + " Taler abgezogen.");
+            cs.sendMessage(Utils.msg(Messages.MINI_PREFIX + "Dein Item wurde repariert und dir wurden <red>" + PRICE + "</red> Taler abgezogen"));
         }
 
         return true;

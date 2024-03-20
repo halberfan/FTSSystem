@@ -51,6 +51,9 @@ public class InvClickListener implements Listener {
             event.setCancelled(true);
 
             ItemStack item = event.getCurrentItem();
+            if (item == null) {
+                return;
+            }
             ItemMeta itemMeta = item.getItemMeta();
 
             ItemStack skull = event.getInventory().getItem(4);
@@ -122,84 +125,26 @@ public class InvClickListener implements Listener {
             if (!meta.getDisplayName().equalsIgnoreCase(" ")) {
 
                 if (meta.getDisplayName().equalsIgnoreCase("§6Druck mir das aus!")) {
-
                     if (printed.contains(event.getWhoClicked())) {
                         if (!event.getWhoClicked().hasPermission("ftssystem.punish")) {
                             event.getWhoClicked().sendMessage("§cDu kannst das nächste mal diese Funktion benutzen nach einem Server-Neustart!");
                             return;
                         }
                     }
-
                     ItemStack firstPunishment = event.getInventory().getItem(0);
                     UUID p;
-
                     if (!firstPunishment.getItemMeta().getDisplayName().equalsIgnoreCase(" ")) {
-
                         int id = Integer.parseInt(firstPunishment.getItemMeta().getLore().get(3));
                         Punishment pun = plugin.getPunishmentManager().getPunishmentById(id);
                         p = pun.getPlayer();
-
                     } else {
-
                         event.getWhoClicked().sendMessage("§cDu hast noch keine Strafen!");
                         return;
-
                     }
-
-                    String content = "[{\"tag\":\"p\",\"children\":[\"REPLACE\"]}]";
-                    //content = "[{\"tag\":\"p\",\"children\":[\"Strafe+1:+Griefing+\\nStrafe+2:+Trolling\"]}]";
-
-                    StringBuilder stringBuilder = new StringBuilder();
-                    for (int i = 0; i < plugin.getPunishmentManager().getPlayers().get(p).size(); i++) {
-                        Punishment pun = plugin.getPunishmentManager().getPlayers().get(p).get(i);
-                        stringBuilder.append("Strafe ").append(i + 1).append(": ").append(pun.getReason()).append("%5Cn");
-                        stringBuilder.append("  - Weitere Infos: ").append(pun.getMoreInformation()).append("%5Cn");
-                        stringBuilder.append("  - Typ: ").append(pun.getType()).append("%5Cn");
-                        if (pun instanceof TemporaryPunishment) {
-                            stringBuilder.append("  - Bis: ").append(((TemporaryPunishment) pun).untilAsCalString()).append("%5Cn");
-                        }
-                        stringBuilder.append("  - Autor: ").append(pun.getAuthorName()).append("%5Cn");
-                        stringBuilder.append("  - Deaktiviert: ").append(!pun.isActive()).append("%5Cn %5Cn");
-                    }
-
-                    content = content.replace("REPLACE", stringBuilder.toString().replace(" ", "+"));
-
-                    URL url = null;
-                    try {
-                        url = new URL("https://api.telegra.ph/createPage?access_token=6cf9217c73e4da3913dc2d9f878423ebd713ff7fd4d9ab6d087b16f48f9b&title=Strafen:+" + UUIDFetcher.getName(p) + "&content=" + content + "&author_name=FTS-System");
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    }
-
-                    Scanner sc = null;
-                    try {
-                        sc = new Scanner(url.openStream());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    StringBuilder sb = new StringBuilder();
-                    while (sc.hasNext()) {
-                        sb.append(sc.next());
-                    }
-
-                    String result = sb.toString();
-
-                    JSONParser parser = new JSONParser();
-                    try {
-                        Object obj = parser.parse(result);
-                        JSONObject jobj = ((JSONObject) obj);
-                        JSONObject obj2 = (JSONObject) jobj.get("result");
-
-                        event.getWhoClicked().sendMessage(Messages.PREFIX + "Hier ist dein Link: §c" + obj2.get("url"));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-
+                    event.getWhoClicked().sendMessage(Messages.PREFIX + "Hier ist dein Link: §c" + printAkte(p));
 
                     return;
                 }
-
 
                 int id = Integer.parseInt(meta.getLore().get(3));
 
@@ -250,7 +195,7 @@ public class InvClickListener implements Listener {
                     p.sendMessage(management);
                 }
             }
-
+            return;
         }
 
         if (event.getView().getTitle().endsWith("Dein Menü")) {
@@ -304,12 +249,71 @@ public class InvClickListener implements Listener {
                     case RP -> u.setGlobalChannelStatus(User.ChannelStatusSwitch.ON);
                     case ON -> u.setGlobalChannelStatus(User.ChannelStatusSwitch.OFF);
                 }
+            } else if(id.equalsIgnoreCase("8")) {
+                plugin.getScoreboardManager().switchToRoleplayMode(u.getPlayer());
             }
 
             u.refreshMenu();
 
         }
 
+    }
+
+    /**
+     *
+     * @param p UUID of the player which akte should be printed
+     * @return The URL of the telegraph document
+     */
+    private String printAkte(UUID p) {
+        String content = "[{\"tag\":\"p\",\"children\":[\"REPLACE\"]}]";
+        //content = "[{\"tag\":\"p\",\"children\":[\"Strafe+1:+Griefing+\\nStrafe+2:+Trolling\"]}]";
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < plugin.getPunishmentManager().getPlayers().get(p).size(); i++) {
+            Punishment pun = plugin.getPunishmentManager().getPlayers().get(p).get(i);
+            stringBuilder.append("Strafe ").append(i + 1).append(": ").append(pun.getReason()).append("%5Cn");
+            stringBuilder.append("  - Weitere Infos: ").append(pun.getMoreInformation()).append("%5Cn");
+            stringBuilder.append("  - Typ: ").append(pun.getType()).append("%5Cn");
+            if (pun instanceof TemporaryPunishment) {
+                stringBuilder.append("  - Bis: ").append(((TemporaryPunishment) pun).untilAsCalString()).append("%5Cn");
+            }
+            stringBuilder.append("  - Autor: ").append(pun.getAuthorName()).append("%5Cn");
+            stringBuilder.append("  - Deaktiviert: ").append(!pun.isActive()).append("%5Cn %5Cn");
+        }
+
+        content = content.replace("REPLACE", stringBuilder.toString().replace(" ", "+"));
+
+        URL url = null;
+        try {
+            url = new URL("https://api.telegra.ph/createPage?access_token=6cf9217c73e4da3913dc2d9f878423ebd713ff7fd4d9ab6d087b16f48f9b&title=Strafen:+" + UUIDFetcher.getName(p) + "&content=" + content + "&author_name=FTS-System");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        Scanner sc = null;
+        try {
+            sc = new Scanner(url.openStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        StringBuilder sb = new StringBuilder();
+        while (sc.hasNext()) {
+            sb.append(sc.next());
+        }
+
+        String result = sb.toString();
+
+        JSONParser parser = new JSONParser();
+        try {
+            Object obj = parser.parse(result);
+            JSONObject jobj = ((JSONObject) obj);
+            JSONObject obj2 = (JSONObject) jobj.get("result");
+            return obj2.get("url").toString();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

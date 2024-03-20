@@ -112,6 +112,7 @@ public class ChatListener implements Listener {
         if (event.isCancelled()) {
             return;
         }
+
         User u = plugin.getUser(event.getPlayer());
         if (u == null) {
             event.getPlayer().sendMessage("§cIrgendwas ist schief gelaufen. Probier mal zu reconnecten!");
@@ -174,7 +175,7 @@ public class ChatListener implements Listener {
                     }
                 }
 
-                Logger.getLogger("Minecraft").log(Level.INFO, "[Chat] " + event.getPlayer().getName() + " [RP] " + msg);
+                FtsSystem.getPluginLogger().info("[Chat] " + event.getPlayer().getName() + " [RP] " + msg);
             }
             return;
         }

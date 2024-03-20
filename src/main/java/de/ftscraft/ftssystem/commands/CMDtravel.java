@@ -60,7 +60,7 @@ public class CMDtravel implements CommandExecutor {
         try {
             loc = plugin.getEssentialsPlugin().getWarps().getWarp(args[1]);
         } catch (WarpNotFoundException | InvalidWorldException e) {
-            plugin.getLogger().log(Level.WARNING, "Tried to warp to " + args[1] + " via Essentials, didn't work");
+            FtsSystem.getPluginLogger().warning("Tried to warp to " + args[1] + " via Essentials, didn't work");
             return true;
         }
 
