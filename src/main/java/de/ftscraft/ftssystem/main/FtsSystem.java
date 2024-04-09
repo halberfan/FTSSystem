@@ -152,6 +152,7 @@ public class FtsSystem extends JavaPlugin {
         new GrindstoneListener(this);
         new EnchantListener(this);
         new ItemPickUpListener(this);
+        new PlayerInteractListener(this);
 
         new Runner(this);
 

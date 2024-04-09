@@ -5,16 +5,20 @@
 
 package de.ftscraft.ftssystem.listeners;
 
+import com.earth2me.essentials.commands.WarpNotFoundException;
 import de.ftscraft.ftssystem.configs.Messages;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.main.User;
 import de.ftscraft.ftssystem.punishment.*;
 import de.ftscraft.ftssystem.utils.UUIDFetcher;
+import de.ftscraft.ftsutils.items.ItemReader;
+import net.ess3.api.InvalidWorldException;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -23,6 +27,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -114,9 +119,7 @@ public class InvClickListener implements Listener {
                     p.openInventory(new PunishmentInventory(plugin, target).getInv(PunishmentInventory.PunishmentInvType.AKTE));
                 }
 
-        }
-
-        if (event.getView().getTitle().startsWith("§2Akte")) {
+        } else if (event.getView().getTitle().startsWith("§2Akte")) {
             event.setCancelled(true);
             ItemStack item = event.getCurrentItem();
             if (item == null)
@@ -196,9 +199,7 @@ public class InvClickListener implements Listener {
                 }
             }
             return;
-        }
-
-        if (event.getView().getTitle().endsWith("Dein Menü")) {
+        } else if (event.getView().getTitle().endsWith("Dein Menü")) {
 
             User u = plugin.getUser((Player) event.getWhoClicked());
 
@@ -249,18 +250,32 @@ public class InvClickListener implements Listener {
                     case RP -> u.setGlobalChannelStatus(User.ChannelStatusSwitch.ON);
                     case ON -> u.setGlobalChannelStatus(User.ChannelStatusSwitch.OFF);
                 }
-            } else if(id.equalsIgnoreCase("8")) {
+            } else if (id.equalsIgnoreCase("8")) {
                 plugin.getScoreboardManager().switchToRoleplayMode(u.getPlayer());
             }
 
             u.refreshMenu();
 
+        } else if (event.getView().getTitle().equals("§1Schriftrolle")) {
+            ItemStack is = event.getCurrentItem();
+            if (is == null) return;
+            String warp = ItemReader.getPDC(is, "SCROLL", PersistentDataType.STRING);
+            if (warp == null) return;
+            Location warpLoc;
+            try {
+                warpLoc = plugin.getEssentialsPlugin().getWarps().getWarp(warp);
+            } catch (WarpNotFoundException | InvalidWorldException e) {
+                return;
+            }
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().teleport(warpLoc);
+            event.getWhoClicked().getActiveItem().setAmount(event.getWhoClicked().getActiveItem().getAmount() - 1);
         }
+
 
     }
 
     /**
-     *
      * @param p UUID of the player which akte should be printed
      * @return The URL of the telegraph document
      */

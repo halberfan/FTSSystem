@@ -8,6 +8,7 @@ depend:
   - FTSUtils
 softdepend:
   - LuckPerms
+  - Essentials
   - Factions
   - ChestShop
   - dynmap

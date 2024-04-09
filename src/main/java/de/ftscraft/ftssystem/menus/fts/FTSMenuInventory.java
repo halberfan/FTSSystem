@@ -5,9 +5,9 @@
 
 package de.ftscraft.ftssystem.menus.fts;
 
-import de.ftscraft.ftsengine.main.Engine;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.main.User;
+import de.ftscraft.ftssystem.menus.FTSGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -18,7 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
 
-public class FTSMenuInventory {
+public class FTSMenuInventory implements FTSGUI {
 
     private final Player player;
     private final User user;
@@ -109,6 +109,7 @@ public class FTSMenuInventory {
         load();
     }
 
+    @Override
     public Inventory getInventory() {
         return init();
     }
