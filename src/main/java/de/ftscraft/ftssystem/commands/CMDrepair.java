@@ -49,7 +49,7 @@ public class CMDrepair implements CommandExecutor {
         }
 
         if (!plugin.getEcon().has(target, PRICE)) {
-            cs.sendMessage(String.format(Messages.NOT_ENOUGH_MONEY, PRICE));
+            target.sendMessage(String.format(Messages.NOT_ENOUGH_MONEY, PRICE));
             return true;
         }
 
@@ -59,7 +59,9 @@ public class CMDrepair implements CommandExecutor {
             damageable.setDamage(0);
             item.setItemMeta(damageable);
             plugin.getEcon().withdrawPlayer(target, PRICE);
-            cs.sendMessage(Utils.msg(Messages.MINI_PREFIX + "Dein Item wurde repariert und dir wurden <red>" + PRICE + "</red> Taler abgezogen"));
+            target.sendMessage(Utils.msg(Messages.MINI_PREFIX + "Dein Item wurde repariert und dir wurden <red>" + PRICE + "</red> Taler abgezogen"));
+        } else {
+            target.sendMessage(Utils.msg(Messages.MINI_PREFIX + "Dein Item kann kein Schaden nehmen, daher auch nicht repariert werden."));
         }
 
         return true;
