@@ -257,6 +257,7 @@ public class InvClickListener implements Listener {
             u.refreshMenu();
 
         } else if (event.getView().getTitle().equals("§1Schriftrolle")) {
+            event.setCancelled(true);
             ItemStack is = event.getCurrentItem();
             if (is == null) return;
             String warp = ItemReader.getPDC(is, "SCROLL", PersistentDataType.STRING);
@@ -269,7 +270,7 @@ public class InvClickListener implements Listener {
             }
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().teleport(warpLoc);
-            event.getWhoClicked().getActiveItem().setAmount(event.getWhoClicked().getActiveItem().getAmount() - 1);
+            event.getWhoClicked().getInventory().getItemInMainHand().setAmount(event.getWhoClicked().getInventory().getItemInMainHand().getAmount() - 1);
         }
 
 
