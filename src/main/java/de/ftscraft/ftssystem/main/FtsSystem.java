@@ -60,11 +60,13 @@ public class FtsSystem extends JavaPlugin {
     private ForumHook forumHook;
     private DiscordHook discordHook;
     private static Logger pluginLogger;
+    private static Logger chatLogger;
     private DatabaseManager databaseManager;
 
     @Override
     public void onEnable() {
         pluginLogger = getLogger();
+        chatLogger = Logger.getLogger("Chat");
         pluginLogger.info("Starting Plugin...");
         hook();
 
@@ -294,6 +296,10 @@ public class FtsSystem extends JavaPlugin {
 
     public static Logger getPluginLogger() {
         return pluginLogger;
+    }
+
+    public static Logger getChatLogger() {
+        return chatLogger;
     }
 
     public Essentials getEssentialsPlugin() {

@@ -197,7 +197,7 @@ public class FTSChatManager extends ChatManager {
 
         }
 
-        FtsSystem.getPluginLogger().info("[Chat] " + u.getPlayer().getName() + " [" + channel.getPrefix() + "] " + msg);
+        FtsSystem.getChatLogger().info(u.getPlayer().getName() + " [" + channel.getPrefix() + "] " + msg);
 
     }
 

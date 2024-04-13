@@ -104,7 +104,7 @@ public class ReichChatManager extends ChatManager {
             }
 
         }
-        FtsSystem.getPluginLogger().info("[Chat] " + u.getPlayer().getName() + " [" + a.getPrefix() + "] " + msg);
+        FtsSystem.getChatLogger().info(u.getPlayer().getName() + " [" + a.getPrefix() + "] " + msg);
     }
 
     public void chat(User u, String msg, Channel channel) {
@@ -190,7 +190,7 @@ public class ReichChatManager extends ChatManager {
 
 
         }
-        FtsSystem.getPluginLogger().info("[Chat] " + u.getPlayer().getName() + " [" + channel.getPrefix() + "] " + msg);
+        FtsSystem.getChatLogger().info(u.getPlayer().getName() + " [" + channel.getPrefix() + "] " + msg);
     }
 
     private String format(User u, Channel c, String msg) {

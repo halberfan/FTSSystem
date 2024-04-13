@@ -175,7 +175,7 @@ public class ChatListener implements Listener {
                     }
                 }
 
-                FtsSystem.getPluginLogger().info("[Chat] " + event.getPlayer().getName() + " [RP] " + msg);
+                FtsSystem.getChatLogger().info(event.getPlayer().getName() + " [RP] " + msg);
             }
             return;
         }
