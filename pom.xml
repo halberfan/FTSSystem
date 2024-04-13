@@ -6,7 +6,7 @@
 
     <groupId>de.ftscraft.ftssystem</groupId>
     <artifactId>FTSSystem</artifactId>
-    <version>1.15.1</version>
+    <version>2.0</version>
     <build>
         <plugins>
             <plugin>
