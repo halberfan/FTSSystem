@@ -3,7 +3,6 @@ package de.ftscraft.ftssystem.main;
 import com.earth2me.essentials.Essentials;
 import de.ftscraft.ftsengine.main.Engine;
 import de.ftscraft.ftssystem.channel.chatmanager.ChatManager;
-import de.ftscraft.ftssystem.channel.chatmanager.FTSChatManager;
 import de.ftscraft.ftssystem.channel.chatmanager.ReichChatManager;
 import de.ftscraft.ftssystem.commands.*;
 import de.ftscraft.ftssystem.configs.ConfigManager;
@@ -55,7 +54,6 @@ public class FtsSystem extends JavaPlugin {
     private PunishmentManager punishmentManager;
     private boolean wartung;
     private ChatManager chatManager;
-    private boolean blockreich = false;
     private PremiumManager premiumManager;
     private ForumHook forumHook;
     private DiscordHook discordHook;
@@ -103,12 +101,7 @@ public class FtsSystem extends JavaPlugin {
         user = new HashMap<>();
         configManager = new ConfigManager(this);
         fileManager = new FileManager(this);
-        if (getServer().getPluginManager().isPluginEnabled("Factions")) {
-            chatManager = new FTSChatManager(this);
-        } else if (getServer().getPluginManager().isPluginEnabled("Towny")) {
-            chatManager = new ReichChatManager(this);
-            blockreich = true;
-        }
+        chatManager = new ReichChatManager(this);
         punishmentManager = new PunishmentManager(this);
         scoreboardManager = new FTSScoreboardManager(this);
         menuItems = new MenuItems();
@@ -146,7 +139,6 @@ public class FtsSystem extends JavaPlugin {
         new SneakListener(this);
         new EntityDeathListener(this);
         new PlayerAttackListener(this);
-        new FactionListener(this);
         new PlayerOpenSignListener(this);
         new PlayerInteractEntityListener(this);
         new LootGenerateListener(this);
@@ -284,10 +276,6 @@ public class FtsSystem extends JavaPlugin {
 
     public void setWartung(boolean wartung) {
         this.wartung = wartung;
-    }
-
-    public boolean isBlockreich() {
-        return blockreich;
     }
 
     public ForumHook getForumHook() {

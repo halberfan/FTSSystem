@@ -44,13 +44,7 @@ public class CMDtutorialbuch implements CommandExecutor {
 
         String name = p.getName();
 
-        String bookCMD;
-
-        if (plugin.isBlockreich()) {
-            bookCMD = plugin.getFileManager().getBookBlockreichCMD().replace("<player>", name);
-        } else {
-            bookCMD = plugin.getFileManager().getBookCMD().replace("<player>", name);
-        }
+        String bookCMD = plugin.getFileManager().getBookCMD().replace("<player>", name);
 
         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), bookCMD);
 
