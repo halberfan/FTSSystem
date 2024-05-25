@@ -11,14 +11,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class CMDpasswort implements CommandExecutor {
 
-    private final ArrayList<String> commands = new ArrayList<>(Arrays.asList("lp user %s promote spieler", "warp taufeld %s"));
+    private final ArrayList<String> commands = new ArrayList<>(Arrays.asList("lp user %s promote spieler", "warp Hauptstadt_Kirche %s"));
 
     private final FtsSystem plugin;
 
@@ -28,7 +27,7 @@ public class CMDpasswort implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 
         if (!(commandSender instanceof Player p)) {
             return true;
@@ -36,9 +35,8 @@ public class CMDpasswort implements CommandExecutor {
 
         if (args.length == 1) {
 
-            String password_blockreich = "glasflasche";
-            String password = "beere";
-            if (args[0].equalsIgnoreCase(password) || args[0].equalsIgnoreCase(password_blockreich)) {
+            String password = "kiwi";
+            if (args[0].equalsIgnoreCase(password)) {
 
                 User user = plugin.getUser(p);
 
