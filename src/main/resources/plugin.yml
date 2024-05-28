@@ -42,7 +42,7 @@ commands:
     description: Allerhand Nützlichkeiten rund um FTS
   wartung:
     description: Schaltet den Server in den Wartungsmodus.
-  tc:
+  cc:
     permission: ftssystem.chat.team
     description: Der Team-Chat
   g:
@@ -55,6 +55,8 @@ commands:
     description: Schalte den Flüster-Chat als deinen aktiven Channel
   sc:
     description: Schalte den Schreien-Chat als deinen aktiven Channel
+  tc:
+    description: Der Towny Chat
   setvotehome:
     description: Setzt den Punkt deines Vote-Homes
   votehome:
