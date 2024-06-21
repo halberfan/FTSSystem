@@ -1,11 +1,13 @@
 package de.ftscraft.ftssystem.listeners;
 
 import de.ftscraft.ftssystem.main.FtsSystem;
+import de.ftscraft.ftssystem.utils.Utils;
 import de.ftscraft.ftssystem.utils.Variables;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.world.LootGenerateEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -18,12 +20,18 @@ public class LootGenerateListener implements Listener {
     @EventHandler
     public void onLootGeneration(LootGenerateEvent event) {
         for (ItemStack is : event.getLoot()) {
-            for (Enchantment enchantment : is.getEnchantments().keySet()) {
-                if (Variables.FORBIDDEN_ENCHANTMENTS.contains(enchantment)) {
-                    is.removeEnchantment(enchantment);
-                    is.addEnchantment(Variables.REPLACEMENT_ENCHANTMENT, Variables.REPLACEMENT_ENCHANTMENT.getMaxLevel());
-                }
-            }
+            if (is == null)
+                continue;
+            Utils.replaceEnchantments(is);
+        }
+    }
+
+    @EventHandler
+    public void onInvOpen(InventoryOpenEvent event) {
+        for (ItemStack is : event.getInventory().getStorageContents()) {
+            if (is == null)
+                continue;
+            Utils.replaceEnchantments(is);
         }
     }
 

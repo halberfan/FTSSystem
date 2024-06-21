@@ -10,15 +10,53 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 
 public class Utils {
+
+    public final static Map<EnchantmentWithLevel, EnchantmentWithLevel> enchantmentReplacements;
+
+    static {
+        enchantmentReplacements = new HashMap<>();
+        enchantmentReplacements.put(new EnchantmentWithLevel(Enchantment.LOOT_BONUS_BLOCKS, 1), new EnchantmentWithLevel(Enchantment.DIG_SPEED, 2));
+        enchantmentReplacements.put(new EnchantmentWithLevel(Enchantment.LOOT_BONUS_BLOCKS, 2), new EnchantmentWithLevel(Enchantment.DIG_SPEED, 3));
+        enchantmentReplacements.put(new EnchantmentWithLevel(Enchantment.LOOT_BONUS_BLOCKS, 3), new EnchantmentWithLevel(Enchantment.DIG_SPEED, 4));
+        enchantmentReplacements.put(new EnchantmentWithLevel(Enchantment.MENDING, 1), new EnchantmentWithLevel(Enchantment.DURABILITY, 3));
+        enchantmentReplacements.put(new EnchantmentWithLevel(Enchantment.ARROW_INFINITE, 1), new EnchantmentWithLevel(Enchantment.ARROW_DAMAGE, 3));
+        enchantmentReplacements.put(new EnchantmentWithLevel(Enchantment.RIPTIDE, 1), new EnchantmentWithLevel(Enchantment.IMPALING, 1));
+    }
+
+    public static class EnchantmentWithLevel {
+        public final Enchantment enchantment;
+        public final int level;
+        public EnchantmentWithLevel(Enchantment enchantment, int level) {
+            this.enchantment = enchantment;
+            this.level = level;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            EnchantmentWithLevel that = (EnchantmentWithLevel) o;
+            return level == that.level && Objects.equals(enchantment, that.enchantment);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(enchantment, level);
+        }
+    }
 
     public static String convertToTime(long millis) {
         millis = millis - System.currentTimeMillis();
@@ -141,6 +179,20 @@ public class Utils {
         return MiniMessage.miniMessage().deserialize(miniMessage);
     }
 
+    /**
+     * Replace enchantments from ItemStack based on replacement map
+     * @param itemStack Replacement gets applied on this ItemStack
+     */
+    public static void replaceEnchantments(ItemStack itemStack) {
+        itemStack.getEnchantments().forEach((enchantment, level) -> {
+            EnchantmentWithLevel enchantmentWithLevel = new EnchantmentWithLevel(enchantment, level);
+            EnchantmentWithLevel replace = enchantmentReplacements.get((enchantmentWithLevel));
+            if (replace != null) {
+                itemStack.removeEnchantment(enchantment);
+                itemStack.addEnchantment(replace.enchantment, replace.level);
+            }
+        });
+    }
 
 
 }
