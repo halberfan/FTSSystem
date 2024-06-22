@@ -61,7 +61,7 @@ public class CMDrepair implements CommandExecutor {
             plugin.getEcon().withdrawPlayer(target, PRICE);
             target.sendMessage(Utils.msg(Messages.MINI_PREFIX + "Dein Item wurde repariert und dir wurden <red>" + PRICE + "</red> Taler abgezogen"));
         } else {
-            target.sendMessage(Utils.msg(Messages.MINI_PREFIX + "Dein Item kann kein Schaden nehmen, daher auch nicht repariert werden."));
+            target.sendMessage(Utils.msg(Messages.MINI_PREFIX + "Dein Item kann kein Schaden nehmen, daher auch <red>nicht</red> repariert werden."));
         }
 
         return true;
