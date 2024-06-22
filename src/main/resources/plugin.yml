@@ -73,6 +73,5 @@ commands:
     usage: /repair [Spieler]
     permission: ftssystem.console
   xpstore:
-    description: Platzhalter
     usage: /xpstore [Spieler]
     permision: ftssystem.console

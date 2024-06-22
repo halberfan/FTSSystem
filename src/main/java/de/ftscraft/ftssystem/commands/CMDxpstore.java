@@ -31,47 +31,29 @@ public class CMDxpstore implements CommandExecutor {
                 Player pl = Bukkit.getServer().getPlayer(playerName);
 
                 if(pl != null && pl.isOnline()) {
-                    Material isBottle = Material.GLASS_BOTTLE;
-                    Material isRedstone = Material.REDSTONE;
-                    Material isLapis = Material.LAPIS_LAZULI;
 
-                    if(pl.getTotalExperience() >= 10 && pl.getInventory().contains(isBottle) && pl.getInventory().contains(isRedstone) && pl.getInventory().contains(isLapis)) {
+                    if(pl.getTotalExperience() >= 10 && pl.getInventory().contains(Material.GLASS_BOTTLE) && pl.getInventory().contains(Material.REDSTONE) && pl.getInventory().contains(Material.LAPIS_LAZULI)) {
 
                         pl.setExperienceLevelAndProgress(pl.calculateTotalExperiencePoints()-10);
 
+                        boolean bottleDone = false;
+                        boolean redstoneDone = false;
+                        boolean lapisDone = false;
 
                         for(ItemStack item : pl.getInventory().getContents()) {
                             if(item == null) {
                                 continue;
                             }
 
-                            if(item.getType() == Material.GLASS_BOTTLE) {
-                                int itemAmount = item.getAmount();
-                                if (itemAmount == 1) {
-                                    pl.getInventory().remove(Material.GLASS_BOTTLE);
-                                    pl.updateInventory();
-                                } else {
-                                    item.setAmount(item.getAmount() - 1);
-                                    pl.updateInventory();
-                                }
-                            } else if(item.getType() == Material.REDSTONE) {
-                                int itemAmount = item.getAmount();
-                                if (itemAmount == 1) {
-                                    pl.getInventory().remove(Material.REDSTONE);
-                                    pl.updateInventory();
-                                } else {
-                                    item.setAmount(item.getAmount() - 1);
-                                    pl.updateInventory();
-                                }
-                            } else if(item.getType() == Material.LAPIS_LAZULI) {
-                                int itemAmount = item.getAmount();
-                                if (itemAmount == 1) {
-                                    pl.getInventory().remove(Material.LAPIS_LAZULI);
-                                    pl.updateInventory();
-                                } else {
-                                    item.setAmount(item.getAmount() - 1);
-                                    pl.updateInventory();
-                                }
+                            if(item.getType() == Material.GLASS_BOTTLE && !bottleDone) {
+                                item.setAmount(item.getAmount() - 1);
+                                bottleDone = true;
+                            } else if(item.getType() == Material.REDSTONE && !redstoneDone) {
+                                item.setAmount(item.getAmount() - 1);
+                                redstoneDone = true;
+                            } else if(item.getType() == Material.LAPIS_LAZULI && !lapisDone) {
+                                item.setAmount(item.getAmount() - 1);
+                                lapisDone = true;
                             } else {
                                 sender.sendMessage("Der Spieler hat nicht genug Rohstoffe im Inventar.");
 
