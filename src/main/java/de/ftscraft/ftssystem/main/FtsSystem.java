@@ -145,7 +145,6 @@ public class FtsSystem extends JavaPlugin {
         new FishingListener(this);
         new GrindstoneListener(this);
         new EnchantListener(this);
-        new ItemPickUpListener(this);
         new PlayerInteractListener(this);
         new FurnaceBurnListener(this);
 
