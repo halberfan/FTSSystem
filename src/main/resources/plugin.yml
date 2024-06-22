@@ -72,3 +72,7 @@ commands:
     description: Repariert das Item in der Hand des angegebenen Spielers
     usage: /repair [Spieler]
     permission: ftssystem.console
+  xpstore:
+    description: Platzhalter
+    usage: /xpstore [Spieler]
+    permision: ftssystem.console
