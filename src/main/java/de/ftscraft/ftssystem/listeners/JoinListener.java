@@ -10,6 +10,9 @@ import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.main.User;
 import de.ftscraft.ftssystem.poll.Umfrage;
 import de.ftscraft.ftssystem.utils.PremiumManager;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.node.Node;
@@ -38,43 +41,7 @@ public class JoinListener implements Listener {
 
         plugin.getScoreboardManager().setPlayerPrefix(p);
 
-        String joinMessage = "%s" + ChatColor.WHITE + " hat Eldoria betreten!";
-
-        boolean isChanged = false;
-
-        if (p.hasPermission("ftssystem.join.lightblue")) {
-            isChanged = true;
-            joinMessage = joinMessage.replace("%s", ChatColor.AQUA + p.getName());
-        }
-        if (p.hasPermission("ftssystem.join.darkred")) {
-            isChanged = true;
-            joinMessage = joinMessage.replace("%s", ChatColor.DARK_RED + p.getName());
-        }
-        if (p.hasPermission("ftssystem.join.darkgreen")) {
-            isChanged = true;
-            joinMessage = joinMessage.replace("%s", ChatColor.DARK_GREEN + p.getName());
-        }
-        if (p.hasPermission("ftssystem.join.red")) {
-            isChanged = true;
-            joinMessage = joinMessage.replace("%s", ChatColor.RED + p.getName());
-        }
-        if (p.hasPermission("ftssystem.join.blue")) {
-            isChanged = true;
-            joinMessage = joinMessage.replace("%s", ChatColor.BLUE + p.getName());
-
-        }
-        if (p.hasPermission("ftssystem.join.darkred")) {
-            isChanged = true;
-            joinMessage = joinMessage.replace("%s", ChatColor.DARK_RED + p.getName());
-        }
-
-        if (!isChanged) {
-
-            joinMessage = joinMessage.replace("%s", ChatColor.GOLD + p.getName());
-
-        }
-
-        event.setJoinMessage(joinMessage);
+        event.joinMessage(generateJoinMessage(p));
 
         User u = new User(plugin, event.getPlayer());
 
@@ -115,6 +82,25 @@ public class JoinListener implements Listener {
             premiumManager.removePremiumPlayer(p.getUniqueId());
         }
 
+    }
+
+    private TextComponent generateJoinMessage(Player p) {
+        TextComponent joinMessage = Component.text(p.getName());
+
+        if (p.hasPermission("ftssystem.join.lightblue")) {
+            joinMessage = joinMessage.color(NamedTextColor.AQUA);
+        } else if (p.hasPermission("ftssystem.join.darkred")) {
+            joinMessage = joinMessage.color(NamedTextColor.DARK_RED);
+        } else if (p.hasPermission("ftssystem.join.darkgreen")) {
+            joinMessage = joinMessage.color(NamedTextColor.DARK_GREEN);
+        } else if (p.hasPermission("ftssystem.join.red")) {
+            joinMessage = joinMessage.color(NamedTextColor.RED);
+        } else if (p.hasPermission("ftssystem.join.blue")) {
+            joinMessage = joinMessage.color(NamedTextColor.BLUE);
+        } else {
+            joinMessage = joinMessage.color(NamedTextColor.GOLD);
+        }
+        return joinMessage.append(Component.text(" hat Eldoria verlassen").color(NamedTextColor.WHITE));
     }
 
 }
