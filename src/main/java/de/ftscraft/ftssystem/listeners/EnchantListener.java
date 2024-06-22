@@ -1,7 +1,7 @@
 package de.ftscraft.ftssystem.listeners;
 
 import de.ftscraft.ftssystem.main.FtsSystem;
-import de.ftscraft.ftssystem.utils.Variables;
+import de.ftscraft.ftssystem.utils.Utils;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentOffer;
 import org.bukkit.event.EventHandler;
@@ -23,9 +23,12 @@ public class EnchantListener implements Listener {
             if (offer == null)
                 continue;
             Enchantment enchantment = offer.getEnchantment();
-            if (Variables.FORBIDDEN_ENCHANTMENTS.contains(enchantment)) {
-                offer.setEnchantment(Variables.REPLACEMENT_ENCHANTMENT);
-                offer.setEnchantmentLevel(Variables.REPLACEMENT_ENCHANTMENT.getMaxLevel());
+
+            var replacement = Utils.enchantmentReplacements.get(new Utils.EnchantmentWithLevel(enchantment, offer.getEnchantmentLevel()));
+
+            if (replacement != null) {
+                offer.setEnchantment(replacement.enchantment);
+                offer.setEnchantmentLevel(replacement.level);
             }
         }
     }
@@ -33,12 +36,13 @@ public class EnchantListener implements Listener {
     @EventHandler
     public void onEnchant(EnchantItemEvent event) {
         Map<Enchantment, Integer> enchantsToAdd = event.getEnchantsToAdd();
-        for (Enchantment enchantment : enchantsToAdd.keySet()) {
-            if (Variables.FORBIDDEN_ENCHANTMENTS.contains(enchantment)) {
-                enchantsToAdd.remove(enchantment);
-                enchantsToAdd.put(Variables.REPLACEMENT_ENCHANTMENT, Variables.REPLACEMENT_ENCHANTMENT.getMaxLevel());
+        enchantsToAdd.forEach((enchantment, lvl) -> {
+            var replacement = Utils.enchantmentReplacements.get(new Utils.EnchantmentWithLevel(enchantment, lvl));
+            if (replacement != null) {
+                enchantsToAdd.remove(replacement.enchantment);
+                enchantsToAdd.put(replacement.enchantment, replacement.level);
             }
-        }
+        });
     }
 
 }
