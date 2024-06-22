@@ -7,9 +7,11 @@ package de.ftscraft.ftssystem.poll;
 
 import de.ftscraft.ftssystem.configs.Messages;
 import de.ftscraft.ftssystem.main.FtsSystem;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -70,11 +72,13 @@ public class Umfrage {
                 all.sendMessage("§7Frage: §c" + frage);
                 for (int i1 = 0; i1 < antwortmoglichkeiten.size(); i1++) {
                     String i = antwortmoglichkeiten.get(i1);
-                    TextComponent a = new TextComponent(i);
-                    a.setColor(ChatColor.BLUE);
-                    a.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/umfrage vote " + i1));
+                    TextComponent a = Component.text(i)
+                            .color(NamedTextColor.BLUE)
+                            .clickEvent(
+                                    ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/umfrage vote " + i1)
+                            );
 
-                    all.spigot().sendMessage(a);
+                    all.sendMessage(a);
                     if (i1 == antwortmoglichkeiten.size() - 1) {
                         if (teilnehmer.contains(all)) {
                             all.sendMessage("§c(Keine Sorge, du hast schon abgestimmt)");
@@ -103,7 +107,7 @@ public class Umfrage {
         for (String a : antwortmoglichkeiten) {
             int w = antworten.get(a);
             String p = ((double) w / (double) teilnehmerzahl * (double) 100) + "%";
-            Bukkit.broadcastMessage(Messages.PREFIX + "Es haben §c" + w + "(" + p + ") §7für §c" + a + " §7gestimmt!");
+            Bukkit.broadcast(LegacyComponentSerializer.legacyAmpersand().deserialize(Messages.PREFIX + "Es haben §c" + w + "(" + p + ") §7für §c" + a + " §7gestimmt!"));
         }
     }
 
@@ -120,10 +124,8 @@ public class Umfrage {
         player.sendMessage("§7Frage: §c" + frage);
         for (int i1 = 0; i1 < antwortmoglichkeiten.size(); i1++) {
             String i = antwortmoglichkeiten.get(i1);
-            TextComponent a = new TextComponent(i);
-            a.setColor(ChatColor.BLUE);
-            a.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/umfrage vote " + i1));
-            player.spigot().sendMessage(a);
+            TextComponent a = Component.text(i).color(NamedTextColor.BLUE).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/umfrage vote " + i1));
+            player.sendMessage(a);
             if (i1 == antwortmoglichkeiten.size() - 1) {
                 if (teilnehmer.contains(player)) {
                     player.sendMessage("§c(Keine Sorge, du hast schon abgestimmt)");

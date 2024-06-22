@@ -40,18 +40,18 @@ public class CommandListener implements Listener {
             Channel c = plugin.getChatManager().getChannel(cmd);
             if (c == null)
                 return;
-            if (!event.getPlayer().hasPermission(c.getPermission())) {
+            if (!event.getPlayer().hasPermission(c.permission())) {
                 event.getPlayer().sendMessage(Messages.NO_PERM);
                 return;
             }
             event.setCancelled(true);
             plugin.getUser(event.getPlayer()).setActiveChannel(c);
-            event.getPlayer().sendMessage(Messages.NOW_ACTIVE_CHANNEL.replace("%s", c.getName()));
+            event.getPlayer().sendMessage(Messages.NOW_ACTIVE_CHANNEL.replace("%s", c.name()));
         } else {
             Channel c = plugin.getChatManager().getChannel(cmd);
             if (c == null)
                 return;
-            if (!event.getPlayer().hasPermission(c.getPermission())) {
+            if (!event.getPlayer().hasPermission(c.permission())) {
                 event.getPlayer().sendMessage(Messages.NO_PERM);
                 return;
             }

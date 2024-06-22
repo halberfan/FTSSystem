@@ -7,7 +7,7 @@ package de.ftscraft.ftssystem.commands;
 
 import de.ftscraft.ftssystem.configs.Messages;
 import de.ftscraft.ftssystem.main.FtsSystem;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -43,7 +43,7 @@ public class CMDbroadcast implements CommandExecutor {
             }
 
             for (Player onlinePlayer : plugin.getServer().getOnlinePlayers()) {
-                onlinePlayer.sendMessage("[§cEin Bote berichtet§r] §a" + ChatColor.translateAlternateColorCodes('&', builder.toString()));
+                onlinePlayer.sendMessage("[§cEin Bote berichtet§r] §a" + LegacyComponentSerializer.legacyAmpersand().deserialize(builder.toString()));
             }
 
         }

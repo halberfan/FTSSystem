@@ -20,10 +20,11 @@ import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.main.User;
 import de.ftscraft.ftssystem.scoreboard.TeamPrefixs;
 import de.ftscraft.ftssystem.utils.Utils;
-import net.md_5.bungee.api.chat.BaseComponent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.ChatColor;
-import net.md_5.bungee.api.chat.*;
-import net.md_5.bungee.api.chat.hover.content.Text;
 
 
 public class ReichChatManager extends ChatManager {
@@ -49,9 +50,9 @@ public class ReichChatManager extends ChatManager {
 
     }
 
-    private BaseComponent[] buildComponent(String text, String user) {
+    private TextComponent buildComponent(String text, String user) {
 
-        ComponentBuilder componentBuilder = new ComponentBuilder();
+        TextComponent component = Component.text("");
         String code = "";
         for (String s : text.split(" ")) {
             if (s.startsWith("§")) {
@@ -61,27 +62,25 @@ public class ReichChatManager extends ChatManager {
                 if (s.substring(2).startsWith("https://") || s.substring(2).startsWith("http://")) {
                     s = s.substring(2);
                 }
-                TextComponent textComponent = new TextComponent("§b[LINK]§r");
-                textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, s));
-                textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(Utils.getTitleFromWebsite(s) + "\n" + "§7" + s)));
-                componentBuilder.append(textComponent);
-                componentBuilder.append(" ").event((HoverEvent) null).event((ClickEvent) null);
+                TextComponent textComponent = Component.text("§b[LINK]§r")
+                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, s))
+                        .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(Utils.getTitleFromWebsite(s) + "\n" + "§7" + s)));
+                component = component.append(textComponent).append(Component.text(" "));
             } else if (s.startsWith("§r§a")) {
-                TextComponent textComponent = new TextComponent(s.replace("_", " "));
-                textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(user)));
-                componentBuilder.append(textComponent);
-                componentBuilder.append(" ").event((HoverEvent) null);
+                TextComponent textComponent = Component.text(s.replace("_", " "))
+                        .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(user)));
+                component = component.append(textComponent).append(Component.text(" "));
             } else {
                 if (!code.isEmpty())
-                    componentBuilder.append(new TextComponent("§" + code + s + " "));
-                else componentBuilder.append(s + " ");
+                    component = component.append(Component.text("§" + code + s + " "));
+                else component = component.append(Component.text(s + " "));
             }
 
             if (s.contains("§"))
                 code = String.valueOf(s.charAt(s.lastIndexOf("§") + 1));
 
         }
-        return componentBuilder.create();
+        return component;
     }
 
     public void chat(User u, String msg, Channel channel) {
@@ -93,22 +92,21 @@ public class ReichChatManager extends ChatManager {
             try {
                 u.joinChannel(channel);
             } catch (Exception ex) {
-                ex.printStackTrace();
+                plugin.getLogger().severe("Exception while chatting");
             }
         }
 
         String formatted = format(u, channel, msg);
 
-        ComponentBuilder componentBuilder = new ComponentBuilder(formatted);
-        componentBuilder.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(u.getPlayer().getName()).create()));
-        BaseComponent[] c = buildComponent(formatted, u.getPlayer().getName());
+        TextComponent componentBuilder = Component.text(formatted).hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(u.getPlayer().getName())));
+        TextComponent c = buildComponent(formatted, u.getPlayer().getName());
 
-        if (channel.getType() == ChannelType.NORMAL || channel.getType() == null) {
+        if (channel.type() == ChannelType.NORMAL || channel.type() == null) {
 
             boolean anyoneRecived = false;
             for (User b : plugin.getUser().values()) {
                 if (b.getEnabledChannels().contains(channel)) {
-                    switch (channel.getPrefix().toLowerCase()) {
+                    switch (channel.prefix().toLowerCase()) {
                         case "g" -> {
                             if (b.getGlobalChannelStatus() == User.ChannelStatusSwitch.OFF) {
                                 continue;
@@ -124,9 +122,9 @@ public class ReichChatManager extends ChatManager {
                             }
                         }
                     }
-                    if (channel.getRange() != -1) {
+                    if (channel.range() != -1) {
                         if (b.getPlayer().getWorld().getName().equalsIgnoreCase(u.getPlayer().getWorld().getName())) {
-                            if (b.getPlayer().getLocation().distance(u.getPlayer().getLocation()) <= channel.getRange()) {
+                            if (b.getPlayer().getLocation().distance(u.getPlayer().getLocation()) <= channel.range()) {
                                 if (b != u)
                                     anyoneRecived = true;
                                 b.getPlayer().sendMessage(c);
@@ -145,7 +143,7 @@ public class ReichChatManager extends ChatManager {
                 u.getPlayer().sendMessage("§cNiemand hat deine Nachricht gelesen. Schreibe ein ! vor deine Nachricht um in den Globalchat zu schreiben");
             }
 
-        } else if (channel.getType() == ChannelType.FACTION_F) {
+        } else if (channel.type() == ChannelType.FACTION_F) {
 
             Resident resident = api.getResident(u.getPlayer());
 
@@ -177,18 +175,18 @@ public class ReichChatManager extends ChatManager {
                 }
             }
 
-        } else if (channel.getType() == ChannelType.FACTION_ALLY) {
+        } else if (channel.type() == ChannelType.FACTION_ALLY) {
 
             //TODO
 
         }
 
-        FtsSystem.getChatLogger().info(u.getPlayer().getName() + " [" + channel.getPrefix() + "] " + msg);
+        FtsSystem.getChatLogger().info(u.getPlayer().getName() + " [" + channel.prefix() + "] " + msg);
 
     }
 
     private String format(User u, Channel c, String msg) {
-        String f = c.getFormat();
+        String f = c.format();
         String faction = "";
 
         Ausweis ausweis = plugin.getEngine().getAusweis(u.getPlayer());
@@ -202,7 +200,7 @@ public class ReichChatManager extends ChatManager {
 
         String prefix = TeamPrefixs.getPrefix(u.getPlayer(), gender);
         String name = u.getPlayer().getName();
-        String channelName = c.getName();
+        String channelName = c.name();
         if (api.getResident(u.getPlayer()).hasTown()) {
             try {
                 faction = api.getResident(u.getPlayer()).getTown().getName();
@@ -214,15 +212,15 @@ public class ReichChatManager extends ChatManager {
         f = f.replace("%fa", faction);
         f = f.replace("%pr", prefix);
         f = f.replace("%ch", channelName);
-        f = f.replace("%cp", c.getPrefix());
+        f = f.replace("%cp", c.prefix());
         f = f.replace("&", "§");
         //Wenn der Spieler im RP Modus ist, wird der eigentliche Name mit dem Namen ausgetauscht der im Ausweis angegeben ist, wenn ein Ausweis vorhanden ist
         if (plugin.getScoreboardManager().isInRoleplayMode(u.getPlayer())) {
             //Wenn der Ausweis nicht existiert, die Variable mit dem normalen Spielernamen ergenzen
-            if (ausweis == null || c.getName().equalsIgnoreCase("Global") || c.getName().equalsIgnoreCase("OOC")) {
+            if (ausweis == null || c.name().equalsIgnoreCase("Global") || c.name().equalsIgnoreCase("OOC")) {
                 f = f.replace("%na", name);
             } else {
-                f = f.replace("%na", ChatColor.GREEN + ausweis.getFirstName().replace(" ", "_") + "_" + ausweis.getLastName().replace(" ", "_") + ChatColor.RESET);
+                f = f.replace("%na", "§a" + ausweis.getFirstName().replace(" ", "_") + "_" + ausweis.getLastName().replace(" ", "_") + "§r");
                 if (u.getPlayer().hasPermission("ftssystem.chat.color")) {
                     f = f.replace("&", "§");
                 }

@@ -27,8 +27,8 @@ public class EnchantListener implements Listener {
             var replacement = Utils.enchantmentReplacements.get(new Utils.EnchantmentWithLevel(enchantment, offer.getEnchantmentLevel()));
 
             if (replacement != null) {
-                offer.setEnchantment(replacement.enchantment);
-                offer.setEnchantmentLevel(replacement.level);
+                offer.setEnchantment(replacement.enchantment());
+                offer.setEnchantmentLevel(replacement.level());
             }
         }
     }
@@ -39,8 +39,8 @@ public class EnchantListener implements Listener {
         enchantsToAdd.forEach((enchantment, lvl) -> {
             var replacement = Utils.enchantmentReplacements.get(new Utils.EnchantmentWithLevel(enchantment, lvl));
             if (replacement != null) {
-                enchantsToAdd.remove(replacement.enchantment);
-                enchantsToAdd.put(replacement.enchantment, replacement.level);
+                enchantsToAdd.remove(replacement.enchantment());
+                enchantsToAdd.put(replacement.enchantment(), replacement.level());
             }
         });
     }

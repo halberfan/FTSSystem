@@ -17,9 +17,6 @@ public class UUIDFetcher {
     private static final Map<String, UUID> uuidCache = new HashMap<>();
     private static final Map<UUID, String> nameCache = new HashMap<>();
 
-    private String name;
-    private UUID id;
-
     public static String getName(UUID uuid) {
 
         if (nameCache.containsKey(uuid))

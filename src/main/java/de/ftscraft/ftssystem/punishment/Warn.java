@@ -5,7 +5,6 @@
 
 package de.ftscraft.ftssystem.punishment;
 
-import java.util.Calendar;
 import java.util.UUID;
 
 public class Warn extends Punishment {

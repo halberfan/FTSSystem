@@ -171,7 +171,7 @@ public class FTSScoreboardManager {
 
     }
 
-    public TeamPrefixs setPlayerPrefix(Player p) {
+    public void setPlayerPrefix(Player p) {
         Ausweis ausweis = plugin.getEngine().getAusweis(p);
         Gender gender;
         if (ausweis != null)
@@ -184,7 +184,7 @@ public class FTSScoreboardManager {
                 if (afkPlayers.contains(p)) {
                     p.setPlayerListName(p.getPlayerListName().replaceAll("§.", "§7§m"));
                 }
-                return a;
+                return;
             }
         }
         TeamPrefixs a = TeamPrefixs.NEULING;
@@ -193,7 +193,6 @@ public class FTSScoreboardManager {
         else
             p.setPlayerListName(a.getPrefix(gender) + " §7| §r" + p.getName() + " §7[RP]");
 
-        return a;
     }
 
     public boolean isInRoleplayMode(Player p) {

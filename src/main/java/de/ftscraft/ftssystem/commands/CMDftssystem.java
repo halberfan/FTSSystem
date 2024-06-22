@@ -4,26 +4,20 @@ import de.ftscraft.ftssystem.configs.Messages;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.utils.FTSCommand;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.Statistic;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 
 public class CMDftssystem implements FTSCommand {
 
-    private final FtsSystem plugin;
-
     public CMDftssystem(FtsSystem plugin) {
-        this.plugin = plugin;
         plugin.getCommand("ftssystem").setExecutor(this);
     }
 
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String label, String[] args) {
 
         Player p = (Player) cs;
 
@@ -85,10 +79,6 @@ public class CMDftssystem implements FTSCommand {
             }
         } else p.sendMessage(Messages.HELP_FTSSYSTEM);
         return false;
-    }
-
-    private void givePearl(Player t) {
-        t.getInventory().addItem(new ItemStack(Material.GHAST_TEAR, 1));
     }
 
 }

@@ -8,6 +8,8 @@ package de.ftscraft.ftssystem.menus.fts;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.main.User;
 import de.ftscraft.ftssystem.menus.FTSGUI;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -37,7 +39,7 @@ public class FTSMenuInventory implements FTSGUI {
 
     private Inventory init() {
 
-        Inventory inv = Bukkit.createInventory(null, 9 * 5, "§6" + player.getName() + ": Dein Menü");
+        Inventory inv = Bukkit.createInventory(null, 9 * 5, Component.text(player.getName() + ": Dein Menü").color(NamedTextColor.GOLD));
 
         this.inv = inv;
 
@@ -50,13 +52,13 @@ public class FTSMenuInventory implements FTSGUI {
     private void load() {
         ItemStack filler = new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1);
         ItemMeta fillerMeta = filler.getItemMeta();
-        fillerMeta.setDisplayName(" ");
+        fillerMeta.displayName(Component.text(" "));
         filler.setItemMeta(fillerMeta);
 
         if (user.hasNoobProtection()) {
             ItemStack noobschutz = new ItemStack(Material.WOODEN_SWORD, 1);
             ItemMeta noobschutzMeta = noobschutz.getItemMeta();
-            noobschutzMeta.setDisplayName("§cNoobschutz");
+            noobschutzMeta.displayName(Component.text("Noobschutz").color(NamedTextColor.RED));
             noobschutzMeta.setLore(Arrays.asList("§cDerzeit: §2An", "§7Klicke, um ihn auszuschalten. Danach kannst du ihn aber nicht wieder aktivieren!"));
             noobschutzMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
             noobschutz.setItemMeta(noobschutzMeta);
