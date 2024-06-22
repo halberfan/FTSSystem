@@ -100,7 +100,7 @@ public class JoinListener implements Listener {
         } else {
             joinMessage = joinMessage.color(NamedTextColor.GOLD);
         }
-        return joinMessage.append(Component.text(" hat Eldoria verlassen").color(NamedTextColor.WHITE));
+        return joinMessage.append(Component.text(" hat Eldoria betreten").color(NamedTextColor.WHITE));
     }
 
 }
