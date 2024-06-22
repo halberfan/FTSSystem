@@ -1,8 +1,7 @@
 package de.ftscraft.ftssystem.listeners;
 
 import de.ftscraft.ftssystem.main.FtsSystem;
-import de.ftscraft.ftssystem.utils.Variables;
-import org.bukkit.enchantments.Enchantment;
+import de.ftscraft.ftssystem.utils.Utils;
 import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,12 +21,7 @@ public class FishingListener implements Listener {
         }
         if (event.getCaught() instanceof Item item) {
             ItemStack is = item.getItemStack();
-            for (Enchantment enchantment : is.getEnchantments().keySet()) {
-                if (Variables.FORBIDDEN_ENCHANTMENTS.contains(enchantment)) {
-                    is.removeEnchantment(enchantment);
-                    is.addEnchantment(Variables.REPLACEMENT_ENCHANTMENT, Variables.REPLACEMENT_ENCHANTMENT.getMaxLevel());
-                }
-            }
+            Utils.replaceEnchantments(is);
         }
     }
 

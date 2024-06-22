@@ -7,12 +7,13 @@ package de.ftscraft.ftssystem.utils;
 
 import de.ftscraft.ftssystem.main.FtsSystem;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.InputStream;
@@ -39,6 +40,7 @@ public class Utils {
     public static class EnchantmentWithLevel {
         public final Enchantment enchantment;
         public final int level;
+
         public EnchantmentWithLevel(Enchantment enchantment, int level) {
             this.enchantment = enchantment;
             this.level = level;
@@ -126,14 +128,6 @@ public class Utils {
         return until;
     }
 
-    public static void sendMessageToAllPlayers(String message) {
-
-        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            onlinePlayer.sendMessage(message);
-        }
-
-    }
-
     public static void sendMessageToAllExceptDisturb(String message, FtsSystem plugin) {
 
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
@@ -145,7 +139,7 @@ public class Utils {
     }
 
     public static String getTitleFromWebsite(String url) {
-        InputStream response = null;
+        InputStream response;
         String title = "Website: ";
         try {
             URL urlc = new URL(url);
@@ -180,19 +174,38 @@ public class Utils {
     }
 
     /**
-     * Replace enchantments from ItemStack based on replacement map
+     * Replace enchantments from {@link ItemStack} based on replacement map
+     *
      * @param itemStack Replacement gets applied on this ItemStack
      */
     public static void replaceEnchantments(ItemStack itemStack) {
-        itemStack.getEnchantments().forEach((enchantment, level) -> {
-            EnchantmentWithLevel enchantmentWithLevel = new EnchantmentWithLevel(enchantment, level);
-            EnchantmentWithLevel replace = enchantmentReplacements.get((enchantmentWithLevel));
-            if (replace != null) {
-                itemStack.removeEnchantment(enchantment);
-                itemStack.addEnchantment(replace.enchantment, replace.level);
-            }
-        });
+
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (itemMeta instanceof EnchantmentStorageMeta enchantmentStorageMeta) {
+
+            enchantmentStorageMeta.getStoredEnchants().forEach((enchantment, level) -> {
+                EnchantmentWithLevel enchantmentWithLevel = new EnchantmentWithLevel(enchantment, level);
+                EnchantmentWithLevel replace = enchantmentReplacements.get((enchantmentWithLevel));
+                if (replace != null) {
+                    enchantmentStorageMeta.removeStoredEnchant(enchantment);
+                    enchantmentStorageMeta.addStoredEnchant(replace.enchantment, replace.level, true);
+                }
+            });
+
+        } else {
+
+            itemMeta.getEnchants().forEach((enchantment, level) -> {
+                EnchantmentWithLevel enchantmentWithLevel = new EnchantmentWithLevel(enchantment, level);
+                EnchantmentWithLevel replace = enchantmentReplacements.get((enchantmentWithLevel));
+                if (replace != null) {
+                    itemStack.removeEnchantment(enchantment);
+                    itemStack.addEnchantment(replace.enchantment, replace.level);
+                }
+            });
+
+        }
+
+        itemStack.setItemMeta(itemMeta);
+
     }
-
-
 }
