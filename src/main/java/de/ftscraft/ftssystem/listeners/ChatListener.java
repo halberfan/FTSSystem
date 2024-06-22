@@ -21,10 +21,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ChatListener implements Listener {
 
@@ -169,7 +165,7 @@ public class ChatListener implements Listener {
 
                 for (User b : plugin.getUser().values()) {
                     if (b.getPlayer().getWorld().getName().equalsIgnoreCase(u.getPlayer().getWorld().getName())) {
-                        if (b.getPlayer().getLocation().distance(u.getPlayer().getLocation()) <= u.getActiveChannel().getRange()) {
+                        if (b.getPlayer().getLocation().distance(u.getPlayer().getLocation()) <= u.getActiveChannel().range()) {
                             b.getPlayer().sendMessage(newMsg.toString());
                         }
                     }

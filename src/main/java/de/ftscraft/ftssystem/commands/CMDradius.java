@@ -16,6 +16,8 @@ public class CMDradius implements CommandExecutor {
 
     private final FtsSystem plugin;
 
+    final String HELP = "/radius - Stellt den Radius eures aktiven Channels da";
+
     public CMDradius(FtsSystem plugin) {
         this.plugin = plugin;
         plugin.getCommand("radius").setExecutor(this);
@@ -25,10 +27,10 @@ public class CMDradius implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
         Player p = (Player) sender;
-        int range = plugin.getUser(p).getActiveChannel().getRange();
+        int range = plugin.getUser(p).getActiveChannel().range();
 
         if(args.length != 0) {
-            p.sendMessage(Messages.PREFIX + "Dieser Befehl nimmt keine Parameter entgegen. \nUsage: §e" + help());
+            p.sendMessage(Messages.PREFIX + "Dieser Befehl nimmt keine Parameter entgegen. \nUsage: §e" + HELP);
             return true;
         }
 
@@ -66,10 +68,6 @@ public class CMDradius implements CommandExecutor {
         }
 
 
-    }
-
-    String help() {
-        return "/radius - Stellt den Radius eures aktiven Channels da";
     }
 
 }

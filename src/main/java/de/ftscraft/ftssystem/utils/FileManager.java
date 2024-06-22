@@ -23,11 +23,9 @@ public class FileManager {
     private final File premiumFile;
     private final FileConfiguration premiumCfg;
 
-    private final File secretsFile;
     private final FileConfiguration secretsConfig;
 
     String bookCMD;
-    String bookBlockreichCMD;
 
     public FileManager(FtsSystem plugin) {
         this.plugin = plugin;
@@ -38,7 +36,7 @@ public class FileManager {
         this.premiumFile = new File(plugin.getDataFolder() + "//premium.yml");
         this.premiumCfg = YamlConfiguration.loadConfiguration(premiumFile);
 
-        this.secretsFile = new File(plugin.getDataFolder() + "//secrets.yml");
+        File secretsFile = new File(plugin.getDataFolder() + "//secrets.yml");
         this.secretsConfig = YamlConfiguration.loadConfiguration(secretsFile);
 
         loadBookComamnd();
@@ -80,11 +78,10 @@ public class FileManager {
         try {
             book_cfg.save(book_file);
         } catch (IOException e) {
-            e.printStackTrace();
+            plugin.getLogger().severe("IO Exception while loading books");
         }
 
         this.bookCMD = book_cfg.getString("command");
-        this.bookBlockreichCMD = book_cfg.getString("command_blockreich");
 
     }
 
@@ -92,7 +89,4 @@ public class FileManager {
         return bookCMD;
     }
 
-    public String getBookBlockreichCMD() {
-        return bookBlockreichCMD;
-    }
 }

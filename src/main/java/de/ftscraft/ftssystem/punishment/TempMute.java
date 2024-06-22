@@ -5,9 +5,6 @@
 
 package de.ftscraft.ftssystem.punishment;
 
-import de.ftscraft.ftssystem.utils.Utils;
-
-import java.util.Calendar;
 import java.util.UUID;
 
 public class TempMute extends TemporaryPunishment {

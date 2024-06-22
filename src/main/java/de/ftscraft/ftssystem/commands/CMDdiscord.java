@@ -22,8 +22,8 @@ import static de.ftscraft.ftssystem.utils.Utils.msg;
 
 public class CMDdiscord implements CommandExecutor {
 
-    private ArrayList<Integer> codes = new ArrayList<>();
-    private FtsSystem plugin;
+    private final ArrayList<Integer> codes = new ArrayList<>();
+    private final FtsSystem plugin;
 
     public CMDdiscord(FtsSystem plugin) {
         this.plugin = plugin;
@@ -41,9 +41,7 @@ public class CMDdiscord implements CommandExecutor {
             int code = generateCode();
             p.sendMessage(msg(String.format("<red>Sende dem FTS-Bot den Befehl /verify %d. Dieser Code ist für 5 Minuten gültig.", generateCode())));
             codes.add(code);
-            Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                codes.remove(code);
-            }, 20 * 60 * 5);
+            Bukkit.getScheduler().runTaskLater(plugin, () -> codes.remove(code), 20 * 60 * 5);
             String town = null;
             try {
                 Resident resident = TownyAPI.getInstance().getResident(p);

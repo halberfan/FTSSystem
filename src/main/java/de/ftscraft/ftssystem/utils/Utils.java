@@ -37,28 +37,7 @@ public class Utils {
         enchantmentReplacements.put(new EnchantmentWithLevel(Enchantment.RIPTIDE, 1), new EnchantmentWithLevel(Enchantment.IMPALING, 1));
     }
 
-    public static class EnchantmentWithLevel {
-        public final Enchantment enchantment;
-        public final int level;
-
-        public EnchantmentWithLevel(Enchantment enchantment, int level) {
-            this.enchantment = enchantment;
-            this.level = level;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            EnchantmentWithLevel that = (EnchantmentWithLevel) o;
-            return level == that.level && Objects.equals(enchantment, that.enchantment);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(enchantment, level);
-        }
-    }
+    public record EnchantmentWithLevel(Enchantment enchantment, int level) {}
 
     public static String convertToTime(long millis) {
         millis = millis - System.currentTimeMillis();
@@ -103,14 +82,14 @@ public class Utils {
         long until = 0;
 
         for (int i = 0; i < u.length; i++) {
-            //If i == 0 -> Its the Number
+            //If i == 0 -> It's the Number
             if (i == 0) {
                 try {
                     until = Integer.parseInt(u[i]);
                 } catch (NumberFormatException ex) {
                     return -1;
                 }
-                //If i == 1 -> Its the Unit
+                //If i == 1 -> It's the Unit
             } else {
                 //Check if Unit exists
                 if (TimeUnits.getTimeUnitByUnit(u[i]) == null) {

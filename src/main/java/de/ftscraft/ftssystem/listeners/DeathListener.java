@@ -24,10 +24,11 @@ public class DeathListener implements Listener {
 
         Player bp = event.getEntity();
 
-
-        for (Entity nearbyEntity : bp.getLocation().getNearbyEntities(80, 100, 80)) {
-            if (nearbyEntity instanceof Player t) {
-                t.sendMessage(event.deathMessage());
+        if (event.deathMessage() != null) {
+            for (Entity nearbyEntity : bp.getLocation().getNearbyEntities(80, 100, 80)) {
+                if (nearbyEntity instanceof Player t) {
+                    t.sendMessage(event.deathMessage());
+                }
             }
         }
 

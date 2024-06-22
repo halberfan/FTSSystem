@@ -17,7 +17,6 @@ import java.util.UUID;
 
 public class CMDvoteban implements CommandExecutor {
 
-    final private int maxPlaytime = 20 * 60 * 60 * 4; //4 Stunden
     private final HashMap<OfflinePlayer, VoteBan> voteBans;
     private final HashMap<OfflinePlayer, VoteBan> pendingConfirmations;
 
@@ -98,6 +97,8 @@ public class CMDvoteban implements CommandExecutor {
                     return true;
                 }
 
+                //4 Stunden
+                int maxPlaytime = 20 * 60 * 60 * 4;
                 if (target.getStatistic(Statistic.PLAY_ONE_MINUTE) > maxPlaytime) {
                     cs.sendMessage(Messages.PREFIX + "Der Spieler spielt zu lange um ihn Votebannen zu können.");
                     return true;
@@ -127,7 +128,7 @@ public class CMDvoteban implements CommandExecutor {
 
                 }
 
-                VoteBan voteBan = new VoteBan(target, player, count);
+                new VoteBan(target, player, count);
 
             }
 
@@ -156,14 +157,6 @@ public class CMDvoteban implements CommandExecutor {
 
         public ArrayList<OfflinePlayer> getVoted() {
             return voted;
-        }
-
-        public OfflinePlayer getInitiator() {
-            return initiator;
-        }
-
-        public OfflinePlayer getTarget() {
-            return target;
         }
 
         public void addVote(OfflinePlayer voter) {

@@ -198,7 +198,6 @@ public class InvClickListener implements Listener {
                     p.sendMessage(management);
                 }
             }
-            return;
         } else if (event.getView().getTitle().endsWith("Dein Menü")) {
 
             User u = plugin.getUser((Player) event.getWhoClicked());
@@ -303,14 +302,14 @@ public class InvClickListener implements Listener {
         try {
             url = new URL("https://api.telegra.ph/createPage?access_token=6cf9217c73e4da3913dc2d9f878423ebd713ff7fd4d9ab6d087b16f48f9b&title=Strafen:+" + UUIDFetcher.getName(p) + "&content=" + content + "&author_name=FTS-System");
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            plugin.getLogger().severe("While creating url for telegraph api");
         }
 
         Scanner sc = null;
         try {
             sc = new Scanner(url.openStream());
         } catch (IOException e) {
-            e.printStackTrace();
+            plugin.getLogger().severe("IO Exception while creating scanner for telegraph url");
         }
 
         StringBuilder sb = new StringBuilder();
@@ -327,7 +326,7 @@ public class InvClickListener implements Listener {
             JSONObject obj2 = (JSONObject) jobj.get("result");
             return obj2.get("url").toString();
         } catch (ParseException e) {
-            e.printStackTrace();
+            plugin.getLogger().severe("Parse exception when trying to receive url");
         }
         return null;
     }

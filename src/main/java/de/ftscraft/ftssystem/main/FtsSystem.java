@@ -18,9 +18,7 @@ import de.ftscraft.ftssystem.utils.ForumHook.ForumHook;
 import de.ftscraft.ftssystem.utils.PremiumManager;
 import de.ftscraft.ftssystem.utils.Runner;
 import de.ftscraft.ftssystem.utils.discordhook.DiscordHook;
-import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -40,11 +38,8 @@ public class FtsSystem extends JavaPlugin {
     private HashMap<String, User> user;
     private Umfrage umfrage = null;
 
-    public boolean factionHooked = false;
     public static final String PREFIX = "§7[§cFTS-System§7] ";
     private Economy econ;
-    private Permission perms;
-    private Chat chat;
     private Essentials essentialsPlugin;
     private ConfigManager configManager;
     private FileManager fileManager;
@@ -75,10 +70,7 @@ public class FtsSystem extends JavaPlugin {
 
 
     private void hook() {
-        factionHooked = getServer().getPluginManager().getPlugin("Factions") != null;
         setupEconomy();
-        setupChat();
-        setupPermissions();
         engine = (Engine) getServer().getPluginManager().getPlugin("FTSEngine");
         if (getServer().getPluginManager().isPluginEnabled("Essentials"))
             essentialsPlugin = (Essentials) getServer().getPluginManager().getPlugin("Essentials");
@@ -201,14 +193,6 @@ public class FtsSystem extends JavaPlugin {
         return econ;
     }
 
-    public Permission getPerms() {
-        return perms;
-    }
-
-    public Chat getChat() {
-        return chat;
-    }
-
     public ChatManager getChatManager() {
         return chatManager;
     }
@@ -246,16 +230,6 @@ public class FtsSystem extends JavaPlugin {
             return;
         }
         econ = rsp.getProvider();
-    }
-
-    private void setupChat() {
-        RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
-        chat = rsp.getProvider();
-    }
-
-    private void setupPermissions() {
-        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
-        perms = rsp.getProvider();
     }
 
     public FileManager getFileManager() {

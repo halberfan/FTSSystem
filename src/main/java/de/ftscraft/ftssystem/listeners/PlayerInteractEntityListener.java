@@ -1,15 +1,11 @@
 package de.ftscraft.ftssystem.listeners;
 
 import de.ftscraft.ftssystem.main.FtsSystem;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.entity.Cow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.inventory.EquipmentSlot;
 
 public class PlayerInteractEntityListener implements Listener {
 

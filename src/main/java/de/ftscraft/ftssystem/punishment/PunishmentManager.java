@@ -5,12 +5,10 @@
 
 package de.ftscraft.ftssystem.punishment;
 
-import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import de.ftscraft.ftssystem.configs.Messages;
 import de.ftscraft.ftssystem.database.entities.PunishmentEntity;
 import de.ftscraft.ftssystem.main.FtsSystem;
-import de.ftscraft.ftssystem.utils.TimeUnits;
 import de.ftscraft.ftssystem.utils.UUIDFetcher;
 import de.ftscraft.ftssystem.utils.Utils;
 import org.bukkit.Bukkit;
@@ -101,9 +99,9 @@ public class PunishmentManager {
         players.remove(player);
     }
 
-    public boolean addWarn(String reason, UUID author, String playerName, String moreInfo) {
+    public void addWarn(String reason, UUID author, String playerName, String moreInfo) {
         UUID uuid = UUIDFetcher.getUUID(playerName);
-        if (uuid == null) return false;
+        if (uuid == null) return;
 
         PunishmentEntity punishmentEntity = new PunishmentEntity(
                 reason,
@@ -133,16 +131,15 @@ public class PunishmentManager {
 
         checkForAutoBan(uuid);
 
-        return true;
     }
 
-    public boolean addTempwarn(String reason, UUID author, String playerName, String moreInfo, String unit) {
+    public void addTempwarn(String reason, UUID author, String playerName, String moreInfo, String unit) {
         //Get UUID from Player
         UUID uuid = UUIDFetcher.getUUID(playerName);
 
         long until = Utils.calculateUntil(unit);
         if (until == -1)
-            return false;
+            return;
 
         PunishmentEntity punishmentEntity = new PunishmentEntity(
                 reason,
@@ -177,10 +174,9 @@ public class PunishmentManager {
 
         checkForAutoBan(uuid);
 
-        return true;
     }
 
-    public boolean addNote(String reason, UUID author, String playerName, String moreInfo) {
+    public void addNote(String reason, UUID author, String playerName, String moreInfo) {
         UUID uuid = UUIDFetcher.getUUID(playerName);
         PunishmentEntity punishmentEntity = new PunishmentEntity(
                 reason,
@@ -194,10 +190,9 @@ public class PunishmentManager {
         );
         addPunishmentToPlayer(uuid, saveNewPunishmentToDatabase(punishmentEntity));
 
-        return true;
     }
 
-    public boolean addTempBan(String reason, UUID author, String playerName, String moreInfo, String unit) {
+    public void addTempBan(String reason, UUID author, String playerName, String moreInfo, String unit) {
         //Get UUID from Player
         UUID uuid = UUIDFetcher.getUUID(playerName);
 
@@ -206,7 +201,7 @@ public class PunishmentManager {
 
         long until = Utils.calculateUntil(unit);
         if (until == -1)
-            return false;
+            return;
 
         PunishmentEntity punishmentEntity = new PunishmentEntity(
                 reason,
@@ -233,12 +228,11 @@ public class PunishmentManager {
         }
 
         checkForAutoBan(uuid);
-        return true;
     }
 
-    public boolean addBan(String reason, UUID author, String playerName, String moreInfo) {
+    public void addBan(String reason, UUID author, String playerName, String moreInfo) {
         UUID uuid = UUIDFetcher.getUUID(playerName);
-        if (uuid == null) return false;
+        if (uuid == null) return;
 
         PunishmentEntity punishmentEntity = new PunishmentEntity(
                 reason,
@@ -266,16 +260,15 @@ public class PunishmentManager {
 
         addPunishmentToPlayer(uuid, punishment);
 
-        return true;
     }
 
-    public boolean addTempMute(String reason, UUID author, String playerName, String moreInfo, String unit) {
+    public void addTempMute(String reason, UUID author, String playerName, String moreInfo, String unit) {
         //Get UUID from Player
         UUID uuid = UUIDFetcher.getUUID(playerName);
 
         long until = Utils.calculateUntil(unit);
         if (until == -1)
-            return false;
+            return;
         PunishmentEntity punishmentEntity = new PunishmentEntity(
                 reason,
                 author,
@@ -290,7 +283,6 @@ public class PunishmentManager {
         addPunishmentToPlayer(uuid, punishment);
 
         checkForAutoBan(uuid);
-        return true;
     }
 
     public HashMap<UUID, List<Punishment>> getPlayers() {
@@ -298,7 +290,7 @@ public class PunishmentManager {
     }
 
     public Punishment isBanned(Player player) {
-        if (!isLoaded(player.getUniqueId()))
+        if (isNotLoaded(player.getUniqueId()))
             loadPlayer(player.getUniqueId());
         if (players.get(player.getUniqueId()) == null) return null;
         for (Punishment a : players.get(player.getUniqueId())) {
@@ -312,7 +304,7 @@ public class PunishmentManager {
     }
 
     public boolean isBanned(UUID player) {
-        if (!isLoaded(player))
+        if (isNotLoaded(player))
             loadPlayer(player);
         loadPlayer(player);
         if (players.get(player) == null) return false;
@@ -328,7 +320,7 @@ public class PunishmentManager {
     }
 
     public Punishment isMuted(Player player) {
-        if (!isLoaded(player.getUniqueId()))
+        if (isNotLoaded(player.getUniqueId()))
             loadPlayer(player.getUniqueId());
         if (players.get(player.getUniqueId()) == null) return null;
         for (Punishment a : players.get(player.getUniqueId())) {
@@ -340,7 +332,7 @@ public class PunishmentManager {
     }
 
     public boolean isMuted(UUID player) {
-        if (!isLoaded(player))
+        if (isNotLoaded(player))
             loadPlayer(player);
         if (players.get(player) == null) return false;
         for (Punishment a : players.get(player)) {
@@ -352,8 +344,8 @@ public class PunishmentManager {
         return false;
     }
 
-    private boolean isLoaded(UUID uuid) {
-        return players.containsKey(uuid);
+    private boolean isNotLoaded(UUID uuid) {
+        return !players.containsKey(uuid);
     }
 
     public void loadPlayer(UUID uuid) {

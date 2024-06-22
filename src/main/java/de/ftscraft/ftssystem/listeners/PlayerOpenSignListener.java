@@ -12,9 +12,7 @@ import org.bukkit.event.Listener;
 
 public class PlayerOpenSignListener implements Listener {
 
-    private final FtsSystem plugin;
     public PlayerOpenSignListener(FtsSystem plugin) {
-        this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 

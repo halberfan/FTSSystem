@@ -8,8 +8,8 @@ import java.util.UUID;
 
 public class DiscordHook {
 
-    private String apiKey;
-    private String url = "localhost:5000/";
+    private final String apiKey;
+    private final String url = "localhost:5000/";
 
     public DiscordHook(String apiKey) {
         this.apiKey = apiKey;

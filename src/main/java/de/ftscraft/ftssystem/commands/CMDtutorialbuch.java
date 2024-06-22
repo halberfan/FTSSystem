@@ -15,10 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class CMDtutorialbuch implements CommandExecutor {
 
-
     private final FtsSystem plugin;
-
-    private String bookCommand;
 
     public CMDtutorialbuch(FtsSystem plugin) {
         this.plugin = plugin;

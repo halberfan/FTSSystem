@@ -8,6 +8,8 @@ package de.ftscraft.ftssystem.punishment;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.utils.UUIDFetcher;
 import de.ftscraft.ftsutils.items.ItemBuilder;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
@@ -37,40 +39,40 @@ public class PunishmentInventory {
     private void loadMain() {
 
         //Platzhalter
-        ItemStack blackglass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1);
-        ItemMeta mblackglass = blackglass.getItemMeta();
-        mblackglass.setDisplayName(" ");
-        blackglass.setItemMeta(mblackglass);
+        ItemStack blackGlass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1);
+        ItemMeta mBlackGlass = blackGlass.getItemMeta();
+        mBlackGlass.displayName(Component.text(" "));
+        blackGlass.setItemMeta(mBlackGlass);
 
         //Skull
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1);
-        SkullMeta mskull = (SkullMeta) skull.getItemMeta();
-        mskull.setOwningPlayer(Bukkit.getOfflinePlayer(player));
-        mskull.setDisplayName("§c" + player);
-        skull.setItemMeta(mskull);
+        SkullMeta mSkull = (SkullMeta) skull.getItemMeta();
+        mSkull.setOwningPlayer(Bukkit.getOfflinePlayer(player));
+        mSkull.displayName(Component.text(player).color(NamedTextColor.RED));
+        skull.setItemMeta(mSkull);
 
         //Note
         ItemStack note = new ItemStack(Material.PAPER, 1);
-        ItemMeta mnote = note.getItemMeta();
-        mnote.setDisplayName("§7Notiz");
-        note.setItemMeta(mnote);
+        ItemMeta mNote = note.getItemMeta();
+        mNote.displayName(Component.text("Notiz").color(NamedTextColor.GRAY));
+        note.setItemMeta(mNote);
 
         //Tempwarn
-        ItemStack tempwarn = new ItemStack(Material.LIGHT_GRAY_DYE, 1);
-        ItemMeta mtempwarn = tempwarn.getItemMeta();
-        mtempwarn.setDisplayName("§6Tempwarn");
-        tempwarn.setItemMeta(mtempwarn);
+        ItemStack tempWarn = new ItemStack(Material.LIGHT_GRAY_DYE, 1);
+        ItemMeta mTempWarn = tempWarn.getItemMeta();
+        mTempWarn.displayName(Component.text("Tempwarn").color(NamedTextColor.GOLD));
+        tempWarn.setItemMeta(mTempWarn);
 
         //Warn
         ItemStack warn = new ItemStack(Material.GRAY_DYE, 1);
-        ItemMeta mwarn = warn.getItemMeta();
-        mwarn.setDisplayName("§6Warn");
-        warn.setItemMeta(mwarn);
+        ItemMeta mWarn = warn.getItemMeta();
+        mWarn.displayName(Component.text("Warn").color(NamedTextColor.GOLD));
+        warn.setItemMeta(mWarn);
 
         //Mute
         ItemStack mute = new ItemStack(Material.GREEN_DYE, 1);
         ItemMeta mmute = mute.getItemMeta();
-        mmute.setDisplayName("§cTempmute");
+        mmute.displayName(Component.text("Tempmute").color(NamedTextColor.RED));
         mute.setItemMeta(mmute);
 
         //Tempban
@@ -82,18 +84,18 @@ public class PunishmentInventory {
         //Ban
         ItemStack ban = new ItemStack(Material.RED_DYE, 1);
         ItemMeta mban = ban.getItemMeta();
-        mban.setDisplayName("§4Ban");
+        mban.displayName(Component.text("Ban").color(NamedTextColor.DARK_RED));
         ban.setItemMeta(mban);
 
         //Akte
         ItemStack akte = new ItemStack(Material.BOOK, 1);
         ItemMeta makte = akte.getItemMeta();
-        makte.setDisplayName("§5Akte");
+        makte.displayName(Component.text("Akte").color(NamedTextColor.DARK_PURPLE));
         akte.setItemMeta(makte);
 
         main.setItem(4, skull);
         main.setItem(18, note);
-        main.setItem(19, tempwarn);
+        main.setItem(19, tempWarn);
         main.setItem(20, warn);
         main.setItem(21, mute);
         main.setItem(22, tempban);
@@ -102,13 +104,13 @@ public class PunishmentInventory {
 
         for (int i = 0; i < main.getSize(); i++) {
             if (main.getItem(i) == null)
-                main.setItem(i, blackglass);
+                main.setItem(i, blackGlass);
         }
 
     }
 
     private void loadAkte() {
-        akte = Bukkit.createInventory(null, 9 * 6, "§2Akte: " + player);
+        akte = Bukkit.createInventory(null, 9 * 6, Component.text("Akte: " + player).color(NamedTextColor.DARK_GREEN));
         PunishmentManager puMa = plugin.getPunishmentManager();
         //Skull
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1);

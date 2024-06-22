@@ -33,10 +33,10 @@ public abstract class ChatManager {
 
     public Channel getChannel(String a) {
         for (Channel channel : channels) {
-            if (channel.getName().equalsIgnoreCase(a)) {
+            if (channel.name().equalsIgnoreCase(a)) {
                 return channel;
             }
-            if (channel.getPrefix().equalsIgnoreCase(a)) {
+            if (channel.prefix().equalsIgnoreCase(a)) {
                 return channel;
             }
         }
@@ -66,24 +66,23 @@ public abstract class ChatManager {
             try {
                 cfg.save(file);
             } catch (IOException e) {
-                e.printStackTrace();
+                plugin.getLogger().severe("IO Exception while loading channel");
             }
         }
         try {
             for (String a : cfg.getConfigurationSection("channel").getKeys(false)) {
                 String prefix = cfg.getString("channel." + a + ".prefix");
-                boolean defaultChannel = cfg.getBoolean("channel." + a + ".default");
                 String permission = cfg.getString("channel." + a + ".permission");
                 int range = cfg.getInt("channel." + a + ".range");
                 String format = cfg.getString("channel." + a + ".format");
                 ChannelType channelType = null;
                 if (cfg.contains("channel." + a + ".type"))
                     channelType = ChannelType.valueOf(cfg.getString("channel." + a + ".type").toUpperCase());
-                Channel c = new Channel(plugin, a, prefix, format, defaultChannel, permission, range, channelType);
+                Channel c = new Channel(a, prefix, format, permission, range, channelType);
                 channels.add(c);
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            plugin.getLogger().severe("Exception while loading channel");
         }
     }
 

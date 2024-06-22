@@ -70,11 +70,11 @@ public class User {
         List<String> chNames = new ArrayList<>();
 
         for (Channel a : enabledChannels) {
-            chNames.add(a.getName());
+            chNames.add(a.name());
         }
 
         cfg.set("channels", chNames.toArray());
-        cfg.set("activeChannel", activeChannel.getName());
+        cfg.set("activeChannel", activeChannel.name());
         cfg.set("scoreboardOn", isScoreboardEnabled());
         cfg.set("approved", approved);
         cfg.set("msgSound", msgSound);
@@ -101,7 +101,7 @@ public class User {
         try {
             cfg.save(file);
         } catch (IOException e) {
-            e.printStackTrace();
+            plugin.getLogger().severe("IO Exception while saving user data");
         }
     }
 
@@ -120,7 +120,7 @@ public class User {
         }
 
         for (Channel a : plugin.getChatManager().getChannels()) {
-            if (player.hasPermission(a.getPermission())) {
+            if (player.hasPermission(a.permission())) {
                 enabledChannels.add(a);
             }
         }
@@ -166,7 +166,7 @@ public class User {
     }
 
     public void joinChannel(Channel channel) {
-        if (player.hasPermission(channel.getPermission())) {
+        if (player.hasPermission(channel.permission())) {
             enabledChannels.add(channel);
             if (activeChannel == null)
                 activeChannel = channel;
@@ -180,7 +180,7 @@ public class User {
     }
 
     public void setActiveChannel(Channel activeChannel) {
-        if (player.hasPermission(activeChannel.getPermission())) {
+        if (player.hasPermission(activeChannel.permission())) {
             this.activeChannel = activeChannel;
             if (!enabledChannels.contains(activeChannel))
                 enabledChannels.add(activeChannel);
@@ -190,10 +190,10 @@ public class User {
     public void toggleChannel(Channel channel) {
         if (enabledChannels.contains(channel)) {
             leaveChannel(channel);
-            player.sendMessage(Messages.LEFT_CHANNEL.replace("%s", channel.getName()));
+            player.sendMessage(Messages.LEFT_CHANNEL.replace("%s", channel.name()));
         } else {
             setActiveChannel(channel);
-            player.sendMessage(Messages.NOW_ACTIVE_CHANNEL.replace("%s", channel.getName()));
+            player.sendMessage(Messages.NOW_ACTIVE_CHANNEL.replace("%s", channel.name()));
         }
     }
 

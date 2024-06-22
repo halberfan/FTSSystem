@@ -8,7 +8,6 @@ package de.ftscraft.ftssystem.punishment;
 import de.ftscraft.ftssystem.configs.Messages;
 import de.ftscraft.ftssystem.main.FtsSystem;
 import de.ftscraft.ftssystem.utils.TimeUnits;
-import de.ftscraft.ftssystem.utils.UUIDFetcher;
 import de.ftscraft.ftssystem.utils.Utils;
 import org.bukkit.entity.Player;
 
@@ -96,14 +95,14 @@ public class PunishmentBuilder {
         long until = 0;
 
         for (int i = 0; i < u.length; i++) {
-            //If i == 0 -> Its the Number
+            //If i == 0 -> It's the Number
             if (i == 0) {
                 try {
                     until = Integer.parseInt(u[i]);
                 } catch (NumberFormatException ex) {
                     return 0;
                 }
-                //If i == 1 -> Its the Unit
+                //If i == 1 -> It's the Unit
             } else {
                 //Check if Unit exists
                 if (TimeUnits.getTimeUnitByUnit(u[i]) == null) {

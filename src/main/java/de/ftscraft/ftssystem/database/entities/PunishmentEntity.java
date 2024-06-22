@@ -6,6 +6,7 @@ import de.ftscraft.ftssystem.punishment.*;
 
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 @DatabaseTable(tableName = "punishments")
 public class PunishmentEntity {
 

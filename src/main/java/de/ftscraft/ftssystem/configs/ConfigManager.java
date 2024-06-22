@@ -10,14 +10,10 @@ import de.ftscraft.ftssystem.travelsystem.TravelType;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class ConfigManager {
 
     private ArrayList<String> autoMessages = new ArrayList<>();
-
-    private int latestPunID = 0;
 
     private boolean wartung = false;
 
@@ -53,7 +49,6 @@ public class ConfigManager {
         this.autoMessages = autoMessages;
 
         //Latest ID for Punishments
-        latestPunID = cfg.getInt("latestPunishID");
 
         wartung = cfg.getBoolean("wartung");
         for (TravelType value : TravelType.values()) {
@@ -68,10 +63,6 @@ public class ConfigManager {
 
     public ArrayList<String> getAutoMessages() {
         return autoMessages;
-    }
-
-    public int getLatestPunID() {
-        return latestPunID;
     }
 
     public void save() {
