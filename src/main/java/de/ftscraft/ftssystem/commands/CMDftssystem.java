@@ -33,11 +33,11 @@ public class CMDftssystem implements FTSCommand {
                     if (args.length == 2) {
                         if (args[1].equalsIgnoreCase("join")) {
                             for (Player a : Bukkit.getOnlinePlayers()) {
-                                a.sendMessage("§b" + p.getName() + " §rhat Parsifal betreten!");
+                                a.sendMessage("§b" + p.getName() + " §rhat Eldoria betreten!");
                             }
                         } else if (args[1].equalsIgnoreCase("leave")) {
                             for (Player a : Bukkit.getOnlinePlayers()) {
-                                a.sendMessage("§b" + p.getName() + " §rhat Parsifal verlassen!");
+                                a.sendMessage("§b" + p.getName() + " §rhat Eldoria verlassen!");
                             }
                         }
                     } else p.sendMessage(Messages.HELP_FTSSYSTEM);

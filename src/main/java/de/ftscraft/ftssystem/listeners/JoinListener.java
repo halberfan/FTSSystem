@@ -38,7 +38,7 @@ public class JoinListener implements Listener {
 
         plugin.getScoreboardManager().setPlayerPrefix(p);
 
-        String joinMessage = "%s" + ChatColor.WHITE + " hat Parsifal betreten!";
+        String joinMessage = "%s" + ChatColor.WHITE + " hat Eldoria betreten!";
 
         boolean isChanged = false;
 

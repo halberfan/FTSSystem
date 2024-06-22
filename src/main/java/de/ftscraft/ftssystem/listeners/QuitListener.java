@@ -39,7 +39,7 @@ public class QuitListener implements Listener {
         u.save();
         plugin.getUser().remove(event.getPlayer().getName());
 
-        String leaveMessage = "%s" + ChatColor.WHITE + " hat Parsifal verlassen!";
+        String leaveMessage = "%s" + ChatColor.WHITE + " hat Eldoria verlassen!";
 
         boolean isChanged = false;
 
