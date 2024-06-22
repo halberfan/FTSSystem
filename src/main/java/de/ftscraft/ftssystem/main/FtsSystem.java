@@ -119,6 +119,7 @@ public class FtsSystem extends JavaPlugin {
         new CMDvotehome(this);
         new CMDwartung(this);
         new CMDrepair(this);
+        new CMDxpstore(this);
 
         new DeathListener(this);
         new CommandListener(this);

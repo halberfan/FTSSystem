@@ -72,3 +72,6 @@ commands:
     description: Repariert das Item in der Hand des angegebenen Spielers
     usage: /repair [Spieler]
     permission: ftssystem.console
+  xpstore:
+    usage: /xpstore [Spieler]
+    permision: ftssystem.console

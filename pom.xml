@@ -112,9 +112,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.halberfan</groupId>
+            <groupId>com.github.FTSCraft</groupId>
             <artifactId>FTSEngine</artifactId>
-            <version>8577cc02b9</version>
+            <version>2adfc1bf5e</version>
         </dependency>
         <dependency>
             <groupId>com.github.halberfan</groupId>
