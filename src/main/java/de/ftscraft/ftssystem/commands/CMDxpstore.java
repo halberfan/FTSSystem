@@ -32,7 +32,7 @@ public class CMDxpstore implements CommandExecutor {
 
                 if(pl != null && pl.isOnline()) {
 
-                    if(pl.getTotalExperience() >= 20 && pl.getInventory().contains(Material.GLASS_BOTTLE) && pl.getInventory().contains(Material.REDSTONE) && pl.getInventory().contains(Material.LAPIS_LAZULI)) {
+                    if(pl.getTotalExperience() >= 20 && pl.getInventory().containsAtLeast(new ItemStack(Material.GLASS_BOTTLE),2) && pl.getInventory().containsAtLeast(new ItemStack(Material.REDSTONE),8) && pl.getInventory().containsAtLeast(new ItemStack(Material.LAPIS_LAZULI),8)) {
 
                         pl.setExperienceLevelAndProgress(pl.calculateTotalExperiencePoints()-20);
 
