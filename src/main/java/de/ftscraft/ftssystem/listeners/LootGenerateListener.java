@@ -16,7 +16,7 @@ public class LootGenerateListener implements Listener {
     @EventHandler
     public void onInvOpen(InventoryOpenEvent event) {
         for (ItemStack is : event.getInventory().getStorageContents()) {
-            if (is == null)
+            if (is == null || !is.hasItemMeta())
                 continue;
             Utils.replaceEnchantments(is);
         }
