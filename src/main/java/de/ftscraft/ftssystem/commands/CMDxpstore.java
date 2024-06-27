@@ -46,14 +46,44 @@ public class CMDxpstore implements CommandExecutor {
                             }
 
                             if(item.getType() == Material.GLASS_BOTTLE && bottleDone != 2) {
-                                item.setAmount(item.getAmount() - 2);
-                                bottleDone++;
+                                if(item.getAmount()>=2 && bottleDone==0) {
+                                    item.setAmount(item.getAmount() - 2);
+                                    bottleDone = 2;
+                                } else {
+                                    if(item.getAmount()<2) {
+                                        bottleDone=item.getAmount();
+                                        item.setAmount(0);
+                                    } else {
+                                        item.setAmount(item.getAmount()-(2-bottleDone));
+                                        bottleDone=bottleDone+(2-bottleDone);
+                                    }
+                                }
                             } else if(item.getType() == Material.REDSTONE && redstoneDone != 8) {
-                                item.setAmount(item.getAmount() - 8);
-                                redstoneDone++;
+                                if(item.getAmount()>=8 && redstoneDone==0) {
+                                    item.setAmount(item.getAmount() - 8);
+                                    redstoneDone = 8;
+                                } else {
+                                    if(item.getAmount()<8) {
+                                        redstoneDone=item.getAmount();
+                                        item.setAmount(0);
+                                    } else {
+                                        item.setAmount(item.getAmount()-(8-redstoneDone));
+                                        redstoneDone=redstoneDone+(8-redstoneDone);
+                                    }
+                                }
                             } else if(item.getType() == Material.LAPIS_LAZULI && lapisDone != 8) {
-                                item.setAmount(item.getAmount() - 8);
-                                lapisDone++;
+                                if(item.getAmount()>=8 && lapisDone==0) {
+                                    item.setAmount(item.getAmount() - 8);
+                                    lapisDone = 8;
+                                } else {
+                                    if(item.getAmount()<8) {
+                                        lapisDone=item.getAmount();
+                                        item.setAmount(0);
+                                    } else {
+                                        item.setAmount(item.getAmount()-(8-lapisDone));
+                                        lapisDone=lapisDone+(8-lapisDone);
+                                    }
+                                }
                             } else {
                                 sender.sendMessage("Der Spieler hat nicht genug Rohstoffe im Inventar.");
 
