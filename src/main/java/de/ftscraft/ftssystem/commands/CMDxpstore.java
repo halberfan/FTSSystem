@@ -32,28 +32,58 @@ public class CMDxpstore implements CommandExecutor {
 
                 if(pl != null && pl.isOnline()) {
 
-                    if(pl.getTotalExperience() >= 10 && pl.getInventory().contains(Material.GLASS_BOTTLE) && pl.getInventory().contains(Material.REDSTONE) && pl.getInventory().contains(Material.LAPIS_LAZULI)) {
+                    if(pl.getTotalExperience() >= 20 && pl.getInventory().containsAtLeast(new ItemStack(Material.GLASS_BOTTLE),2) && pl.getInventory().containsAtLeast(new ItemStack(Material.REDSTONE),8) && pl.getInventory().containsAtLeast(new ItemStack(Material.LAPIS_LAZULI),8)) {
 
-                        pl.setExperienceLevelAndProgress(pl.calculateTotalExperiencePoints()-10);
+                        pl.setExperienceLevelAndProgress(pl.calculateTotalExperiencePoints()-20);
 
-                        boolean bottleDone = false;
-                        boolean redstoneDone = false;
-                        boolean lapisDone = false;
+                        int bottleDone = 0;
+                        int redstoneDone = 0;
+                        int lapisDone = 0;
 
                         for(ItemStack item : pl.getInventory().getContents()) {
                             if(item == null) {
                                 continue;
                             }
 
-                            if(item.getType() == Material.GLASS_BOTTLE && !bottleDone) {
-                                item.setAmount(item.getAmount() - 1);
-                                bottleDone = true;
-                            } else if(item.getType() == Material.REDSTONE && !redstoneDone) {
-                                item.setAmount(item.getAmount() - 1);
-                                redstoneDone = true;
-                            } else if(item.getType() == Material.LAPIS_LAZULI && !lapisDone) {
-                                item.setAmount(item.getAmount() - 1);
-                                lapisDone = true;
+                            if(item.getType() == Material.GLASS_BOTTLE && bottleDone != 2) {
+                                if(item.getAmount()>=2 && bottleDone==0) {
+                                    item.setAmount(item.getAmount() - 2);
+                                    bottleDone = 2;
+                                } else {
+                                    if(item.getAmount()<2) {
+                                        bottleDone=item.getAmount();
+                                        item.setAmount(0);
+                                    } else {
+                                        item.setAmount(item.getAmount()-(2-bottleDone));
+                                        bottleDone=bottleDone+(2-bottleDone);
+                                    }
+                                }
+                            } else if(item.getType() == Material.REDSTONE && redstoneDone != 8) {
+                                if(item.getAmount()>=8 && redstoneDone==0) {
+                                    item.setAmount(item.getAmount() - 8);
+                                    redstoneDone = 8;
+                                } else {
+                                    if(item.getAmount()<8) {
+                                        redstoneDone=item.getAmount();
+                                        item.setAmount(0);
+                                    } else {
+                                        item.setAmount(item.getAmount()-(8-redstoneDone));
+                                        redstoneDone=redstoneDone+(8-redstoneDone);
+                                    }
+                                }
+                            } else if(item.getType() == Material.LAPIS_LAZULI && lapisDone != 8) {
+                                if(item.getAmount()>=8 && lapisDone==0) {
+                                    item.setAmount(item.getAmount() - 8);
+                                    lapisDone = 8;
+                                } else {
+                                    if(item.getAmount()<8) {
+                                        lapisDone=item.getAmount();
+                                        item.setAmount(0);
+                                    } else {
+                                        item.setAmount(item.getAmount()-(8-lapisDone));
+                                        lapisDone=lapisDone+(8-lapisDone);
+                                    }
+                                }
                             } else {
                                 sender.sendMessage("Der Spieler hat nicht genug Rohstoffe im Inventar.");
 
@@ -62,7 +92,7 @@ public class CMDxpstore implements CommandExecutor {
 
 
 
-                        ItemStack isExpBottle = new ItemStack(Material.EXPERIENCE_BOTTLE, 1);
+                        ItemStack isExpBottle = new ItemStack(Material.EXPERIENCE_BOTTLE, 2);
                         pl.getInventory().addItem(isExpBottle);
 
                     }
