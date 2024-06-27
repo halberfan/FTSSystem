@@ -36,6 +36,12 @@ public class CMDxpstore implements CommandExecutor {
 
                         pl.setExperienceLevelAndProgress(pl.calculateTotalExperiencePoints()-20);
 
+                        int bottleNeeded=2;
+                        int redstoneNeeded=8;
+                        int lapisNeeded=8;
+
+
+
                         int bottleDone = 0;
                         int redstoneDone = 0;
                         int lapisDone = 0;
@@ -45,45 +51,18 @@ public class CMDxpstore implements CommandExecutor {
                                 continue;
                             }
 
-                            if(item.getType() == Material.GLASS_BOTTLE && bottleDone != 2) {
-                                if(item.getAmount()>=2 && bottleDone==0) {
-                                    item.setAmount(item.getAmount() - 2);
-                                    bottleDone = 2;
-                                } else {
-                                    if(item.getAmount()<2) {
-                                        bottleDone=item.getAmount();
-                                        item.setAmount(0);
-                                    } else {
-                                        item.setAmount(item.getAmount()-(2-bottleDone));
-                                        bottleDone=bottleDone+(2-bottleDone);
-                                    }
-                                }
-                            } else if(item.getType() == Material.REDSTONE && redstoneDone != 8) {
-                                if(item.getAmount()>=8 && redstoneDone==0) {
-                                    item.setAmount(item.getAmount() - 8);
-                                    redstoneDone = 8;
-                                } else {
-                                    if(item.getAmount()<8) {
-                                        redstoneDone=item.getAmount();
-                                        item.setAmount(0);
-                                    } else {
-                                        item.setAmount(item.getAmount()-(8-redstoneDone));
-                                        redstoneDone=redstoneDone+(8-redstoneDone);
-                                    }
-                                }
-                            } else if(item.getType() == Material.LAPIS_LAZULI && lapisDone != 8) {
-                                if(item.getAmount()>=8 && lapisDone==0) {
-                                    item.setAmount(item.getAmount() - 8);
-                                    lapisDone = 8;
-                                } else {
-                                    if(item.getAmount()<8) {
-                                        lapisDone=item.getAmount();
-                                        item.setAmount(0);
-                                    } else {
-                                        item.setAmount(item.getAmount()-(8-lapisDone));
-                                        lapisDone=lapisDone+(8-lapisDone);
-                                    }
-                                }
+                            if(item.getType() == Material.GLASS_BOTTLE && bottleDone != bottleNeeded) {
+                                int removeFromStack = Math.min(item.getAmount(), bottleNeeded - bottleDone);
+                                item.setAmount(item.getAmount() - removeFromStack);
+                                bottleDone += removeFromStack;
+                            } else if(item.getType() == Material.REDSTONE && redstoneDone != redstoneNeeded) {
+                            int removeFromStack = Math.min(item.getAmount(), redstoneNeeded - redstoneDone);
+                            item.setAmount(item.getAmount() - removeFromStack);
+                            redstoneDone += removeFromStack;
+                            } else if(item.getType() == Material.LAPIS_LAZULI && lapisDone != lapisNeeded) {
+                                int removeFromStack = Math.min(item.getAmount(), lapisNeeded - lapisDone);
+                                item.setAmount(item.getAmount() - removeFromStack);
+                                lapisDone += removeFromStack;
                             } else {
                                 sender.sendMessage("Der Spieler hat nicht genug Rohstoffe im Inventar.");
 
